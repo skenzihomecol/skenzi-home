@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skenzi Home | Todo para tu hogar y mucho más</title>
+
+    <meta name="description" content="Skenzi Home - Productos para el hogar, tecnología, deporte, industrial y juguetes.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8f5ed;
+            color: #173f3d;
+        }
+
+        /* ENCABEZADO */
+        header {
+            background: #063f3d;
+            color: #f8f1df;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: Georgia, serif;
+            font-size: 36px;
+            font-style: italic;
+            color: #f8f1df;
+            white-space: nowrap;
+        }
+
+        .search {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 30px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .cart {
+            color: #f8f1df;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        /* MENÚ */
+        nav {
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        nav a {
+            color: #173f3d;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #b38a58;
+        }
+
+        /* BANNER */
+        .hero {
+            min-height: 560px;
+            background:
+                linear-gradient(
+                    rgba(6, 63, 61, 0.25),
+                    rgba(6, 63, 61, 0.45)
+                ),
+                #0b5551;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            color: #ffffff;
+        }
+
+        .hero h1 {
+            font-family: Georgia, serif;
+            font-size: clamp(45px, 8vw, 82px);
+            margin-bottom: 20px;
+            color: #f8f1df;
+        }
+
+        .hero p {
+            font-size: 21px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: #f0e3c8;
+            color: #174543;
+            padding: 15px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .hero-button:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* SECCIONES */
+        section {
+            padding: 70px 6%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-family: Georgia, serif;
+            font-size: 38px;
+            color: #174543;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #666;
+        }
+
+        /* CATEGORÍAS */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .category {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 35px 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.13);
+        }
+
+        .category-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .category h3 {
+            color: #174543;
+            font-size: 18px;
+        }
+
+        /* OFERTAS */
+        .offers {
+            background: #174543;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .offers h2 {
+            color: #f8f1df;
+        }
+
+        .bbb {
+            font-size: 25px;
+            color: #f0d9ad;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .offer-button {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 30px;
+            background: #f0e3c8;
+            color: #174543;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* PRODUCTOS */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product {
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .product-image {
+            height: 230px;
+            background: #e8e2d5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            color: #173f3d;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            color: #174543;
+            margin-bottom: 15px;
+        }
+
+        .add-cart {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: #174543;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* CONTACTO */
+        .contact {
+            text-align: center;
+            background: #eee8dc;
+        }
+
+        .contact p {
+            margin: 10px 0;
+        }
+
+        .whatsapp {
+            display: inline-block;
+            margin-top: 20px;
+            background: #174543;
+            color: #ffffff;
+            padding: 14px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* PIE DE PÁGINA */
+        footer {
+            background: #063f3d;
+            color: #f8f1df;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header {
+                flex-wrap: wrap;
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            .categories,
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: 450px;
+            }
+
+            section {
+                padding: 50px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <header>
+
+        <div class="logo">
+            Skenzi
+        </div>
+
+        <div class="search">
+            <input
+                type="search"
+                placeholder="¿Qué estás buscando?"
+                aria-label="Buscar productos"
+            >
+        </div>
+
+        <a href="#" class="cart">
+            🛒 Carrito
+        </a>
+
+    </header>
+
+
+    <!-- MENÚ -->
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#ofertas">Ofertas BBB</a>
+        <a href="#novedades">Novedades</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+
+    <!-- PORTADA -->
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h1>Skenzi Home</h1>
+
+                <p>
+                    Todo para tu hogar y mucho más.
+                    Encuentra productos para tu hogar,
+                    tecnología, deporte, industria y entretenimiento.
+                </p>
+
+                <a href="#categorias" class="hero-button">
+                    VER PRODUCTOS
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- CATEGORÍAS -->
+        <section id="categorias">
+
+            <div class="section-title">
+
+                <h2>Compra por categoría</h2>
+
+                <p>
+                    Encuentra fácilmente lo que estás buscando.
+                </p>
+
+            </div>
+
+            <div class="categories">
+
+                <div class="category">
+                    <div class="category-icon">🏠</div>
+                    <h3>Hogar</h3>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">⚽</div>
+                    <h3>Deporte</h3>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">💻</div>
+                    <h3>Tecnología</h3>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">🏭</div>
+                    <h3>Industrial</h3>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">🧸</div>
+                    <h3>Juguetes</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- OFERTAS BBB -->
+        <section class="offers" id="ofertas">
+
+            <div class="section-title">
+
+                <h2>🔥 Ofertas BBB</h2>
+
+                <div class="bbb">
+                    Bueno • Bonito • Barato
+                </div>
+
+                <p>
+                    Descubre nuestros productos con precios especiales.
+                </p>
+
+            </div>
+
+            <a href="#" class="offer-button">
+                VER OFERTAS
+            </a>
+
+        </section>
+
+
+        <!-- PRODUCTOS DESTACADOS -->
+        <section id="novedades">
+
+            <div class="section-title">
+
+                <h2>Productos destacados</h2>
+
+                <p>
+                    Descubre algunos de nuestros productos.
+                </p>
+
+            </div>
+
+            <div class="products">
+
+                <article class="product">
+
+                    <div class="product-image">
+                        Imagen del producto
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>Producto Skenzi</h3>
+
+                        <div class="price">
+                            $0
+                        </div>
+
+                        <button class="add-cart">
+                            AGREGAR AL CARRITO
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product">
+
+                    <div class="product-image">
+                        Imagen del producto
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>Producto Skenzi</h3>
+
+                        <div class="price">
+                            $0
+                        </div>
+
+                        <button class="add-cart">
+                            AGREGAR AL CARRITO
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product">
+
+                    <div class="product-image">
+                        Imagen del producto
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>Producto Skenzi</h3>
+
+                        <div class="price">
+                            $0
+                        </div>
+
+                        <button class="add-cart">
+                            AGREGAR AL CARRITO
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product">
+
+                    <div class="product-image">
+                        Imagen del producto
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>Producto Skenzi</h3>
+
+                        <div class="price">
+                            $0
+                        </div>
+
+                        <button class="add-cart">
+                            AGREGAR AL CARRITO
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTACTO -->
+        <section class="contact" id="contacto">
+
+            <div class="section-title">
+
+                <h2>¿Necesitas ayuda?</h2>
+
+                <p>
+                    Estamos para ayudarte con tus compras.
+                </p>
+
+            </div>
+
+            <p>📲 Atención por WhatsApp</p>
+            <p>📦 Envíos y entregas</p>
+            <p>💬 Resolvemos tus dudas</p>
+
+            <a href="#" class="whatsapp">
+                ESCRÍBENOS POR WHATSAPP
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+
+        <p>
+            © 2026 Skenzi Home. Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+</body>
+</html>
