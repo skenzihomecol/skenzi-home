@@ -6,398 +6,485 @@
 
     <title>Skenzi Home | Todo para tu hogar y mucho más</title>
 
-    <meta name="description" content="Skenzi Home - Productos para el hogar, tecnología, deporte, industrial y juguetes.">
+    <meta name="description" content="Skenzi Home - Hogar, deporte, tecnología, industrial y juguetes.">
 
     <style>
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f0e5;
-    color: #171714;
-}
-
-/* =========================
-   ENCABEZADO
-========================= */
-
-header {
-    background: #11110f;
-    color: #f5eedf;
-    padding: 18px 6%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo {
-    font-family: Georgia, serif;
-    font-size: 38px;
-    font-style: italic;
-    color: #f5eedf;
-    white-space: nowrap;
-}
-
-.search {
-    flex: 1;
-    max-width: 520px;
-}
-
-.search input {
-    width: 100%;
-    padding: 14px 22px;
-    border: 1px solid #6b7055;
-    border-radius: 30px;
-    outline: none;
-    font-size: 15px;
-    background: #f8f4ea;
-    color: #171714;
-}
-
-.cart {
-    color: #f5eedf;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-/* =========================
-   MENÚ
-========================= */
-
-nav {
-    background: #252820;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 16px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.18);
-}
-
-nav a {
-    color: #f5eedf;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #e7bd4b;
-}
-
-/* =========================
-   PORTADA
-========================= */
-
-.hero {
-    min-height: 560px;
-    background:
-        linear-gradient(
-            rgba(17,17,15,0.45),
-            rgba(47,53,38,0.65)
-        ),
-        #343a2a;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 20px;
-}
-
-.hero-content {
-    max-width: 850px;
-    color: #ffffff;
-}
-
-.hero h1 {
-    font-family: Georgia, serif;
-    font-size: clamp(45px, 8vw, 82px);
-    margin-bottom: 20px;
-    color: #f5eedf;
-}
-
-.hero p {
-    font-size: 21px;
-    line-height: 1.6;
-    margin-bottom: 35px;
-    color: #f5eedf;
-}
-
-.hero-button {
-    display: inline-block;
-    background: #e7bd4b;
-    color: #171714;
-    padding: 15px 34px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.hero-button:hover {
-    background: #f5eedf;
-    transform: translateY(-3px);
-}
-
-/* =========================
-   SECCIONES
-========================= */
-
-section {
-    padding: 70px 6%;
-}
-
-.section-title {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.section-title h2 {
-    font-family: Georgia, serif;
-    font-size: 38px;
-    color: #252820;
-    margin-bottom: 10px;
-}
-
-.section-title p {
-    color: #66675e;
-}
-
-/* =========================
-   CATEGORÍAS
-========================= */
-
-.categories {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-}
-
-.category {
-    background: #fffdf7;
-    border: 1px solid #d7cfbd;
-    border-radius: 18px;
-    padding: 35px 15px;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.category:hover {
-    transform: translateY(-6px);
-    border-color: #7a805e;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.13);
-}
-
-.category-icon {
-    font-size: 45px;
-    margin-bottom: 15px;
-}
-
-.category h3 {
-    color: #252820;
-    font-size: 18px;
-}
-
-/* =========================
-   OFERTAS BBB
-========================= */
-
-.offers {
-    background: #e7bd4b;
-    color: #171714;
-    text-align: center;
-}
-
-.offers h2 {
-    color: #171714;
-}
-
-.bbb {
-    font-size: 25px;
-    color: #252820;
-    font-weight: bold;
-    margin-bottom: 30px;
-}
-
-.offer-button {
-    display: inline-block;
-    padding: 14px 32px;
-    border-radius: 30px;
-    background: #11110f;
-    color: #f5eedf;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.offer-button:hover {
-    background: #343a2a;
-}
-
-/* =========================
-   PRODUCTOS
-========================= */
-
-.products {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-}
-
-.product {
-    background: #fffdf7;
-    border: 1px solid #d7cfbd;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-}
-
-.product-image {
-    height: 230px;
-    background: #e4dfd1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6b6b62;
-}
-
-.product-info {
-    padding: 20px;
-}
-
-.product-info h3 {
-    color: #252820;
-    margin-bottom: 10px;
-}
-
-.price {
-    font-size: 21px;
-    font-weight: bold;
-    color: #4d5738;
-    margin-bottom: 15px;
-}
-
-.add-cart {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 25px;
-    background: #343a2a;
-    color: #f5eedf;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.add-cart:hover {
-    background: #11110f;
-}
-
-/* =========================
-   CONTACTO
-========================= */
-
-.contact {
-    text-align: center;
-    background: #252820;
-    color: #f5eedf;
-}
-
-.contact .section-title h2 {
-    color: #f5eedf;
-}
-
-.contact .section-title p {
-    color: #d8d3c6;
-}
-
-.contact p {
-    margin: 10px 0;
-}
-
-.whatsapp {
-    display: inline-block;
-    margin-top: 20px;
-    background: #e7bd4b;
-    color: #171714;
-    padding: 14px 30px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* =========================
-   PIE DE PÁGINA
-========================= */
-
-footer {
-    background: #11110f;
-    color: #f5eedf;
-    text-align: center;
-    padding: 30px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 900px) {
-
-    .categories {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .products {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    header {
-        flex-wrap: wrap;
-    }
-
-    .search {
-        order: 3;
-        flex-basis: 100%;
-    }
-}
-
-@media (max-width: 600px) {
-
-    nav {
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-
-    .categories,
-    .products {
-        grid-template-columns: 1fr;
-    }
-
-    .hero {
-        min-height: 450px;
-    }
-
-    section {
-        padding: 50px 5%;
-    }
-}   
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --negro: #11110f;
+            --negro-suave: #25251f;
+            --verde: #4f5838;
+            --verde-oscuro: #343a29;
+            --crema: #f5eedf;
+            --crema-claro: #faf7ef;
+            --amarillo: #e8bd4b;
+            --gris: #d8d2c3;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--crema-claro);
+            color: var(--negro);
+        }
+
+        /* =========================
+           ENCABEZADO
+        ========================= */
+
+        header {
+            background: var(--negro);
+            min-height: 82px;
+            padding: 15px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: var(--crema);
+            font-family: Georgia, serif;
+            font-size: 38px;
+            font-style: italic;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .search {
+            flex: 1;
+            max-width: 560px;
+        }
+
+        .search input {
+            width: 100%;
+            height: 44px;
+            border: none;
+            border-radius: 25px;
+            padding: 0 22px;
+            font-size: 15px;
+            outline: none;
+            background: var(--crema-claro);
+            color: var(--negro);
+        }
+
+        .cart {
+            text-decoration: none;
+            color: var(--crema);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .cart:hover {
+            color: var(--amarillo);
+        }
+
+        /* =========================
+           MENÚ
+        ========================= */
+
+        nav {
+            background: var(--negro-suave);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 42px;
+            padding: 16px 20px;
+        }
+
+        nav a {
+            color: var(--crema);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--amarillo);
+        }
+
+        /* =========================
+           PORTADA
+        ========================= */
+
+        .hero {
+            min-height: 570px;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(17,17,15,0.90) 0%,
+                    rgba(17,17,15,0.68) 45%,
+                    rgba(52,58,41,0.45) 100%
+                ),
+                linear-gradient(
+                    135deg,
+                    #11110f,
+                    #4f5838
+                );
+
+            display: flex;
+            align-items: center;
+            padding: 70px 8%;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-small {
+            color: var(--amarillo);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            color: var(--crema);
+            font-family: Georgia, serif;
+            font-size: clamp(48px, 7vw, 82px);
+            line-height: 0.95;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--amarillo);
+        }
+
+        .hero p {
+            color: #eee9dd;
+            font-size: 19px;
+            line-height: 1.7;
+            margin-bottom: 35px;
+            max-width: 590px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: var(--amarillo);
+            color: var(--negro);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 15px 32px;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+
+        .hero-button:hover {
+            background: var(--crema);
+            transform: translateY(-3px);
+        }
+
+        /* =========================
+           SECCIONES
+        ========================= */
+
+        section {
+            padding: 75px 6%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-family: Georgia, serif;
+            color: var(--negro-suave);
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #6d6b62;
+            font-size: 16px;
+        }
+
+        /* =========================
+           CATEGORÍAS
+        ========================= */
+
+        .categories {
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .category {
+            background: white;
+            border: 1px solid var(--gris);
+            border-radius: 20px;
+            padding: 35px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category:hover {
+            transform: translateY(-7px);
+            border-color: var(--verde);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .category-icon {
+            font-size: 43px;
+            margin-bottom: 18px;
+        }
+
+        .category h3 {
+            color: var(--negro-suave);
+            font-size: 18px;
+        }
+
+        .category p {
+            color: #77746b;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        /* =========================
+           OFERTAS BBB
+        ========================= */
+
+        .offers {
+            background: var(--amarillo);
+            text-align: center;
+        }
+
+        .offers .section-title h2 {
+            color: var(--negro);
+        }
+
+        .bbb {
+            font-size: 25px;
+            font-weight: bold;
+            color: var(--verde-oscuro);
+            margin-bottom: 12px;
+        }
+
+        .offers-button {
+            display: inline-block;
+            background: var(--negro);
+            color: var(--crema);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 14px 32px;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+
+        .offers-button:hover {
+            background: var(--verde-oscuro);
+        }
+
+        /* =========================
+           PRODUCTOS
+        ========================= */
+
+        .products {
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .product {
+            background: white;
+            border: 1px solid var(--gris);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+        }
+
+        .product-image {
+            height: 240px;
+            background: #e9e3d6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #77746b;
+            font-size: 14px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            color: var(--negro-suave);
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            color: var(--verde);
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .add-cart {
+            width: 100%;
+            border: none;
+            border-radius: 25px;
+            padding: 12px;
+            background: var(--verde-oscuro);
+            color: var(--crema);
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-cart:hover {
+            background: var(--negro);
+        }
+
+        /* =========================
+           CONTACTO
+        ========================= */
+
+        .contact {
+            background: var(--verde-oscuro);
+            color: var(--crema);
+            text-align: center;
+        }
+
+        .contact .section-title h2 {
+            color: var(--crema);
+        }
+
+        .contact .section-title p {
+            color: #ded9cb;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            font-size: 16px;
+        }
+
+        .whatsapp {
+            display: inline-block;
+            background: var(--amarillo);
+            color: var(--negro);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 14px 30px;
+            border-radius: 30px;
+        }
+
+        /* =========================
+           PIE DE PÁGINA
+        ========================= */
+
+        footer {
+            background: var(--negro);
+            color: var(--crema);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 14px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 950px) {
+
+            .categories {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header {
+                flex-wrap: wrap;
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 15px 5%;
+            }
+
+            .logo {
+                font-size: 30px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            nav a {
+                font-size: 13px;
+            }
+
+            .hero {
+                min-height: 500px;
+                padding: 55px 7%;
+            }
+
+            .hero h1 {
+                font-size: 50px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .categories,
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 55px 5%;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <!-- ENCABEZADO -->
+
     <header>
 
         <div class="logo">
@@ -420,32 +507,56 @@ footer {
 
 
     <!-- MENÚ -->
+
     <nav>
+
         <a href="#">Inicio</a>
-        <a href="#categorias">Categorías</a>
-        <a href="#ofertas">Ofertas BBB</a>
-        <a href="#novedades">Novedades</a>
-        <a href="#contacto">Contacto</a>
+
+        <a href="#categorias">
+            Categorías
+        </a>
+
+        <a href="#ofertas">
+            Ofertas BBB
+        </a>
+
+        <a href="#novedades">
+            Novedades
+        </a>
+
+        <a href="#contacto">
+            Contacto
+        </a>
+
     </nav>
 
 
     <!-- PORTADA -->
+
     <main>
 
         <section class="hero">
 
             <div class="hero-content">
 
-                <h1>Skenzi Home</h1>
+                <div class="hero-small">
+                    Skenzi Home
+                </div>
+
+                <h1>
+                    Todo para tu
+                    <span>hogar</span>
+                    y mucho más.
+                </h1>
 
                 <p>
-                    Todo para tu hogar y mucho más.
-                    Encuentra productos para tu hogar,
-                    tecnología, deporte, industria y entretenimiento.
+                    Descubre productos para tu hogar,
+                    tecnología, deporte, industria,
+                    juguetes y mucho más.
                 </p>
 
                 <a href="#categorias" class="hero-button">
-                    VER PRODUCTOS
+                    EXPLORAR PRODUCTOS
                 </a>
 
             </div>
@@ -454,11 +565,14 @@ footer {
 
 
         <!-- CATEGORÍAS -->
+
         <section id="categorias">
 
             <div class="section-title">
 
-                <h2>Compra por categoría</h2>
+                <h2>
+                    Compra por categoría
+                </h2>
 
                 <p>
                     Encuentra fácilmente lo que estás buscando.
@@ -466,31 +580,91 @@ footer {
 
             </div>
 
+
             <div class="categories">
 
                 <div class="category">
-                    <div class="category-icon">🏠</div>
-                    <h3>Hogar</h3>
+
+                    <div class="category-icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        Hogar
+                    </h3>
+
+                    <p>
+                        Cocina, decoración y más
+                    </p>
+
                 </div>
 
-                <div class="category">
-                    <div class="category-icon">⚽</div>
-                    <h3>Deporte</h3>
-                </div>
 
                 <div class="category">
-                    <div class="category-icon">💻</div>
-                    <h3>Tecnología</h3>
+
+                    <div class="category-icon">
+                        ⚽
+                    </div>
+
+                    <h3>
+                        Deporte
+                    </h3>
+
+                    <p>
+                        Ejercicio y entretenimiento
+                    </p>
+
                 </div>
 
-                <div class="category">
-                    <div class="category-icon">🏭</div>
-                    <h3>Industrial</h3>
-                </div>
 
                 <div class="category">
-                    <div class="category-icon">🧸</div>
-                    <h3>Juguetes</h3>
+
+                    <div class="category-icon">
+                        💻
+                    </div>
+
+                    <h3>
+                        Tecnología
+                    </h3>
+
+                    <p>
+                        Tecnología y accesorios
+                    </p>
+
+                </div>
+
+
+                <div class="category">
+
+                    <div class="category-icon">
+                        🏭
+                    </div>
+
+                    <h3>
+                        Industrial
+                    </h3>
+
+                    <p>
+                        Herramientas y productos
+                    </p>
+
+                </div>
+
+
+                <div class="category">
+
+                    <div class="category-icon">
+                        🧸
+                    </div>
+
+                    <h3>
+                        Juguetes
+                    </h3>
+
+                    <p>
+                        Juegos y diversión
+                    </p>
+
                 </div>
 
             </div>
@@ -498,36 +672,42 @@ footer {
         </section>
 
 
-        <!-- OFERTAS BBB -->
+        <!-- OFERTAS -->
+
         <section class="offers" id="ofertas">
 
             <div class="section-title">
 
-                <h2>🔥 Ofertas BBB</h2>
+                <h2>
+                    🔥 Ofertas BBB
+                </h2>
 
                 <div class="bbb">
                     Bueno • Bonito • Barato
                 </div>
 
                 <p>
-                    Descubre nuestros productos con precios especiales.
+                    Productos seleccionados con precios especiales.
                 </p>
 
             </div>
 
-            <a href="#" class="offer-button">
+            <a href="#" class="offers-button">
                 VER OFERTAS
             </a>
 
         </section>
 
 
-        <!-- PRODUCTOS DESTACADOS -->
+        <!-- PRODUCTOS -->
+
         <section id="novedades">
 
             <div class="section-title">
 
-                <h2>Productos destacados</h2>
+                <h2>
+                    Productos destacados
+                </h2>
 
                 <p>
                     Descubre algunos de nuestros productos.
@@ -535,20 +715,23 @@ footer {
 
             </div>
 
+
             <div class="products">
 
                 <article class="product">
 
                     <div class="product-image">
-                        Imagen del producto
+                        Próximamente
                     </div>
 
                     <div class="product-info">
 
-                        <h3>Producto Skenzi</h3>
+                        <h3>
+                            Producto Skenzi
+                        </h3>
 
                         <div class="price">
-                            $0
+                            Próximamente
                         </div>
 
                         <button class="add-cart">
@@ -563,15 +746,17 @@ footer {
                 <article class="product">
 
                     <div class="product-image">
-                        Imagen del producto
+                        Próximamente
                     </div>
 
                     <div class="product-info">
 
-                        <h3>Producto Skenzi</h3>
+                        <h3>
+                            Producto Skenzi
+                        </h3>
 
                         <div class="price">
-                            $0
+                            Próximamente
                         </div>
 
                         <button class="add-cart">
@@ -586,15 +771,17 @@ footer {
                 <article class="product">
 
                     <div class="product-image">
-                        Imagen del producto
+                        Próximamente
                     </div>
 
                     <div class="product-info">
 
-                        <h3>Producto Skenzi</h3>
+                        <h3>
+                            Producto Skenzi
+                        </h3>
 
                         <div class="price">
-                            $0
+                            Próximamente
                         </div>
 
                         <button class="add-cart">
@@ -609,15 +796,17 @@ footer {
                 <article class="product">
 
                     <div class="product-image">
-                        Imagen del producto
+                        Próximamente
                     </div>
 
                     <div class="product-info">
 
-                        <h3>Producto Skenzi</h3>
+                        <h3>
+                            Producto Skenzi
+                        </h3>
 
                         <div class="price">
-                            $0
+                            Próximamente
                         </div>
 
                         <button class="add-cart">
@@ -634,11 +823,14 @@ footer {
 
 
         <!-- CONTACTO -->
+
         <section class="contact" id="contacto">
 
             <div class="section-title">
 
-                <h2>¿Necesitas ayuda?</h2>
+                <h2>
+                    ¿Necesitas ayuda?
+                </h2>
 
                 <p>
                     Estamos para ayudarte con tus compras.
@@ -646,9 +838,23 @@ footer {
 
             </div>
 
-            <p>📲 Atención por WhatsApp</p>
-            <p>📦 Envíos y entregas</p>
-            <p>💬 Resolvemos tus dudas</p>
+
+            <div class="contact-info">
+
+                <div class="contact-item">
+                    📲 Atención por WhatsApp
+                </div>
+
+                <div class="contact-item">
+                    📦 Envíos y entregas
+                </div>
+
+                <div class="contact-item">
+                    💬 Resolvemos tus dudas
+                </div>
+
+            </div>
+
 
             <a href="#" class="whatsapp">
                 ESCRÍBENOS POR WHATSAPP
@@ -660,6 +866,7 @@ footer {
 
 
     <!-- PIE DE PÁGINA -->
+
     <footer>
 
         <p>
