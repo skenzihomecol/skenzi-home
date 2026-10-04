@@ -111,7 +111,85 @@
         nav a:hover {
             color: var(--amarillo);
         }
+/* MENÚ DESPLEGABLE DE CATEGORÍAS */
 
+.menu-categorias {
+    position: relative;
+}
+
+.categoria-boton {
+    color: var(--crema);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.submenu-categorias {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 260px;
+    background: var(--crema-claro);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.menu-categorias:hover .submenu-categorias {
+    display: block;
+}
+
+.subcategoria {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    color: var(--negro-suave);
+    cursor: pointer;
+}
+
+.subcategoria:hover {
+    background: var(--gris);
+}
+
+.subcategoria strong {
+    font-weight: 500;
+}
+
+.subcategoria span {
+    color: #aaa;
+    font-size: 20px;
+}
+
+.sub-submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: 230px;
+    background: var(--crema-claro);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    padding: 10px 0;
+}
+
+.subcategoria:hover .sub-submenu {
+    display: block;
+}
+
+.sub-submenu a {
+    display: block;
+    padding: 12px 18px;
+    color: var(--negro-suave);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sub-submenu a:hover {
+    background: var(--gris);
+    color: var(--verde);
+}
         /* =========================
            PORTADA
         ========================= */
@@ -510,9 +588,68 @@ background-repeat: no-repeat;
 
         <a href="#">Inicio</a>
 
-        <a href="#categorias">
-            Categorías
-        </a>
+        <div class="menu-categorias">
+
+    <a href="#categorias" class="categoria-boton">
+        Categorías ▾
+    </a>
+
+    <div class="submenu-categorias">
+
+        <div class="subcategoria">
+            <strong>Hogar</strong>
+            <span>›</span>
+            <div class="sub-submenu">
+                <a href="#">Cocina</a>
+                <a href="#">Decoración</a>
+                <a href="#">Muebles</a>
+                <a href="#">Textiles</a>
+            </div>
+        </div>
+
+        <div class="subcategoria">
+            <strong>Deporte</strong>
+            <span>›</span>
+            <div class="sub-submenu">
+                <a href="#">Fitness</a>
+                <a href="#">Deportes</a>
+                <a href="#">Accesorios deportivos</a>
+            </div>
+        </div>
+
+        <div class="subcategoria">
+            <strong>Tecnología</strong>
+            <span>›</span>
+            <div class="sub-submenu">
+                <a href="#">Celulares y accesorios</a>
+                <a href="#">Computación</a>
+                <a href="#">Electrónica</a>
+            </div>
+        </div>
+
+        <div class="subcategoria">
+            <strong>Industrial</strong>
+            <span>›</span>
+            <div class="sub-submenu">
+                <a href="#">Herramientas</a>
+                <a href="#">Equipos</a>
+                <a href="#">Accesorios</a>
+            </div>
+        </div>
+
+        <div class="subcategoria">
+            <strong>Juguetes</strong>
+            <span>›</span>
+            <div class="sub-submenu">
+                <a href="#">Juegos</a>
+                <a href="#">Juguetes educativos</a>
+                <a href="#">Niños</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
         <a href="#ofertas">
             Ofertas BBB
