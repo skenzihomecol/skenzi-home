@@ -110,28 +110,71 @@
         </section>
 
 
-        <!-- GALERÍA DE OFERTAS -->
-        <section class="seccion" id="ofertas">
+      
+<!-- GALERÍA DE OFERTAS -->
+<section class="galeria-ofertas" id="ofertas">
 
-            <div class="seccion-cabecera">
+    <!-- OFERTA DEL DÍA -->
+    <article class="panel-oferta-dia">
 
-                <div>
-                    <span class="etiqueta">OPORTUNIDADES PARA TI</span>
-                    <h2>Ofertas especiales</h2>
+        <h2>Oferta del día</h2>
 
-                    <p>
-                        Encuentra productos destacados para aprovechar.
-                    </p>
+        <div id="producto-oferta-dia">
+            <div class="vacio">
+                Próximamente encontrarás aquí nuestra oferta destacada.
+            </div>
+        </div>
+
+    </article>
+
+    <!-- CARRUSEL DE OFERTAS -->
+    <article class="panel-carrusel-ofertas">
+
+        <div class="encabezado-ofertas">
+            <h2>Ofertas</h2>
+
+            <a class="enlace-ofertas" href="novedades.html">
+                Mostrar todas las ofertas →
+            </a>
+        </div>
+
+        <div class="carrusel-contenedor">
+
+            <div
+                id="carrusel-ofertas"
+                class="carrusel-productos"
+                aria-label="Productos en oferta"
+            >
+                <div class="vacio">
+                    Próximamente encontrarás aquí nuestros productos en oferta.
                 </div>
+            </div>
+
+            <div class="flechas-carrusel">
+
+                <button
+                    type="button"
+                    id="ofertas-anterior"
+                    aria-label="Ver ofertas anteriores"
+                >
+                    ‹
+                </button>
+
+                <button
+                    type="button"
+                    id="ofertas-siguiente"
+                    aria-label="Ver más ofertas"
+                >
+                    ›
+                </button>
 
             </div>
 
-            <div
-                id="productos-ofertas"
-                class="grid-productos"
-            ></div>
+        </div>
 
-        </section>
+    </article>
+
+</section>
 
 
         <!-- GALERÍA GENERAL DE PRODUCTOS -->
