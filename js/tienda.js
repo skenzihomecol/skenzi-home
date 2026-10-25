@@ -529,7 +529,7 @@ function agregarAlCarrito(idProducto) {
         return;
     }
 
-    const carrito = obtenerCarrito();
+    const carrito =leerCarrito();
     const existente = carrito.find(item => item.id === idProducto);
 
     if (existente) {
