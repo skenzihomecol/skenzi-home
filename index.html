@@ -3,998 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Skenzi Home | Todo para tu hogar y mucho más</title>
-
-    <meta name="description" content="Skenzi Home - Hogar, deporte, tecnología, industrial y juguetes.">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --negro: #11110f;
-            --negro-suave: #25251f;
-            --verde: #4f5838;
-            --verde-oscuro: #343a29;
-            --crema: #f5eedf;
-            --crema-claro: #faf7ef;
-            --amarillo: #e8bd4b;
-            --gris: #d8d2c3;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: var(--crema-claro);
-            color: var(--negro);
-        }
-
-        /* =========================
-           ENCABEZADO
-        ========================= */
-
-        header {
-            background: var(--negro);
-            min-height: 82px;
-            padding: 15px 6%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            color: var(--crema);
-            font-family: Georgia, serif;
-            font-size: 38px;
-            font-style: italic;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .search {
-            flex: 1;
-            max-width: 560px;
-        }
-
-        .search input {
-            width: 100%;
-            height: 44px;
-            border: none;
-            border-radius: 25px;
-            padding: 0 22px;
-            font-size: 15px;
-            outline: none;
-            background: var(--crema-claro);
-            color: var(--negro);
-        }
-
-        .cart {
-            text-decoration: none;
-            color: var(--crema);
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .cart:hover {
-            color: var(--amarillo);
-        }
-
-        /* =========================
-           MENÚ
-        ========================= */
-
-        nav {
-            
-    background: var(--verde);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-         gap: 80px;
-            padding: 16px 20px;
-        }
-
-        nav a {
-            color: var(--crema);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--amarillo);
-        }
-/* MENÚ DESPLEGABLE DE CATEGORÍAS */
-
-.menu-categorias {
-    position: relative;
-}
-
-.categoria-boton {
-    color: var(--crema);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.submenu-categorias {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 260px;
-    background: var(--crema-claro);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    padding: 10px 0;
-    z-index: 1000;
-    flex-direction: column;
-}
-
-.menu-categorias:hover .submenu-categorias {
-   display: flex;
-}
-
-.subcategoria {
-    position: relative;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 16px 18px;
-    color: var(--negro-suave);
-    cursor: pointer;
-}
-
-.subcategoria:hover {
-    background: var(--gris);
-}
-
-.subcategoria strong {
-    font-weight: 500;
-}
-
-.subcategoria span {
-    color: #aaa;
-    font-size: 20px;
-}
-
-.sub-submenu {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: 0;
-    width: 230px;
-    background: var(--crema-claro);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    padding: 8px 0;
-}
-
-.subcategoria:hover > .sub-submenu {
-    display: block;
-}
-
-.sub-submenu a {
-    display: block;
-    padding: 12px 18px;
-    color: var(--negro-suave);
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.sub-submenu a:hover {
-    background: var(--gris);
-    color: var(--verde);
-}
-        /* =========================
-           PORTADA
-        ========================= */
-
-        .hero {
-            min-height: 570px;
-
-   
-   background-image: url('skenzi-fondo.png');
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-
-    display: flex;
-    align-items: center;
-
-            
-            
-            padding: 70px 8%;
-        }
-
-        .hero-content {
-            max-width: 650px;
-        }
-
-        .hero-small {
-            color: var(--amarillo);
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            margin-bottom: 18px;
-            text-transform: uppercase;
-        }
-
-        .hero h1 {
-           color: var(--negro);
-            font-family: Georgia, serif;
-            font-size: clamp(48px, 7vw, 82px);
-            line-height: 0.95;
-            margin-bottom: 25px;
-        }
-
-        .hero h1 span {
-            color: var(--amarillo);
-        }
-
-        .hero p {
-           color: var(--negro-suave);
-            font-size: 19px;
-            line-height: 1.7;
-            margin-bottom: 35px;
-            max-width: 590px;
-        }
-
-        .hero-button {
-            display: inline-block;
-            background: var(--amarillo);
-            color: var(--negro);
-            text-decoration: none;
-            font-weight: bold;
-            padding: 15px 32px;
-            border-radius: 30px;
-            transition: 0.3s;
-        }
-
-        .hero-button:hover {
-            background: var(--crema);
-            transform: translateY(-3px);
-        }
-
-        /* =========================
-           SECCIONES
-        ========================= */
-
-        section {
-            padding: 75px 6%;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-
-        .section-title h2 {
-            font-family: Georgia, serif;
-            color: var(--negro-suave);
-            font-size: 38px;
-            margin-bottom: 12px;
-        }
-
-        .section-title p {
-            color: #6d6b62;
-            font-size: 16px;
-        }
-
-        /* =========================
-           CATEGORÍAS
-        ========================= */
-
-        .categories {
-            max-width: 1250px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-        }
-
-        .category {
-            background: white;
-            border: 1px solid var(--gris);
-            border-radius: 20px;
-            padding: 35px 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .category:hover {
-            transform: translateY(-7px);
-            border-color: var(--verde);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-        }
-
-        .category-icon {
-            font-size: 43px;
-            margin-bottom: 18px;
-        }
-
-        .category h3 {
-            color: var(--negro-suave);
-            font-size: 18px;
-        }
-
-        .category p {
-            color: #77746b;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-
-        /* =========================
-           OFERTAS BBB
-        ========================= */
-
-        .offers {
-            background: var(--amarillo);
-            text-align: center;
-        }
-
-        .offers .section-title h2 {
-            color: var(--negro);
-        }
-
-        .bbb {
-            font-size: 25px;
-            font-weight: bold;
-            color: var(--verde-oscuro);
-            margin-bottom: 12px;
-        }
-
-        .offers-button {
-            display: inline-block;
-            background: var(--negro);
-            color: var(--crema);
-            text-decoration: none;
-            font-weight: bold;
-            padding: 14px 32px;
-            border-radius: 30px;
-            transition: 0.3s;
-        }
-
-        .offers-button:hover {
-            background: var(--verde-oscuro);
-        }
-
-        /* =========================
-           PRODUCTOS
-        ========================= */
-
-        .products {
-            max-width: 1250px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        .product {
-            background: white;
-            border: 1px solid var(--gris);
-            border-radius: 18px;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
-        }
-
-        .product-image {
-            height: 240px;
-            background: #e9e3d6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #77746b;
-            font-size: 14px;
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-info h3 {
-            color: var(--negro-suave);
-            font-size: 17px;
-            margin-bottom: 12px;
-        }
-
-        .price {
-            color: var(--verde);
-            font-size: 21px;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-
-        .add-cart {
-            width: 100%;
-            border: none;
-            border-radius: 25px;
-            padding: 12px;
-            background: var(--verde-oscuro);
-            color: var(--crema);
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .add-cart:hover {
-            background: var(--negro);
-        }
-
-        /* =========================
-           CONTACTO
-        ========================= */
-
-        .contact {
-            background: var(--verde-oscuro);
-            color: var(--crema);
-            text-align: center;
-        }
-
-        .contact .section-title h2 {
-            color: var(--crema);
-        }
-
-        .contact .section-title p {
-            color: #ded9cb;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .contact-item {
-            font-size: 16px;
-        }
-
-        .whatsapp {
-            display: inline-block;
-            background: var(--amarillo);
-            color: var(--negro);
-            text-decoration: none;
-            font-weight: bold;
-            padding: 14px 30px;
-            border-radius: 30px;
-        }
-
-        /* =========================
-           PIE DE PÁGINA
-        ========================= */
-
-        footer {
-            background: var(--negro);
-            color: var(--crema);
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 14px;
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 950px) {
-
-            .categories {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .products {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            header {
-                flex-wrap: wrap;
-            }
-
-            .search {
-                order: 3;
-                flex-basis: 100%;
-                max-width: none;
+    <title>Skenzi Home - Tu Tienda Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#1D4ED8',
+                            darkblue: '#1E40AF',
+                            orange: '#F97316',
+                            light: '#F9FAFB'
+                        }
+                    }
+                }
             }
         }
-
-        @media (max-width: 600px) {
-
-            header {
-                padding: 15px 5%;
-            }
-
-            .logo {
-                font-size: 30px;
-            }
-
-            nav {
-                gap: 15px;
-                flex-wrap: wrap;
-            }
-
-            nav a {
-                font-size: 13px;
-            }
-
-            .hero {
-                min-height: 500px;
-                padding: 55px 7%;
-            }
-
-            .hero h1 {
-                font-size: 50px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .categories,
-            .products {
-                grid-template-columns: 1fr;
-            }
-
-            section {
-                padding: 55px 5%;
-            }
-
-            .section-title h2 {
-                font-size: 32px;
-            }
-        }
-    </style>
+    </script>
 </head>
+<body class="bg-brand-light text-gray-800 font-sans antialiased">
 
-<body>
+    <!-- HEADER / NAVEGACIÓN -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="showSection('inicio')" class="flex items-center space-x-2">
+                <span class="text-2xl font-black text-brand-blue tracking-wider">SKENZI<span class="text-brand-orange">HOME</span></span>
+            </a>
 
-    <!-- ENCABEZADO -->
+            <!-- Navegación de Secciones -->
+            <nav class="hidden md:flex space-x-6 font-medium text-gray-600">
+                <button onclick="showSection('inicio')" class="hover:text-brand-blue transition">Inicio</button>
+                <button onclick="showSection('ofertas')" class="hover:text-brand-orange transition">Ofertas BBB</button>
+                <button onclick="showSection('novedades')" class="hover:text-brand-blue transition">Novedades</button>
+                <button onclick="showSection('contacto')" class="hover:text-brand-blue transition">Contáctanos</button>
+            </nav>
 
-    <header>
+            <!-- Acciones de Usuario y Carrito -->
+            <div class="flex items-center space-x-4">
+                <div id="user-menu-container" class="flex items-center space-x-2">
+                    <button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-700 hover:text-brand-blue px-3 py-1.5 border border-gray-300 rounded-lg">Iniciar Sesión</button>
+                    <button onclick="openAuthModal('register')" class="text-sm font-semibold text-white bg-brand-blue hover:bg-brand-darkblue px-3 py-1.5 rounded-lg shadow">Registrarse</button>
+                </div>
 
-        <div class="logo">
-            Skenzi
+                <!-- Botón Carrito -->
+                <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-brand-orange">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-brand-orange text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+                </button>
+            </div>
         </div>
-
-        <div class="search">
-            <input
-                type="search"
-                placeholder="¿Qué estás buscando?"
-                aria-label="Buscar productos"
-            >
-        </div>
-
-        <a href="#" class="cart">
-            🛒 Carrito
-        </a>
-
     </header>
 
+    <!-- CONTENIDO PRINCIPAL (SECCIONES SPA) -->
+    <main class="container mx-auto px-4 py-6">
 
-    <!-- MENÚ -->
-
-    <nav>
-
-        <a href="#">Inicio</a>
-
-        <div class="menu-categorias">
-
-   <a href="categorias.html" class="categoria-boton">
-        Categorías ▾
-    </a>
-
-    <div class="submenu-categorias">
-
-        <div class="subcategoria">
-            <strong>Hogar</strong>
-            <span>›</span>
-            <div class="sub-submenu">
-                <a href="#">Cocina</a>
-                <a href="#">Decoración</a>
-                <a href="#">Muebles</a>
-                <a href="#">Textiles</a>
+        <!-- SECCIÓN INICIO: VITRINA DE PRODUCTOS -->
+        <section id="sec-inicio" class="page-section">
+            <div class="bg-gradient-to-r from-brand-blue to-brand-darkblue rounded-2xl p-8 mb-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0 max-w-xl">
+                    <span class="bg-brand-orange text-white text-xs font-bold uppercase px-3 py-1 rounded-full">Nueva Colección</span>
+                    <h1 class="text-3xl md:text-5xl font-extrabold mt-2 mb-3">Todo lo que buscas para tu hogar y estilo</h1>
+                    <p class="text-blue-100 text-sm md:text-base">Encuentra cortinas, sábanas, tecnología, herramientas y mucho más al mejor precio.</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20 text-center">
+                    <p class="text-sm uppercase tracking-widest text-blue-200">Catálogo Variado</p>
+                    <p class="text-3xl font-black text-white mt-1">+12 Categorías</p>
+                </div>
             </div>
-        </div>
 
-        <div class="subcategoria">
-            <strong>Deporte</strong>
-          <span>›</span>
-<div class="sub-submenu">
-    <a href="#">Fitness</a>
-</div>
-
-        <div class="subcategoria">
-            <strong>Tecnología</strong>
-            <span>›</span>
-            <div class="sub-submenu">
-               <a href="#">Accesorios</a>
+            <!-- Filtros rápidos de categorías -->
+            <div class="flex overflow-x-auto space-x-2 pb-4 mb-6 scrollbar-none">
+                <button onclick="filterProducts('todos')" class="px-4 py-2 bg-brand-blue text-white rounded-full text-sm font-medium whitespace-nowrap shadow">Todos</button>
+                <button onclick="filterProducts('Hogar')" class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap border">Hogar y Textiles</button>
+                <button onclick="filterProducts('Tecnología')" class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap border">Tecnología y Audio</button>
+                <button onclick="filterProducts('Belleza')" class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap border">Belleza</button>
+                <button onclick="filterProducts('Herramientas')" class="px-4 py-2 bg-white text-gray-700 hover:bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap border">Herramientas y Juguetes</button>
             </div>
-        </div>
 
-        <div class="subcategoria">
-    <strong>Industrial</strong>
-</div>
-        
+            <!-- Cuadrícula de Productos -->
+            <div id="products-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Se inyecta por JS -->
+            </div>
+        </section>
 
-        <div class="subcategoria">
-            <strong>Juguetes</strong>
+        <!-- SECCIÓN OFERTAS BBB -->
+        <section id="sec-ofertas" class="page-section hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 flex items-center"><i class="fa-solid fa-fire text-brand-orange mr-2"></i> Ofertas BBB (Bueno, Bonito y Barato)</h2>
+                <p class="text-gray-600 text-sm">Descuentos especiales por tiempo limitado en productos seleccionados.</p>
+            </div>
+            <div id="ofertas-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Se inyecta por JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN NOVEDADES -->
+        <section id="sec-novedades" class="page-section hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 flex items-center"><i class="fa-solid fa-bolt text-brand-blue mr-2"></i> Novedades en Skenzi Home</h2>
+                <p class="text-gray-600 text-sm">Los productos más recientes que acaban de llegar a nuestro catálogo.</p>
+            </div>
+            <div id="novedades-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Se inyecta por JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN CONTÁCTANOS -->
+        <section id="sec-contacto" class="page-section hidden max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Contáctanos</h2>
+            <p class="text-gray-600 text-sm mb-6">¿Tienes dudas sobre tu pedido de dropshipping o necesitas soporte? Escríbenos.</p>
             
-        </div>
-
-    </div>
-
-</div>
-
-        <a href="#ofertas">
-            Ofertas BBB
-        </a>
-
-        <a href="#novedades">
-            Novedades
-        </a>
-
-        <a href="#contacto">
-            Contacto
-        </a>
-
-    </nav>
-
-
-    <!-- PORTADA -->
-
-    <main>
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <div class="hero-small">
-                    Skenzi Home
+            <form onsubmit="submitContact(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Tu Nombre</label>
+                    <input type="text" required class="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue outline-none" placeholder="Ej. Carlos Pérez">
                 </div>
-
-                <h1>
-                    Todo para tu
-                    <span>hogar</span>
-                    y mucho más.
-                </h1>
-
-                <p>
-                    Descubre productos para tu hogar,
-                    tecnología, deporte, industria,
-                    juguetes y mucho más.
-                </p>
-
-                <a href="#categorias" class="hero-button">
-                    EXPLORAR PRODUCTOS
-                </a>
-
-            </div>
-
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                    <input type="email" required class="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue outline-none" placeholder="correo@ejemplo.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Mensaje o Consulta</label>
+                    <rows="4" class="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue outline-none" placeholder="¿En qué podemos ayudarte?"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-brand-blue text-white py-3 rounded-lg font-semibold hover:bg-brand-darkblue transition">Enviar Mensaje</button>
+            </form>
         </section>
 
-
-        <!-- CATEGORÍAS -->
-
-        <section id="categorias">
-
-            <div class="section-title">
-
-                <h2>
-                    Compra por categoría
-                </h2>
-
-                <p>
-                    Encuentra fácilmente lo que estás buscando.
-                </p>
-
+        <!-- PANEL DE CLIENTE -->
+        <section id="sec-panel-cliente" class="page-section hidden max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Panel de Cliente</h2>
+                    <p id="client-email-display" class="text-sm text-gray-500"></p>
+                </div>
+                <button onclick="logout()" class="text-sm text-red-600 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50">Cerrar Sesión</button>
             </div>
-
-
-            <div class="categories">
-
-                <div class="category">
-
-                    <div class="category-icon">
-                        🏠
-                    </div>
-
-                    <h3>
-                        Hogar
-                    </h3>
-
-                    <p>
-                        Cocina, decoración y más
-                    </p>
-
-                </div>
-
-
-                <div class="category">
-
-                    <div class="category-icon">
-                        ⚽
-                    </div>
-
-                    <h3>
-                        Deporte
-                    </h3>
-
-                    <p>
-                        Ejercicio y entretenimiento
-                    </p>
-
-                </div>
-
-
-                <div class="category">
-
-                    <div class="category-icon">
-                        💻
-                    </div>
-
-                    <h3>
-                        Tecnología
-                    </h3>
-
-                    <p>
-                        Tecnología y accesorios
-                    </p>
-
-                </div>
-
-
-                <div class="category">
-
-                    <div class="category-icon">
-                        🏭
-                    </div>
-
-                    <h3>
-                        Industrial
-                    </h3>
-
-                    <p>
-                        Herramientas y productos
-                    </p>
-
-                </div>
-
-
-                <div class="category">
-
-                    <div class="category-icon">
-                        🧸
-                    </div>
-
-                    <h3>
-                        Juguetes
-                    </h3>
-
-                    <p>
-                        Juegos y diversión
-                    </p>
-
-                </div>
-
+            
+            <h3 class="text-lg font-semibold mb-3">Mis Compras Recientes</h3>
+            <div id="client-orders-list" class="space-y-3">
+                <!-- Se llena por JS -->
             </div>
-
         </section>
 
-
-        <!-- OFERTAS -->
-
-        <section class="offers" id="ofertas">
-
-            <div class="section-title">
-
-                <h2>
-                    🔥 Ofertas BBB
-                </h2>
-
-                <div class="bbb">
-                    Bueno • Bonito • Barato
+        <!-- PANEL DE ADMINISTRADOR -->
+        <section id="sec-panel-admin" class="page-section hidden max-w-6xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-md p-6 mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900"><i class="fa-solid fa-user-shield text-brand-blue mr-2"></i> Panel de Administración</h2>
+                    <p class="text-sm text-gray-500">Gestión de Inventario y Rótulos de Envío (Dropshipping)</p>
                 </div>
-
-                <p>
-                    Productos seleccionados con precios especiales.
-                </p>
-
+                <button onclick="logout()" class="text-sm text-red-600 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50">Cerrar Sesión</button>
             </div>
 
-            <a href="#" class="offers-button">
-                VER OFERTAS
-            </a>
-
-        </section>
-
-
-        <!-- PRODUCTOS -->
-
-        <section id="novedades">
-
-            <div class="section-title">
-
-                <h2>
-                    Productos destacados
-                </h2>
-
-                <p>
-                    Descubre algunos de nuestros productos.
-                </p>
-
+            <!-- Pestañas internas del Administrador -->
+            <div class="flex space-x-3 mb-6">
+                <button onclick="switchAdminTab('inventario')" id="tab-btn-inventario" class="px-4 py-2 bg-brand-blue text-white rounded-lg font-medium text-sm">Gestionar Inventario</button>
+                <button onclick="switchAdminTab('pedidos')" id="tab-btn-pedidos" class="px-4 py-2 bg-white text-gray-700 rounded-lg font-medium text-sm border">Pedidos y Rótulos</button>
             </div>
 
-
-            <div class="products">
-
-                <article class="product">
-
-                    <div class="product-image">
-                        Próximamente
-                    </div>
-
-                    <div class="product-info">
-
-                        <h3>
-                            Producto Skenzi
-                        </h3>
-
-                        <div class="price">
-                            Próximamente
-                        </div>
-
-                        <button class="add-cart">
-                            AGREGAR AL CARRITO
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product">
-
-                    <div class="product-image">
-                        Próximamente
-                    </div>
-
-                    <div class="product-info">
-
-                        <h3>
-                            Producto Skenzi
-                        </h3>
-
-                        <div class="price">
-                            Próximamente
-                        </div>
-
-                        <button class="add-cart">
-                            AGREGAR AL CARRITO
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product">
-
-                    <div class="product-image">
-                        Próximamente
-                    </div>
-
-                    <div class="product-info">
-
-                        <h3>
-                            Producto Skenzi
-                        </h3>
-
-                        <div class="price">
-                            Próximamente
-                        </div>
-
-                        <button class="add-cart">
-                            AGREGAR AL CARRITO
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product">
-
-                    <div class="product-image">
-                        Próximamente
-                    </div>
-
-                    <div class="product-info">
-
-                        <h3>
-                            Producto Skenzi
-                        </h3>
-
-                        <div class="price">
-                            Próximamente
-                        </div>
-
-                        <button class="add-cart">
-                            AGREGAR AL CARRITO
-                        </button>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- CONTACTO -->
-
-        <section class="contact" id="contacto">
-
-            <div class="section-title">
-
-                <h2>
-                    ¿Necesitas ayuda?
-                </h2>
-
-                <p>
-                    Estamos para ayudarte con tus compras.
-                </p>
-
-            </div>
-
-
-            <div class="contact-info">
-
-                <div class="contact-item">
-                    📲 Atención por WhatsApp
+            <!-- Vista 1: Inventario -->
+            <div id="admin-tab-inventario" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Agregar / Actualizar Producto</h3>
                 </div>
+                <form onsubmit="handleAddProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 bg-gray-50 p-4 rounded-xl border">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700">Nombre del Producto</label>
+                        <input type="text" id="prod-name" required class="mt-1 w-full p-2 text-sm border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700">Categoría</label>
+                        <select id="prod-cat" class="mt-1 w-full p-2 text-sm border rounded-lg">
+                            <option value="Hogar">Hogar y Textiles</option>
+                            <option value="Tecnología">Tecnología y Audio</option>
+                            <option value="Belleza">Belleza</option>
+                            <option value="Herramientas">Herramientas y Juguetes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700">Precio ($ COP)</label>
+                        <input type="number" id="prod-price" required class="mt-1 w-full p-2 text-sm border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700">URL de Imagen</label>
+                        <input type="url" id="prod-img" required class="mt-1 w-full p-2 text-sm border rounded-lg" placeholder="https://...">
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="bg-brand-blue text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-darkblue">Guardar Producto en Inventario</button>
+                    </div>
+                </form>
 
-                <div class="contact-item">
-                    📦 Envíos y entregas
+                <h3 class="text-lg font-bold mb-3">Inventario Actual</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="p-3">Imagen</th>
+                                <th class="p-3">Nombre</th>
+                                <th class="p-3">Categoría</th>
+                                <th class="p-3">Precio</th>
+                                <th class="p-3 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-inventory-table">
+                            <!-- Se llena por JS -->
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="contact-item">
-                    💬 Resolvemos tus dudas
-                </div>
-
             </div>
 
-
-            <a href="#" class="whatsapp">
-                ESCRÍBENOS POR WHATSAPP
-            </a>
-
+            <!-- Vista 2: Pedidos y Rótulos -->
+            <div id="admin-tab-pedidos" class="bg-white rounded-2xl shadow-md p-6 hidden">
+                <h3 class="text-lg font-bold mb-3">Órdenes y Rótulos de Envío (Dropshipping)</h3>
+                <div id="admin-orders-list" class="space-y-4">
+                    <!-- Se llena por JS -->
+                </div>
+            </div>
         </section>
 
     </main>
 
+    <!-- CARRITO DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex justify-between items-center mb-4 border-b pb-3">
+                    <h3 class="text-lg font-bold">Tu Carrito de Compras</h3>
+                    <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="cart-items" class="space-y-3 overflow-y-auto max-h-[60vh]">
+                    <!-- Se llena por JS -->
+                </div>
+            </div>
+            <div class="border-t pt-4">
+                <div class="flex justify-between font-bold text-lg mb-4">
+                    <span>Total:</span>
+                    <span id="cart-total">$0</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-brand-orange text-white py-3 rounded-lg font-bold hover:bg-orange-600 transition shadow">Finalizar Pedido por WhatsApp</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- PIE DE PÁGINA -->
+    <!-- MODAL AUTENTICACIÓN (LOGIN / REGISTRO) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 relative shadow-2xl">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 id="auth-modal-title" class="text-xl font-bold mb-4">Iniciar Sesión</h3>
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700">Correo Electrónico</label>
+                    <input type="email" id="auth-email" required class="mt-1 w-full p-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-blue" placeholder="correo@ejemplo.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700">Contraseña</label>
+                    <input type="password" id="auth-password" required class="mt-1 w-full p-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-blue" placeholder="••••••••">
+                </div>
+                <div id="role-select-container" class="hidden">
+                    <label class="block text-xs font-medium text-gray-700">Seleccionar Rol</label>
+                    <select id="auth-role" class="mt-1 w-full p-3 border rounded-lg text-sm bg-white">
+                        <option value="client">Cliente</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full bg-brand-blue text-white py-3 rounded-lg font-semibold text-sm hover:bg-brand-darkblue transition">Ingresar</button>
+            </form>
+        </div>
+    </div>
 
-    <footer>
-
-        <p>
-            © 2026 Skenzi Home. Todos los derechos reservados.
-        </p>
-
-    </footer>
-
-</body>
-</html>
+    <!-- SCRIPT DE
