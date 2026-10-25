@@ -21,3 +21,215 @@ a{color:inherit;text-decoration:none}button,.boton{font:inherit;border:0;border-
 .formulario{display:grid;gap:.8rem;max-width:700px}.formulario label{display:grid;gap:.35rem;font-weight:700}.formulario input,.formulario textarea{width:100%;padding:.8rem;border:1px solid #c8c6bb;border-radius:8px;background:white}.pie-aviso{font-size:.85rem;color:#66665d}
 @media(max-width:850px){.grid-productos{grid-template-columns:repeat(2,minmax(0,1fr))}.categorias-rapidas{grid-template-columns:repeat(3,1fr)}.fila-superior{flex-wrap:wrap}.busqueda{order:3;flex-basis:100%;max-width:none}}
 @media(max-width:560px){.fila-superior{padding:.8rem}.menu{padding:0 .4rem;flex-wrap:wrap}.menu>a,.menu-categorias>button{padding:.85rem .7rem;font-size:.9rem}.lista-categorias{min-width:min(230px,90vw)}.hero{min-height:260px;margin:.8rem auto}.grid-productos{gap:.65rem}.producto-cuerpo{padding:.75rem}.producto-cuerpo h3{font-size:.95rem}.acciones-producto{flex-direction:column}.categorias-rapidas{grid-template-columns:repeat(2,1fr)}.fila-carrito{grid-template-columns:1fr auto}}
+
+
+/* =========================================
+   GALERÍA DE OFERTAS SKENZI HOME
+   Oferta del día + carrusel de productos
+   ========================================= */
+
+.galeria-ofertas {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.85fr) minmax(0, 2fr);
+    gap: 1rem;
+    align-items: stretch;
+    margin: 1.5rem 0 2rem;
+}
+
+.panel-oferta-dia,
+.panel-carrusel-ofertas {
+    min-width: 0;
+    background: var(--blanco);
+    border: 1px solid var(--gris);
+    border-radius: 14px;
+    padding: 1.25rem;
+}
+
+.panel-oferta-dia h2,
+.panel-carrusel-ofertas h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: var(--carbon);
+}
+
+.encabezado-ofertas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+.enlace-ofertas {
+    color: var(--oliva);
+    font-size: .9rem;
+    font-weight: 700;
+}
+
+.enlace-ofertas:hover {
+    text-decoration: underline;
+}
+
+/* Producto destacado del día */
+
+.producto-oferta-dia {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.producto-oferta-dia .producto-imagen {
+    aspect-ratio: 4 / 3;
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.producto-oferta-dia .producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.producto-oferta-dia .producto-cuerpo {
+    padding: 0;
+}
+
+.precio-anterior {
+    color: #85857d;
+    text-decoration: line-through;
+    font-size: .9rem;
+}
+
+.precio-oferta {
+    color: var(--carbon);
+    font-size: 1.65rem;
+    font-weight: 900;
+    line-height: 1.25;
+}
+
+.descuento-oferta {
+    display: inline-block;
+    margin-left: .35rem;
+    padding: .15rem .4rem;
+    border-radius: 4px;
+    background: var(--oliva);
+    color: white;
+    font-size: .78rem;
+    font-weight: 800;
+    vertical-align: middle;
+}
+
+/* Carrusel de ofertas */
+
+.carrusel-contenedor {
+    position: relative;
+    min-width: 0;
+}
+
+.carrusel-productos {
+    display: grid;
+    grid-auto-columns: calc((100% - 3rem) / 4);
+    grid-auto-flow: column;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: .25rem 0 .8rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--oliva) var(--gris);
+}
+
+.carrusel-productos > * {
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.carrusel-productos .tarjeta {
+    height: 100%;
+    border: 0;
+    border-radius: 8px;
+}
+
+.carrusel-productos .producto-imagen {
+    aspect-ratio: 1 / 1;
+    background: #f3f1eb;
+    overflow: hidden;
+}
+
+.carrusel-productos .producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.carrusel-productos .producto-cuerpo {
+    padding: .65rem 0;
+}
+
+.carrusel-productos .producto-cuerpo h3 {
+    font-size: .92rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.carrusel-productos .precio {
+    font-size: 1.25rem;
+}
+
+.flechas-carrusel {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+    margin-top: .5rem;
+}
+
+.flechas-carrusel button {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--gris);
+    border-radius: 50%;
+    background: var(--blanco);
+    color: var(--oliva);
+    font-size: 1.5rem;
+}
+
+.flechas-carrusel button:hover {
+    background: var(--oliva);
+    color: white;
+}
+
+/* Pantallas medianas */
+
+@media (max-width: 1000px) {
+    .galeria-ofertas {
+        grid-template-columns: minmax(220px, .8fr) minmax(0, 1.5fr);
+    }
+
+    .carrusel-productos {
+        grid-auto-columns: calc((100% - 1rem) / 2);
+    }
+}
+
+/* Celulares */
+
+@media (max-width: 650px) {
+    .galeria-ofertas {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-oferta-dia,
+    .panel-carrusel-ofertas {
+        padding: 1rem;
+    }
+
+    .carrusel-productos {
+        grid-auto-columns: 65%;
+    }
+
+    .producto-oferta-dia .producto-imagen {
+        aspect-ratio: 4 / 3;
+    }
+}
