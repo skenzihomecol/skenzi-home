@@ -1,13 +1,276 @@
+
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#20221D">
-<link rel="stylesheet" href="css/estilos.css">
-<script src="js/tienda.js" defer></script><title>Deporte | Skenzi Home</title><meta name="description" content="Productos de Deporte en Skenzi Home."></head><body data-categoria="deporte"><header class="encabezado"><div class="fila-superior">
-<a class="marca" href="index.html">SKENZI<span>HOME</span></a>
-<form class="busqueda" data-busqueda role="search"><input type="search" aria-label="Buscar productos" placeholder="Buscar productos..."><button type="submit">Buscar</button></form>
-<a class="carrito-enlace" href="carrito.html">🛒 Carrito (<span data-contador-carrito>0</span>)</a></div>
-<nav aria-label="Navegación principal"><div class="menu"><div class="menu-categorias">
-<button type="button" data-boton-categorias aria-expanded="false">CATEGORÍAS ▾</button><div class="lista-categorias">
-<a href="hogar.html">Hogar</a><a href="deporte.html">Deporte</a><a href="tecnologia.html">Tecnología</a><a href="industrial.html">Industrial</a><a href="juguetes.html">Juguetes</a><a href="belleza.html">Belleza</a></div></div>
-<a href="novedades.html">NOVEDADES</a><a href="contacto.html">CONTACTO</a></div></nav></header><main class="contenedor"><section class="hero"><div class="hero-contenido"><span class="etiqueta">Categoría · Deporte</span><h1>🏃 Deporte</h1><p>Accesorios y artículos para tu actividad física.</p><a class="boton" href="categorias.html">Ver catálogo completo</a></div></section><section class="seccion" id="catalogo"><div class="seccion-cabecera"><div><h2>Productos de deporte</h2><p>Consulta el precio y la disponibilidad antes de confirmar tu compra.</p></div></div><div id="productos" class="grid-productos"></div></section></main><footer class="pie"><div class="pie-interior"><div><strong>SKENZI HOME</strong><br><small>Tu hogar, tu estilo.</small></div><div><a href="contacto.html">Contacto</a> · <a href="carrito.html">Carrito</a></div><small>La disponibilidad, el precio final y el envío se confirman antes de aceptar el pedido.</small></div></footer><div id="mensaje-tienda" class="contenedor" role="status" hidden style="padding:.8rem 0"></div></body></html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#20221D">
+
+    <title>Skenzi Home | Hogar, estilo y variedad</title>
+
+    <meta name="description" content="Descubre productos para el hogar, cocina, tecnología, deporte, organización y mucho más en Skenzi Home.">
+
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/tienda.js" defer></script>
+</head>
+
+<body data-pagina="catalogo">
+
+    <!-- ENCABEZADO -->
+    <header class="encabezado">
+
+        <div class="fila-superior">
+
+            <a class="marca" href="index.html" aria-label="Skenzi Home">
+                SKENZI<span>HOME</span>
+            </a>
+
+            <form class="busqueda" data-busqueda role="search">
+                <input
+                    type="search"
+                    aria-label="Buscar productos"
+                    placeholder="¿Qué estás buscando?"
+                >
+                <button type="submit">Buscar</button>
+            </form>
+
+            <a class="carrito-enlace" href="carrito.html">
+                🛒 Carrito
+                (<span data-contador-carrito>0</span>)
+            </a>
+
+        </div>
+
+        <!-- MENÚ PRINCIPAL -->
+        <nav aria-label="Navegación principal">
+
+            <div class="menu">
+
+                <div class="menu-categorias">
+
+                    <button
+                        type="button"
+                        data-boton-categorias
+                        aria-expanded="false"
+                    >
+                        CATEGORÍAS ▾
+                    </button>
+
+                    <div class="lista-categorias">
+
+                        <a href="hogar.html">Hogar</a>
+                        <a href="deporte.html">Deporte</a>
+                        <a href="tecnologia.html">Tecnología</a>
+                        <a href="industrial.html">Industrial</a>
+                        <a href="juguetes.html">Juguetes</a>
+                        <a href="belleza.html">Belleza</a>
+
+                    </div>
+
+                </div>
+
+                <a href="novedades.html">NOVEDADES</a>
+                <a href="contacto.html">CONTACTO</a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="contenedor">
+
+        <!-- BANNER PRINCIPAL -->
+        <section class="hero">
+
+            <div class="hero-contenido">
+
+                <span class="etiqueta">
+                    BIENVENIDO A SKENZI HOME
+                </span>
+
+                <h1>
+                    Tu hogar,<br>
+                    tu estilo.
+                </h1>
+
+                <p>
+                    Descubre productos que hacen tu vida más práctica,
+                    cómoda y especial.
+                </p>
+
+                <a class="boton" href="#productos">
+                    DESCUBRIR PRODUCTOS
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- GALERÍA DE OFERTAS -->
+        <section class="seccion" id="ofertas">
+
+            <div class="seccion-cabecera">
+
+                <div>
+                    <span class="etiqueta">OPORTUNIDADES PARA TI</span>
+                    <h2>Ofertas especiales</h2>
+
+                    <p>
+                        Encuentra productos destacados para aprovechar.
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="productos-ofertas"
+                class="grid-productos"
+            ></div>
+
+        </section>
+
+
+        <!-- GALERÍA GENERAL DE PRODUCTOS -->
+        <section class="seccion" id="productos">
+
+            <div class="seccion-cabecera">
+
+                <div>
+                    <span class="etiqueta">DESCUBRE NUESTRA VARIEDAD</span>
+                    <h2>Explora nuestros productos</h2>
+
+                    <p>
+                        Encuentra artículos para diferentes espacios,
+                        necesidades y estilos de vida.
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="productos"
+                class="grid-productos"
+                data-listado-productos
+            ></div>
+
+        </section>
+
+
+        <!-- CATEGORÍAS DESTACADAS -->
+        <section class="seccion" id="categorias-destacadas">
+
+            <div class="seccion-cabecera">
+
+                <div>
+                    <span class="etiqueta">ENCUENTRA LO QUE NECESITAS</span>
+                    <h2>Compra por categoría</h2>
+
+                    <p>
+                        Explora nuestras categorías y descubre nuevas
+                        opciones para ti.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="grid-categorias">
+
+                <a class="tarjeta-categoria" href="hogar.html">
+                    <span>🏠</span>
+                    <h3>Hogar</h3>
+                    <p>Ideas para disfrutar tus espacios.</p>
+                </a>
+
+                <a class="tarjeta-categoria" href="deporte.html">
+                    <span>🏃</span>
+                    <h3>Deporte</h3>
+                    <p>Accesorios para mantenerte activo.</p>
+                </a>
+
+                <a class="tarjeta-categoria" href="tecnologia.html">
+                    <span>💻</span>
+                    <h3>Tecnología</h3>
+                    <p>Soluciones prácticas para tu día a día.</p>
+                </a>
+
+                <a class="tarjeta-categoria" href="industrial.html">
+                    <span>🛠️</span>
+                    <h3>Industrial</h3>
+                    <p>Herramientas y artículos funcionales.</p>
+                </a>
+
+                <a class="tarjeta-categoria" href="juguetes.html">
+                    <span>🧸</span>
+                    <h3>Juguetes</h3>
+                    <p>Opciones para jugar y compartir.</p>
+                </a>
+
+                <a class="tarjeta-categoria" href="belleza.html">
+                    <span>💄</span>
+                    <h3>Belleza</h3>
+                    <p>Detalles para tu cuidado personal.</p>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMACIÓN DE COMPRA -->
+        <section class="seccion informacion-compra">
+
+            <div class="seccion-cabecera">
+
+                <div>
+                    <h2>Compra con tranquilidad</h2>
+
+                    <p>
+                        Antes de confirmar tu pedido, verificamos la
+                        disponibilidad, el precio final y las condiciones
+                        de envío.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="pie">
+
+        <div class="pie-interior">
+
+            <div>
+                <strong>SKENZI HOME</strong>
+                <br>
+                <small>Tu hogar, tu estilo.</small>
+            </div>
+
+            <div>
+                <a href="contacto.html">Contacto</a>
+                ·
+                <a href="carrito.html">Carrito</a>
+            </div>
+
+            <small>
+                La disponibilidad, el precio final y el envío se confirman
+                antes de aceptar el pedido.
+            </small>
+
+        </div>
+
+    </footer>
+
+
+    <!-- MENSAJES DE LA TIENDA -->
+    <div
+        id="mensaje-tienda"
+        class="contenedor"
+        role="
