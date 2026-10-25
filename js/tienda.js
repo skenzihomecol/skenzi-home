@@ -1,4 +1,3 @@
-
 "use strict";
 
 /* =====================================================
@@ -8,7 +7,7 @@
 
 /* 1. CONFIGURACIÓN */
 
-const NUMERO_WHATSAPP = ""; // Escribe aquí el número comercial con indicativo del país, solo números.
+const NUMERO_WHATSAPP = ""; // Configura aquí tu número comercial.
 
 const CATEGORIAS = [
     { id: "hogar", nombre: "Hogar", icono: "🏠" },
@@ -20,93 +19,92 @@ const CATEGORIAS = [
 ];
 
 /*
-  IMPORTANTE:
-  Estos productos son ejemplos. Reemplázalos por productos reales.
-  precioAnterior solo se utiliza cuando es mayor que precio.
-  oferta y novedad deben ser true o false.
+  PRODUCTOS DE DEMOSTRACIÓN.
+  Los precios e imágenes son ilustrativos.
+  No son ofertas comerciales reales.
 */
 
 const PRODUCTOS = [
     {
         id: "demo-hogar-1",
-        nombre: "Organizador para el hogar (ejemplo)",
+        nombre: "Organizador para el hogar (DEMO)",
         categoria: "hogar",
-        precio: 0,
-        precioAnterior: 0,
-        disponible: "Por confirmar",
-        imagen: "",
-        descripcion: "Producto de ejemplo.",
-        oferta: false,
-        novedad: false,
-        destacado: false,
+        precio: 39900,
+        precioAnterior: 59900,
+        disponible: "Producto de demostración",
+        imagen: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=700&q=80",
+        descripcion: "Ejemplo visual. Precio e imagen ilustrativos.",
+        oferta: true,
+        novedad: true,
+        destacado: true,
         activo: true
     },
     {
         id: "demo-deporte-1",
-        nombre: "Accesorio deportivo (ejemplo)",
+        nombre: "Accesorio deportivo (DEMO)",
         categoria: "deporte",
-        precio: 0,
-        precioAnterior: 0,
-        disponible: "Por confirmar",
-        imagen: "",
-        descripcion: "Producto de ejemplo.",
-        oferta: false,
+        precio: 45900,
+        precioAnterior: 65900,
+        disponible: "Producto de demostración",
+        imagen: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=700&q=80",
+        descripcion: "Ejemplo visual. Precio e imagen ilustrativos.",
+        oferta: true,
         novedad: false,
         destacado: false,
         activo: true
     },
     {
         id: "demo-tecnologia-1",
-        nombre: "Accesorio tecnológico (ejemplo)",
+        nombre: "Accesorio tecnológico (DEMO)",
         categoria: "tecnologia",
-        precio: 0,
-        precioAnterior: 0,
-        disponible: "Por confirmar",
-        imagen: "",
-        descripcion: "Producto de ejemplo.",
-        oferta: false,
-        novedad: false,
+        precio: 79900,
+        precioAnterior: 99900,
+        disponible: "Producto de demostración",
+        imagen: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80",
+        descripcion: "Ejemplo visual. Precio e imagen ilustrativos.",
+        oferta: true,
+        novedad: true,
         destacado: false,
         activo: true
     },
     {
         id: "demo-industrial-1",
-        nombre: "Herramienta (ejemplo)",
+        nombre: "Herramienta multiuso (DEMO)",
         categoria: "industrial",
-        precio: 0,
-        precioAnterior: 0,
-        disponible: "Por confirmar",
-        imagen: "",
-        descripcion: "Producto de ejemplo.",
-        oferta: false,
+        precio: 52900,
+        precioAnterior: 72900,
+        disponible: "Producto de demostración",
+        imagen: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=700&q=80",
+        descripcion: "Ejemplo visual. Precio e imagen ilustrativos.",
+        oferta: true,
         novedad: false,
         destacado: false,
         activo: true
     },
     {
         id: "demo-juguetes-1",
-        nombre: "Juego recreativo (ejemplo)",
+        nombre: "Juego recreativo (DEMO)",
         categoria: "juguetes",
-        precio: 0,
-        precioAnterior: 0,
-        disponible: "Por confirmar",
-        imagen: "",
-        descripcion: "Producto de ejemplo.",
-        oferta: false,
-        novedad: false,
+        precio: 29900,
+        precioAnterior: 39900,
+        disponible: "Producto de demostración",
+        imagen: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=700&q=80",
+        descripcion: "Ejemplo visual. Precio e imagen ilustrativos.",
+        oferta: true,
+        novedad: true,
         destacado: false,
         activo: true
     },
     {
         id: "demo-belleza-1",
-        nombre: "Accesorio de belleza (ejemplo)",
+        nombre: "Accesorio de belleza (DEMO)",
         categoria: "belleza",
-        precio: 0,
-        precioAnterior: 0,
-        disponible: "Por confirmar",
-        imagen: "",
-        descripcion: "Producto de ejemplo.",
-        oferta: false,
+        precio: 34900,
+        precioAnterior: 49900,
+        disponible: "Producto de demostración",
+        imagen: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=80",
+        descripcion: "Ejemplo visual. Precio e imagen ilustrativos.",
+        oferta: true,
         novedad: false,
         destacado: false,
         activo: true
@@ -124,6 +122,7 @@ const leerCarrito = () => {
         const datos = JSON.parse(
             localStorage.getItem("skenzi_carrito") || "[]"
         );
+
         return Array.isArray(datos) ? datos : [];
     } catch {
         return [];
@@ -131,7 +130,10 @@ const leerCarrito = () => {
 };
 
 const guardarCarrito = productos => {
-    localStorage.setItem("skenzi_carrito", JSON.stringify(productos));
+    localStorage.setItem(
+        "skenzi_carrito",
+        JSON.stringify(productos)
+    );
 };
 
 const buscarCategoria = id =>
@@ -167,9 +169,10 @@ function actualizarContadorCarrito() {
         0
     );
 
-    document.querySelectorAll("[data-contador-carrito]").forEach(elemento => {
-        elemento.textContent = cantidad;
-    });
+    document.querySelectorAll("[data-contador-carrito]")
+        .forEach(elemento => {
+            elemento.textContent = cantidad;
+        });
 }
 
 function productoTienePrecio(producto) {
@@ -198,7 +201,11 @@ function obtenerPrecioAnterior(producto) {
     const actual = Number(producto.precio);
 
     if (anterior > actual && actual > 0) {
-        return `<p class="precio-anterior">${FORMATO_COP.format(anterior)}</p>`;
+        return `
+            <p class="precio-anterior">
+                ${FORMATO_COP.format(anterior)}
+            </p>
+        `;
     }
 
     return "";
@@ -209,7 +216,9 @@ function obtenerDescuento(producto) {
     const actual = Number(producto.precio);
 
     if (anterior > actual && actual > 0) {
-        const porcentaje = Math.round((1 - actual / anterior) * 100);
+        const porcentaje = Math.round(
+            (1 - actual / anterior) * 100
+        );
 
         return `
             <span class="descuento-oferta">
@@ -220,9 +229,9 @@ function obtenerDescuento(producto) {
 
     return "";
 }
-
-
-/* 3. TARJETAS DE PRODUCTOS */
+/* ==========================================================
+   3. TARJETAS DE PRODUCTOS
+   ========================================================== */
 
 function tarjetaProducto(producto) {
     const precio = productoTienePrecio(producto)
@@ -230,10 +239,16 @@ function tarjetaProducto(producto) {
         : "Precio por confirmar";
 
     const oferta = producto.oferta
-        ? '<span class="etiqueta-oferta">OFERTA</span>'
+        ? '<span class="etiqueta-oferta">OFERTA DEMO</span>'
         : "";
 
-    const boton = productoTienePrecio(producto)
+    const esDemo = producto.id.startsWith("demo-");
+
+    const avisoDemo = esDemo
+        ? '<p class="estado"><strong>DEMOSTRACIÓN:</strong> precio e imagen ilustrativos; no es una oferta real.</p>'
+        : "";
+
+    const boton = productoTienePrecio(producto) && !esDemo
         ? `
             <button type="button" data-agregar="${escapar(producto.id)}">
                 Agregar al carrito
@@ -241,7 +256,7 @@ function tarjetaProducto(producto) {
         `
         : `
             <button type="button" data-consultar="${escapar(producto.id)}">
-                Consultar producto
+                ${esDemo ? "Producto de demostración" : "Consultar producto"}
             </button>
         `;
 
@@ -254,6 +269,7 @@ function tarjetaProducto(producto) {
             <div class="producto-cuerpo">
                 ${oferta}
                 <h3>${escapar(producto.nombre)}</h3>
+                ${avisoDemo}
                 ${obtenerPrecioAnterior(producto)}
 
                 <p class="precio">
@@ -292,7 +308,9 @@ function mostrarProductos(lista, idContenedor = "productos") {
 }
 
 
-/* 4. GALERÍA DE OFERTAS */
+/* ==========================================================
+   4. GALERÍA DE OFERTAS
+   ========================================================== */
 
 function mostrarOfertaDelDia() {
     const contenedor = document.getElementById("producto-oferta-dia");
@@ -305,7 +323,8 @@ function mostrarOfertaDelDia() {
         productoTienePrecio(producto)
     );
 
-    const destacado = ofertas.find(producto => producto.destacado) || ofertas[0];
+    const destacado =
+        ofertas.find(producto => producto.destacado) || ofertas[0];
 
     if (!destacado) {
         contenedor.innerHTML = `
@@ -341,12 +360,15 @@ function mostrarOfertaDelDia() {
                     ${escapar(destacado.disponible || "Por confirmar")}
                 </p>
 
+                <p class="estado">
+                    <strong>DEMOSTRACIÓN:</strong>
+                    precio ilustrativo; no publicar como oferta real.
+                </p>
+
                 <div class="acciones-producto">
-                    <button
-                        type="button"
-                        data-agregar="${escapar(destacado.id)}"
-                    >
-                        Agregar al carrito
+                    <button type="button"
+                        data-consultar="${escapar(destacado.id)}">
+                        Ver ejemplo
                     </button>
                 </div>
             </div>
@@ -400,7 +422,9 @@ function configurarFlechasOfertas() {
 }
 
 
-/* 5. MENÚ DE CATEGORÍAS */
+/* ==========================================================
+   5. MENÚ DE CATEGORÍAS
+   ========================================================== */
 
 function configurarMenu() {
     const boton = document.querySelector("[data-boton-categorias]");
@@ -429,9 +453,9 @@ function configurarMenu() {
         }
     });
 }
-
-
-/* 6. BÚSQUEDA */
+/* ==========================================================
+   6. BÚSQUEDA DE PRODUCTOS
+   ========================================================== */
 
 function configurarBusqueda() {
     const formulario = document.querySelector("[data-busqueda]");
@@ -442,233 +466,290 @@ function configurarBusqueda() {
         evento.preventDefault();
 
         const entrada = formulario.querySelector("input");
-        const consulta = (entrada?.value || "").trim().toLowerCase();
+        const texto = (entrada?.value || "").trim().toLowerCase();
 
-        if (!consulta) {
-            mostrarMensaje("Escribe el nombre del producto que deseas buscar.");
-            return;
+        const resultados = PRODUCTOS.filter(producto => {
+            if (!producto.activo) return false;
+
+            const nombre = (producto.nombre || "").toLowerCase();
+            const categoria = (producto.categoria || "").toLowerCase();
+            const descripcion = (producto.descripcion || "").toLowerCase();
+
+            return (
+                nombre.includes(texto) ||
+                categoria.includes(texto) ||
+                descripcion.includes(texto)
+            );
+        });
+
+        mostrarProductos(resultados, "galeria-productos");
+
+        const titulo = document.getElementById("titulo-productos");
+
+        if (titulo) {
+            titulo.textContent = texto
+                ? `Resultados para: ${texto}`
+                : "Todos nuestros productos";
         }
 
-        const resultados = PRODUCTOS.filter(producto =>
-            producto.activo &&
-            `${producto.nombre} ${producto.descripcion} ${producto.categoria}`
-                .toLowerCase()
-                .includes(consulta)
-        );
-
-        const destino = document.querySelector("[data-listado-productos]")
-            ? "galeria-productos"
-            : "productos";
-
-        mostrarProductos(resultados, destino);
-
-        const catalogo = document.getElementById("catalogo") ||
-            document.getElementById(destino);
-
-        catalogo?.scrollIntoView({ behavior: "smooth" });
-
-        if (!resultados.length) {
-            mostrarMensaje("No encontramos productos con ese nombre.");
-        }
+        document.getElementById("productos")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     });
 }
 
 
-/* 7. CARRITO */
+/* ==========================================================
+   7. CARRITO DE COMPRAS
+   ========================================================== */
 
-function agregarAlCarrito(id) {
-    const producto = PRODUCTOS.find(item => item.id === id);
+function agregarAlCarrito(idProducto) {
+    const producto = PRODUCTOS.find(item => item.id === idProducto);
 
-    if (!producto || !producto.activo) {
-        mostrarMensaje("Este producto ya no está disponible.");
+    if (!producto) {
+        mostrarMensaje("No encontramos este producto.");
+        return;
+    }
+
+    if (producto.id.startsWith("demo-")) {
+        mostrarMensaje(
+            "Este es un producto de demostración. Debes configurar tus productos reales antes de vender."
+        );
         return;
     }
 
     if (!productoTienePrecio(producto)) {
-        mostrarMensaje("Consulta el precio y la disponibilidad antes de comprar.");
+        mostrarMensaje("Este producto todavía no tiene un precio confirmado.");
         return;
     }
 
-    const carrito = leerCarrito();
-    const existente = carrito.find(item => item.id === id);
+    if (producto.disponible === "Agotado") {
+        mostrarMensaje("Este producto está agotado por el momento.");
+        return;
+    }
+
+    const carrito = obtenerCarrito();
+    const existente = carrito.find(item => item.id === idProducto);
 
     if (existente) {
-        existente.cantidad++;
+        existente.cantidad += 1;
     } else {
         carrito.push({
             id: producto.id,
-            nombre: producto.nombre,
-            precio: Number(producto.precio),
             cantidad: 1
         });
     }
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
+
     mostrarMensaje("Producto agregado al carrito.");
 }
 
-function configurarCarrito() {
+function quitarDelCarrito(idProducto) {
+    const carrito = obtenerCarrito().filter(item => item.id !== idProducto);
+
+    guardarCarrito(carrito);
+    actualizarContadorCarrito();
+    mostrarCarrito();
+}
+
+function cambiarCantidad(idProducto, cantidad) {
+    const carrito = obtenerCarrito();
+    const item = carrito.find(producto => producto.id === idProducto);
+
+    if (!item) return;
+
+    const nuevaCantidad = Number(cantidad);
+
+    if (!Number.isFinite(nuevaCantidad) || nuevaCantidad < 1) {
+        quitarDelCarrito(idProducto);
+        return;
+    }
+
+    item.cantidad = Math.floor(nuevaCantidad);
+
+    guardarCarrito(carrito);
+    actualizarContadorCarrito();
+    mostrarCarrito();
+}
+
+function mostrarCarrito() {
     const contenedor = document.getElementById("lista-carrito");
+    const totalElemento = document.getElementById("total-carrito");
 
     if (!contenedor) return;
 
-    function pintarCarrito() {
-        const carrito = leerCarrito();
+    const carrito = obtenerCarrito();
 
-        if (!carrito.length) {
-            contenedor.innerHTML = `
-                <div class="vacio">
-                    Tu carrito está vacío.
-                    Explora nuestras categorías para encontrar productos.
-                </div>
-            `;
-        } else {
-            contenedor.innerHTML = carrito.map(item => `
-                <div class="fila-carrito">
-                    <strong>${escapar(item.nombre)}</strong>
+    if (!carrito.length) {
+        contenedor.innerHTML = `
+            <div class="vacio">
+                <p>Tu carrito está vacío.</p>
+                <p>Explora nuestro catálogo y agrega tus productos favoritos.</p>
+            </div>
+        `;
 
-                    <span>
-                        ${FORMATO_COP.format(item.precio * item.cantidad)}
-                    </span>
-
-                    <div>
-                        <button type="button" data-restar="${escapar(item.id)}">
-                            −
-                        </button>
-
-                        ${item.cantidad}
-
-                        <button type="button" data-sumar="${escapar(item.id)}">
-                            +
-                        </button>
-
-                        <button type="button" data-quitar="${escapar(item.id)}">
-                            Quitar
-                        </button>
-                    </div>
-                </div>
-            `).join("");
+        if (totalElemento) {
+            totalElemento.textContent = FORMATO_COP.format(0);
         }
 
-        const total = carrito.reduce(
-            (suma, item) => suma + item.precio * item.cantidad,
-            0
-        );
-
-        const elementoTotal = document.getElementById("total-carrito");
-
-        if (elementoTotal) {
-            elementoTotal.textContent = FORMATO_COP.format(total);
-        }
-
-        actualizarContadorCarrito();
+        return;
     }
 
-    contenedor.addEventListener("click", evento => {
-        const boton = evento.target.closest("button");
+    let total = 0;
 
-        if (!boton) return;
+    contenedor.innerHTML = carrito.map(item => {
+        const producto = PRODUCTOS.find(p => p.id === item.id);
 
-        let carrito = leerCarrito();
-
-        if (boton.dataset.sumar) {
-            const item = carrito.find(
-                producto => producto.id === boton.dataset.sumar
-            );
-
-            if (item) item.cantidad++;
+        if (!producto || !productoTienePrecio(producto)) {
+            return "";
         }
 
-        if (boton.dataset.restar) {
-            const item = carrito.find(
-                producto => producto.id === boton.dataset.restar
-            );
+        const subtotal = producto.precio * item.cantidad;
+        total += subtotal;
 
-            if (item) item.cantidad--;
+        return `
+            <article class="item-carrito">
+                <div class="producto-imagen">
+                    ${obtenerImagen(producto)}
+                </div>
 
-            carrito = carrito.filter(item => item.cantidad > 0);
-        }
+                <div class="producto-cuerpo">
+                    <h3>${escapar(producto.nombre)}</h3>
 
-        if (boton.dataset.quitar) {
-            carrito = carrito.filter(
-                item => item.id !== boton.dataset.quitar
-            );
-        }
+                    <p>
+                        Precio:
+                        ${FORMATO_COP.format(producto.precio)}
+                    </p>
 
-        guardarCarrito(carrito);
-        pintarCarrito();
-    });
+                    <label>
+                        Cantidad:
+                        <input
+                            type="number"
+                            min="1"
+                            value="${item.cantidad}"
+                            data-cantidad="${escapar(item.id)}"
+                        >
+                    </label>
 
-    document.getElementById("vaciar-carrito")?.addEventListener("click", () => {
-        guardarCarrito([]);
-        pintarCarrito();
-    });
+                    <p>
+                        Subtotal:
+                        ${FORMATO_COP.format(subtotal)}
+                    </p>
 
-    document.getElementById("pedido-whatsapp")?.addEventListener("click", () => {
-        const carrito = leerCarrito();
+                    <button
+                        type="button"
+                        data-quitar="${escapar(item.id)}"
+                    >
+                        Quitar
+                    </button>
+                </div>
+            </article>
+        `;
+    }).join("");
 
-        if (!carrito.length) {
-            mostrarMensaje("Agrega productos antes de preparar el pedido.");
-            return;
-        }
-
-        const valor = id =>
-            document.getElementById(id)?.value.trim() || "";
-
-        const nombre = valor("cliente-nombre");
-        const telefono = valor("cliente-telefono");
-        const ciudad = valor("cliente-ciudad");
-        const direccion = valor("cliente-direccion");
-
-        if (!nombre || !telefono || !ciudad || !direccion) {
-            mostrarMensaje("Completa nombre, teléfono, ciudad y dirección.");
-            return;
-        }
-
-        if (!NUMERO_WHATSAPP) {
-            mostrarMensaje(
-                "Falta configurar el número comercial en js/tienda.js."
-            );
-            return;
-        }
-
-        const productos = carrito.map(item =>
-            `• ${item.nombre} x${item.cantidad} — ${
-                FORMATO_COP.format(item.precio * item.cantidad)
-            }`
-        ).join("\n");
-
-        const total = carrito.reduce(
-            (suma, item) => suma + item.precio * item.cantidad,
-            0
-        );
-
-        const mensaje = [
-            "Hola, quiero confirmar disponibilidad y hacer un pedido en Skenzi Home.",
-            `Nombre: ${nombre}`,
-            `Teléfono: ${telefono}`,
-            `Ciudad: ${ciudad}`,
-            `Dirección: ${direccion}`,
-            "Productos:",
-            productos,
-            `Subtotal: ${FORMATO_COP.format(total)}`,
-            "Envío: por confirmar.",
-            "Pago: sujeto a confirmación."
-        ].join("\n");
-
-        window.open(
-            `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`,
-            "_blank",
-            "noopener"
-        );
-    });
-
-    pintarCarrito();
+    if (totalElemento) {
+        totalElemento.textContent = FORMATO_COP.format(total);
+    }
 }
 
 
-/* 8. EVENTOS GENERALES */
+/* ==========================================================
+   8. CONSULTAS POR WHATSAPP
+   ========================================================== */
+
+function consultarProducto(idProducto) {
+    const producto = PRODUCTOS.find(item => item.id === idProducto);
+
+    if (!producto) {
+        mostrarMensaje("No encontramos este producto.");
+        return;
+    }
+
+    const precio = productoTienePrecio(producto)
+        ? FORMATO_COP.format(producto.precio)
+        : "Precio por confirmar";
+
+    const mensaje = encodeURIComponent(
+        `Hola, Skenzi Home. Quiero consultar información sobre: ${producto.nombre}. Precio: ${precio}. ¿Me pueden brindar más información?`
+    );
+
+    if (!NUMERO_WHATSAPP) {
+        mostrarMensaje(
+            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
+        );
+        return;
+    }
+
+    const numero = NUMERO_WHATSAPP.replace(/\D/g, "");
+
+    window.open(
+        `https://wa.me/${numero}?text=${mensaje}`,
+        "_blank",
+        "noopener,noreferrer"
+    );
+}
+
+function enviarPedidoWhatsApp() {
+    if (!NUMERO_WHATSAPP) {
+        mostrarMensaje(
+            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
+        );
+        return;
+    }
+
+    const carrito = obtenerCarrito();
+
+    if (!carrito.length) {
+        mostrarMensaje("Tu carrito está vacío.");
+        return;
+    }
+
+    let total = 0;
+    const lineas = [];
+
+    for (const item of carrito) {
+        const producto = PRODUCTOS.find(p => p.id === item.id);
+
+        if (!producto || !productoTienePrecio(producto)) continue;
+
+        if (producto.id.startsWith("demo-")) {
+            mostrarMensaje(
+                "El carrito contiene productos de demostración. Configura tus productos reales antes de hacer un pedido."
+            );
+            return;
+        }
+
+        const subtotal = producto.precio * item.cantidad;
+        total += subtotal;
+
+        lineas.push(
+            `- ${producto.nombre} x ${item.cantidad}: ${FORMATO_COP.format(subtotal)}`
+        );
+    }
+
+    if (!lineas.length) {
+        mostrarMensaje("No hay productos válidos para enviar el pedido.");
+        return;
+    }
+
+    const mensaje = encodeURIComponent(
+        `Hola, Skenzi Home. Quiero realizar el siguiente pedido:\n\n${lineas.join("\n")}\n\nTotal de productos: ${FORMATO_COP.format(total)}\n\nPor favor, confirmen disponibilidad, costo del domicilio y medios de pago.`
+    );
+
+    const numero = NUMERO_WHATSAPP.replace(/\D/g, "");
+
+    window.open(
+        `https://wa.me/${numero}?text=${mensaje}`,
+        "_blank",
+        "noopener,noreferrer"
+    );
+}
+/* ==========================================================
+   9. EVENTOS DE LA TIENDA
+   ========================================================== */
 
 document.addEventListener("click", evento => {
     const botonAgregar = evento.target.closest("[data-agregar]");
@@ -681,61 +762,92 @@ document.addEventListener("click", evento => {
     const botonConsultar = evento.target.closest("[data-consultar]");
 
     if (botonConsultar) {
-        const producto = PRODUCTOS.find(
-            item => item.id === botonConsultar.dataset.consultar
-        );
+        consultarProducto(botonConsultar.dataset.consultar);
+        return;
+    }
 
-        if (producto) {
-            mostrarMensaje(
-                `Consulta el precio y la disponibilidad de: ${producto.nombre}.`
-            );
-        }
+    const botonQuitar = evento.target.closest("[data-quitar]");
+
+    if (botonQuitar) {
+        quitarDelCarrito(botonQuitar.dataset.quitar);
     }
 });
 
 
-/* 9. INICIO DE LA TIENDA */
+/* ==========================================================
+   10. CAMBIOS DE CANTIDAD EN EL CARRITO
+   ========================================================== */
+
+document.addEventListener("change", evento => {
+    const entradaCantidad = evento.target.closest("[data-cantidad]");
+
+    if (entradaCantidad) {
+        cambiarCantidad(
+            entradaCantidad.dataset.cantidad,
+            entradaCantidad.value
+        );
+    }
+});
+
+
+/* ==========================================================
+   11. BOTÓN PARA REALIZAR EL PEDIDO
+   ========================================================== */
+
+function configurarBotonPedido() {
+    const boton = document.getElementById("pedido-whatsapp");
+
+    if (!boton) return;
+
+    boton.addEventListener("click", enviarPedidoWhatsApp);
+}
+
+
+/* ==========================================================
+   12. INICIO DE LA TIENDA SKENZI HOME
+   ========================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
     configurarMenu();
     configurarBusqueda();
-    configurarCarrito();
+    configurarBotonPedido();
 
     const categoriaActual = document.body.dataset.categoria;
     const paginaActual = document.body.dataset.pagina;
 
     if (categoriaActual) {
-        mostrarProductos(
-            PRODUCTOS.filter(producto =>
-                producto.activo &&
-                producto.categoria === categoriaActual
-            )
-        );
-    } else if (paginaActual === "ofertas") {
-        mostrarProductos(
-            PRODUCTOS.filter(producto =>
-                producto.activo && producto.oferta
-            )
-        );
-    } else if (paginaActual === "novedades") {
-        mostrarProductos(
-            PRODUCTOS.filter(producto =>
-                producto.activo && producto.novedad
-            )
-        );
-    } else if (paginaActual === "catalogo") {
-        const contenedorGeneral = document.querySelector(
-            "[data-listado-productos]"
+        const productosCategoria = PRODUCTOS.filter(producto =>
+            producto.activo &&
+            producto.categoria === categoriaActual
         );
 
-        mostrarProductos(
-            PRODUCTOS.filter(producto => producto.activo),
-            contenedorGeneral ? contenedorGeneral.id : "productos"
+        mostrarProductos(productosCategoria, "galeria-productos");
+    } else if (paginaActual === "ofertas") {
+        const ofertas = PRODUCTOS.filter(producto =>
+            producto.activo && producto.oferta
         );
+
+        mostrarProductos(ofertas, "galeria-productos");
+    } else if (paginaActual === "novedades") {
+        const novedades = PRODUCTOS.filter(producto =>
+            producto.activo && producto.novedad
+        );
+
+        mostrarProductos(novedades, "galeria-productos");
+    } else {
+        const productosActivos = PRODUCTOS.filter(producto =>
+            producto.activo
+        );
+
+        mostrarProductos(productosActivos, "galeria-productos");
     }
 
     mostrarOfertaDelDia();
     mostrarCarruselOfertas();
     configurarFlechasOfertas();
     actualizarContadorCarrito();
+
+    if (document.getElementById("lista-carrito")) {
+        mostrarCarrito();
+    }
 });
