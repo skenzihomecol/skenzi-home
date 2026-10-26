@@ -178,12 +178,12 @@ async function cargarResumen() {
       "Resumen actualizado correctamente."
     );
 
-  } catch (error) {
+   } catch (error) {
     console.error("Error al cargar el resumen:", error);
 
     mostrarMensaje(
       mensajeAdmin,
-      "El inicio de sesión puede funcionar, pero todavía falta configurar o verificar los permisos de lectura de las tablas. No se modificaron datos.",
+      "Error de conexión: " + error.message,
       true
     );
   }
