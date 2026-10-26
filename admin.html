@@ -188,4 +188,89 @@
           <p>Panel de control del negocio</p>
         </div>
 
-        <button class
+      
+        <button class="admin-boton" id="cerrar-sesion" type="button">
+          Cerrar sesión
+        </button>
+      </header>
+
+      <div class="admin-tarjetas">
+        <article class="admin-tarjeta">
+          <h3>Productos activos</h3>
+          <div class="admin-valor" id="total-productos">—</div>
+        </article>
+
+        <article class="admin-tarjeta">
+          <h3>Unidades en inventario</h3>
+          <div class="admin-valor" id="total-existencias">—</div>
+        </article>
+
+        <article class="admin-tarjeta">
+          <h3>Ventas registradas</h3>
+          <div class="admin-valor" id="total-ventas">—</div>
+        </article>
+
+        <article class="admin-tarjeta">
+          <h3>Gastos registrados</h3>
+          <div class="admin-valor" id="total-gastos">—</div>
+        </article>
+      </div>
+
+      <nav class="admin-menu" aria-label="Administración">
+        <button type="button" data-seccion="inicio">Inicio</button>
+        <button type="button" data-seccion="productos">Productos</button>
+        <button type="button" data-seccion="inventario">Inventario</button>
+        <button type="button" data-seccion="ventas">Ventas</button>
+        <button type="button" data-seccion="gastos">Gastos</button>
+        <button type="button" data-seccion="informes">Informes</button>
+      </nav>
+
+      <section class="admin-seccion" id="seccion-inicio">
+        <h2>Resumen del negocio</h2>
+        <p class="admin-aviso">
+          Aquí podrás consultar el estado de tu tienda, el inventario,
+          las ventas y los gastos.
+        </p>
+      </section>
+
+      <section class="admin-seccion admin-oculto" id="seccion-productos">
+        <h2>Productos</h2>
+        <p>Administración del catálogo, precios, costos y existencias.</p>
+        <div id="lista-productos">Conexión pendiente.</div>
+      </section>
+
+      <section class="admin-seccion admin-oculto" id="seccion-inventario">
+        <h2>Inventario</h2>
+        <p>Control de entradas, salidas y alertas de stock.</p>
+        <div id="lista-inventario">Conexión pendiente.</div>
+      </section>
+
+      <section class="admin-seccion admin-oculto" id="seccion-ventas">
+        <h2>Ventas y pedidos</h2>
+        <p>Registro de ventas de la tienda y ventas externas.</p>
+        <div id="lista-ventas">Conexión pendiente.</div>
+      </section>
+
+      <section class="admin-seccion admin-oculto" id="seccion-gastos">
+        <h2>Gastos del negocio</h2>
+        <p>Registro de compras, domicilios, empaques y otros gastos.</p>
+        <div id="lista-gastos">Conexión pendiente.</div>
+      </section>
+
+      <section class="admin-seccion admin-oculto" id="seccion-informes">
+        <h2>Informes</h2>
+        <p>Informes de ventas, costos, ganancias y productos sin rotación.</p>
+        <div id="lista-informes">Conexión pendiente.</div>
+      </section>
+
+      <p id="mensaje-admin" role="status"></p>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+</html>
+
