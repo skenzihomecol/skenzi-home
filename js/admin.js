@@ -229,6 +229,7 @@ async function cargarProductos() {
     const categoriasActivas = categorias
       .filter(c => c.activa === true)
       .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+    console.log("Categorías activas:", categoriasActivas);
 
     selectorCategoria.innerHTML =
       '<option value="">Selecciona una categoría</option>' +
