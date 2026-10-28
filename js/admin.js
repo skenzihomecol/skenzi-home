@@ -215,52 +215,44 @@ async function cargarProductos() {
   let imagenActual = "";
   let imagenSeleccionada = null;
 
-  // Cargar categorías desde Supabase.
-  try {
+// Cargar categorías desde Supabase.
+try {
     console.log("Cargando categorías...");
 
     const categorias = await consultar(
-      "categorias",
-      "id,nombre,activa"
+        "categorias",
+        "id,nombre,activa"
     );
 
     console.log("Categorías recibidas:", categorias);
 
     const categoriasActivas = categorias
-      .filter(c => c.activa === true)
-      .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+        .filter(c => c.activa === true)
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+
     console.log("Categorías activas:", categoriasActivas);
 
-   selectorCategoria.replaceChildren();
+    selectorCategoria.innerHTML =
+        '<option value="">Selecciona una categoría</option>';
 
-const opcionInicial = document.createElement("option");
-opcionInicial.value = "";
-opcionInicial.textContent = "Selecciona una categoría";
-selectorCategoria.appendChild(opcionInicial);
-
-categoriasActivas.forEach(categoria => {
-  const opcion = document.createElement("option");
-  opcion.value = categoria.id;
-  opcion.textContent = categoria.nombre;
-  selectorCategoria.appendChild(opcion);
-});
-
-console.log(
-  "Opciones agregadas al selector:",
-  selectorCategoria.options.length
-);
+    categoriasActivas.forEach(categoria => {
+        const opcion = document.createElement("option");
+        opcion.value = categoria.id;
+        opcion.textContent = categoria.nombre;
+        selectorCategoria.appendChild(opcion);
+    });
 
     if (categoriasActivas.length === 0) {
-      selectorCategoria.innerHTML =
-        '<option value="">No hay categorías activas</option>';
+        selectorCategoria.innerHTML =
+            '<option value="">No hay categorías activas</option>';
     }
 
-  } catch (error) {
+} catch (error) {
     console.error("Error al cargar categorías:", error);
 
     selectorCategoria.innerHTML =
-      '<option value="">Error al cargar categorías</option>';
-  }
+        '<option value="">Error al cargar categorías</option>';
+}
   // Vista previa de la fotografía.
   archivoImagen.addEventListener("change", () => {
     imagenSeleccionada =
