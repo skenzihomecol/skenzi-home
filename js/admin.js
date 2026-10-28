@@ -216,43 +216,45 @@ async function cargarProductos() {
   let imagenSeleccionada = null;
 
 // Cargar categorías desde Supabase.
-try {
-    console.log("Cargando categorías...");
+    try {
+        console.log("Cargando categorías...");
 
-    const categorias = await consultar(
-        "categorias",
-        "id,nombre,activa"
-    );
+        const categorias = await consultar(
+            "categorias",
+            "id,nombre,activa"
+        );
 
-    console.log("Categorías recibidas:", categorias);
+        console.log("Categorías recibidas:", categorias);
 
-    const categoriasActivas = categorias
-        .filter(c => c.activa === true)
-        .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+        const categoriasActivas = categorias
+            .filter(c => c.activa === true)
+            .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+        
+        console.log("Categorías activas:", categoriasActivas);
 
-    console.log("Categorías activas:", categoriasActivas);
+        // LIMPIAR Y LLENAR EL SELECTOR CORRECTAMENTE
+        selectorCategoria.innerHTML = "";
 
-    selectorCategoria.innerHTML =
-        '<option value="">Selecciona una categoría</option>';
+        const opcionInicial = document.createElement("option");
+        opcionInicial.value = "";
+        opcionInicial.textContent = "Selecciona una categoría";
+        selectorCategoria.appendChild(opcionInicial);
 
-    categoriasActivas.forEach(categoria => {
-        const opcion = document.createElement("option");
-        opcion.value = categoria.id;
-        opcion.textContent = categoria.nombre;
-        selectorCategoria.appendChild(opcion);
-    });
+        categoriasActivas.forEach(categoria => {
+            const opcion = document.createElement("option");
+            opcion.value = categoria.id;
+            opcion.textContent = categoria.nombre;
+            selectorCategoria.appendChild(opcion);
+        });
 
-    if (categoriasActivas.length === 0) {
-        selectorCategoria.innerHTML =
-            '<option value="">No hay categorías activas</option>';
+        if (categoriasActivas.length === 0) {
+            selectorCategoria.innerHTML = '<option value="">No hay categorías activas</option>';
+        }
+
+    } catch (error) {
+        console.error("Error al cargar categorías:", error);
+        selectorCategoria.innerHTML = '<option value="">Error al cargar categorías</option>';
     }
-
-} catch (error) {
-    console.error("Error al cargar categorías:", error);
-
-    selectorCategoria.innerHTML =
-        '<option value="">Error al cargar categorías</option>';
-}
   // Vista previa de la fotografía.
   archivoImagen.addEventListener("change", () => {
     imagenSeleccionada =
