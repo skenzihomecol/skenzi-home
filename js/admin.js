@@ -61,8 +61,8 @@ function fecha(valor) {
 }
 
 function mostrarPanel(autenticado) {
-  login.classList.toggle("admin-oculto", autenticado);
-  panel.classList.toggle("admin-oculto", !autenticado);
+  if (login) login.classList.toggle("admin-oculto", autenticado);
+  if (panel) panel.classList.toggle("admin-oculto", !autenticado);
 }
 
 function prepararTabla(encabezados, filas) {
@@ -115,6 +115,7 @@ function mostrarError(id, error) {
 
 async function cargarProductos() {
   const contenedor = document.getElementById("lista-productos");
+  if (!contenedor) return;
 
   contenedor.innerHTML = `
     <h3>Agregar producto</h3>
@@ -215,81 +216,86 @@ async function cargarProductos() {
   let imagenActual = "";
   let imagenSeleccionada = null;
 
-// Cargar categorías desde Supabase.
-    try {
-        console.log("Cargando categorías...");
+  // Cargar categorías desde Supabase de forma segura.
+  try {
+    console.log("Cargando categorías...");
 
-        const categorias = await consultar(
-            "categorias",
-            "id,nombre,activa"
-        );
+    const categorias = await consultar(
+      "categorias",
+      "id,nombre,activa"
+    );
 
-        console.log("Categorías recibidas:", categorias);
+    console.log("Categorías recibidas:", categorias);
 
-       const categoriasActivas = categorias
-            .filter(c => c.activa === true || c.activa === "true" || c.activa === null)
-            .sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
-        
-        console.log("Categorías activas:", categoriasActivas);
+    const categoriasActivas = (categorias || []).filter(c => 
+      c.activa === true || c.activa === "true" || c.activa === null
+    ).sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
+    
+    console.log("Categorías activas filtradas:", categoriasActivas);
 
-        // LIMPIAR Y LLENAR EL SELECTOR CORRECTAMENTE
-        selectorCategoria.innerHTML = "";
+    selectorCategoria.innerHTML = "";
 
-        const opcionInicial = document.createElement("option");
-        opcionInicial.value = "";
-        opcionInicial.textContent = "Selecciona una categoría";
-        selectorCategoria.appendChild(opcionInicial);
+    const opcionInicial = document.createElement("option");
+    opcionInicial.value = "";
+    opcionInicial.textContent = "Selecciona una categoría";
+    selectorCategoria.appendChild(opcionInicial);
 
-        categoriasActivas.forEach(categoria => {
-            const opcion = document.createElement("option");
-            opcion.value = categoria.id;
-            opcion.textContent = categoria.nombre;
-            selectorCategoria.appendChild(opcion);
-          selectorCategoria.size = 1;
-        });
-
-        if (categoriasActivas.length === 0) {
-            selectorCategoria.innerHTML = '<option value="">No hay categorías activas</option>';
-        }
-
-    } catch (error) {
-        console.error("Error al cargar categorías:", error);
-        selectorCategoria.innerHTML = '<option value="">Error al cargar categorías</option>';
+    if (categoriasActivas.length > 0) {
+      categoriasActivas.forEach(categoria => {
+        const opcion = document.createElement("option");
+        opcion.value = categoria.id;
+        opcion.textContent = categoria.nombre;
+        selectorCategoria.appendChild(opcion);
+      });
+    } else {
+      const opcionVacia = document.createElement("option");
+      opcionVacia.value = "";
+      opcionVacia.textContent = "No hay categorías activas";
+      selectorCategoria.appendChild(opcionVacia);
     }
+
+  } catch (error) {
+    console.error("Error al cargar categorías:", error);
+    selectorCategoria.innerHTML = '<option value="">Error al cargar categorías</option>';
+  }
+
   // Vista previa de la fotografía.
-  archivoImagen.addEventListener("change", () => {
-    imagenSeleccionada =
-      archivoImagen.files && archivoImagen.files[0]
-        ? archivoImagen.files[0]
-        : null;
+  if (archivoImagen) {
+    archivoImagen.addEventListener("change", () => {
+      imagenSeleccionada =
+        archivoImagen.files && archivoImagen.files[0]
+          ? archivoImagen.files[0]
+          : null;
 
-    if (!imagenSeleccionada) {
-      vistaPrevia.style.display = imagenActual ? "block" : "none";
-      vistaPrevia.src = imagenActual;
-      return;
-    }
+      if (!imagenSeleccionada) {
+        vistaPrevia.style.display = imagenActual ? "block" : "none";
+        vistaPrevia.src = imagenActual;
+        return;
+      }
 
-    if (!imagenSeleccionada.type.startsWith("image/")) {
-      mostrarMensaje(mensaje, "Selecciona un archivo de imagen válido.", true);
-      archivoImagen.value = "";
-      imagenSeleccionada = null;
-      return;
-    }
+      if (!imagenSeleccionada.type.startsWith("image/")) {
+        mostrarMensaje(mensaje, "Selecciona un archivo de imagen válido.", true);
+        archivoImagen.value = "";
+        imagenSeleccionada = null;
+        return;
+      }
 
-    if (imagenSeleccionada.size > 5 * 1024 * 1024) {
-      mostrarMensaje(mensaje, "La imagen no puede superar los 5 MB.", true);
-      archivoImagen.value = "";
-      imagenSeleccionada = null;
-      return;
-    }
+      if (imagenSeleccionada.size > 5 * 1024 * 1024) {
+        mostrarMensaje(mensaje, "La imagen no puede superar los 5 MB.", true);
+        archivoImagen.value = "";
+        imagenSeleccionada = null;
+        return;
+      }
 
-    vistaPrevia.src = URL.createObjectURL(imagenSeleccionada);
-    vistaPrevia.style.display = "block";
-  });
+      vistaPrevia.src = URL.createObjectURL(imagenSeleccionada);
+      vistaPrevia.style.display = "block";
+    });
+  }
 
   // Cargar y mostrar productos.
   async function actualizarLista() {
     const tabla = document.getElementById("tabla-productos");
+    if (!tabla) return;
     tabla.textContent = "Cargando productos...";
 
     try {
@@ -299,7 +305,7 @@ async function cargarProductos() {
       );
 
       productosActuales.sort((a, b) =>
-        a.nombre.localeCompare(b.nombre, "es")
+        (a.nombre || "").localeCompare(b.nombre || "", "es")
       );
 
       if (!productosActuales.length) {
@@ -357,7 +363,7 @@ async function cargarProductos() {
       tabla.querySelectorAll("[data-editar-producto]").forEach(boton => {
         boton.addEventListener("click", () => {
           const producto = productosActuales.find(
-            p => p.id === boton.dataset.editarProducto
+            p => String(p.id) === String(boton.dataset.editarProducto)
           );
 
           if (!producto) return;
@@ -379,7 +385,7 @@ async function cargarProductos() {
 
           imagenActual = producto.imagen_url || "";
           imagenSeleccionada = null;
-          archivoImagen.value = "";
+          if (archivoImagen) archivoImagen.value = "";
 
           vistaPrevia.src = imagenActual;
           vistaPrevia.style.display = imagenActual ? "block" : "none";
@@ -397,7 +403,7 @@ async function cargarProductos() {
       tabla.querySelectorAll("[data-eliminar-producto]").forEach(boton => {
         boton.addEventListener("click", async () => {
           const producto = productosActuales.find(
-            p => p.id === boton.dataset.eliminarProducto
+            p => String(p.id) === String(boton.dataset.eliminarProducto)
           );
 
           if (!producto) return;
@@ -589,12 +595,14 @@ async function cargarProductos() {
 
   await actualizarLista();
 }
+
 // ============================================
 // INVENTARIO
 // ============================================
 
 async function cargarInventario() {
   const contenedor = document.getElementById("lista-inventario");
+  if (!contenedor) return;
   contenedor.textContent = "Cargando inventario...";
 
   try {
@@ -655,6 +663,7 @@ async function cargarInventario() {
 
 async function cargarVentas() {
   const contenedor = document.getElementById("lista-ventas");
+  if (!contenedor) return;
   contenedor.textContent = "Cargando ventas y pedidos...";
 
   try {
@@ -713,7 +722,7 @@ async function imprimirComprobante(ventaId) {
     const detalles = await consultar("detalles_venta");
 
     const productosVenta = detalles.filter(
-      d => d.venta_id === ventaId
+      d => String(d.venta_id) === String(ventaId)
     );
 
     const subtotal = productosVenta.reduce(
@@ -749,7 +758,7 @@ async function imprimirComprobante(ventaId) {
         <title>Recibo Skenzi Home</title>
         <style>
           body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:20px;color:#222}
-          h1{color:#555b35}
+          h1{color:#1D4ED8}
           table{width:100%;border-collapse:collapse;margin-top:20px}
           th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}
           .total{text-align:right;margin-top:20px;line-height:1.8}
@@ -757,7 +766,7 @@ async function imprimirComprobante(ventaId) {
         </style>
       </head>
       <body>
-        <h1>Skenzi Home</h1>
+        <h1>SKENZI HOME</h1>
         <h2>Recibo de venta</h2>
         <p><b>Número:</b> ${escapar(venta.numero_venta ?? venta.id)}</p>
         <p><b>Fecha:</b> ${fecha(venta.fecha)}</p>
@@ -819,7 +828,7 @@ async function imprimirRotulo(ventaId) {
         <style>
           body{font-family:Arial,sans-serif;margin:20px}
           .rotulo{border:2px solid #222;padding:24px;max-width:500px}
-          h1{margin-top:0;color:#555b35}
+          h1{margin-top:0;color:#1D4ED8}
           .dato{margin:14px 0;font-size:17px}
           @media print{button{display:none}}
         </style>
@@ -827,7 +836,7 @@ async function imprimirRotulo(ventaId) {
       <body>
         <div class="rotulo">
           <h1>SKENZI HOME</h1>
-          <h2>DATOS DEL DESTINATARIO</h2>
+          <h2>DATOS DEL DESTINATARIO (DROPSHIPPING)</h2>
           <div class="dato"><b>Pedido:</b> ${escapar(venta.numero_venta ?? venta.id)}</div>
           <div class="dato"><b>Cliente:</b> ${escapar(venta.cliente_nombre || "—")}</div>
           <div class="dato"><b>Teléfono:</b> ${escapar(venta.cliente_telefono || "—")}</div>
@@ -848,7 +857,6 @@ async function imprimirRotulo(ventaId) {
   }
 }
 
-// Permite que los botones de la tabla accedan a estas funciones.
 window.imprimirComprobante = imprimirComprobante;
 window.imprimirRotulo = imprimirRotulo;
 
@@ -858,6 +866,7 @@ window.imprimirRotulo = imprimirRotulo;
 
 async function cargarGastos() {
   const contenedor = document.getElementById("lista-gastos");
+  if (!contenedor) return;
   contenedor.textContent = "Cargando gastos...";
 
   try {
@@ -903,6 +912,7 @@ async function cargarGastos() {
 
 async function cargarInformes() {
   const contenedor = document.getElementById("lista-informes");
+  if (!contenedor) return;
   contenedor.textContent = "Calculando informes...";
 
   try {
@@ -951,7 +961,6 @@ async function cargarInformes() {
           ).join("")}</ul>`
         : "<p>No hay productos con stock bajo.</p>"
       }
-      <p>Estos informes utilizan los registros existentes. Las ganancias requieren calcular los costos de los productos vendidos.</p>
     `;
 
   } catch (error) {
@@ -988,16 +997,20 @@ async function cargarResumen() {
       0
     );
 
-    document.getElementById("total-productos").textContent = activos.length;
-    document.getElementById("total-existencias").textContent = unidades;
-    document.getElementById("total-ventas").textContent = ventas;
-    document.getElementById("total-gastos").textContent = gastos;
+    const elProd = document.getElementById("total-productos");
+    const elExis = document.getElementById("total-existencias");
+    const elVentas = document.getElementById("total-ventas");
+    const elGastos = document.getElementById("total-gastos");
+
+    if (elProd) elProd.textContent = activos.length;
+    if (elExis) elExis.textContent = unidades;
+    if (elVentas) elVentas.textContent = ventas;
+    if (elGastos) elGastos.textContent = gastos;
 
     mostrarMensaje(mensajeAdmin, "Resumen actualizado correctamente.");
 
   } catch (error) {
     console.error("Error en resumen:", error);
-
     mostrarMensaje(
       mensajeAdmin,
       "No se pudieron cargar todos los datos. Revisa la consola del navegador.",
@@ -1048,62 +1061,71 @@ document.querySelectorAll("[data-seccion]").forEach(boton => {
 // INICIAR SESIÓN
 // ============================================
 
-formLogin.addEventListener("submit", async evento => {
-  evento.preventDefault();
+if (formLogin) {
+  formLogin.addEventListener("submit", async evento => {
+    evento.preventDefault();
 
-  const email = document.getElementById("correo-admin").value.trim();
-  const password = document.getElementById("clave-admin").value;
-  const boton = formLogin.querySelector('button[type="submit"]');
+    const emailInput = document.getElementById("correo-admin");
+    const passInput = document.getElementById("clave-admin");
+    if (!emailInput || !passInput) return;
 
-  boton.disabled = true;
-  mostrarMensaje(mensajeLogin, "Verificando acceso...");
+    const email = emailInput.value.trim();
+    const password = passInput.value;
+    const boton = formLogin.querySelector('button[type="submit"]');
 
-  try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
+    if (boton) boton.disabled = true;
+    mostrarMensaje(mensajeLogin, "Verificando acceso...");
 
-    if (error) throw error;
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    if (!data.session) {
-      throw new Error("No se pudo establecer la sesión.");
+      if (error) throw error;
+
+      if (!data.session) {
+        throw new Error("No se pudo establecer la sesión.");
+      }
+
+      usuarioAutenticado = true;
+      mostrarPanel(true);
+      formLogin.reset();
+
+      await cargarResumen();
+      mostrarMensaje(mensajeAdmin, "Sesión iniciada correctamente.");
+
+    } catch (error) {
+      mostrarMensaje(
+        mensajeLogin,
+        error.message || "No fue posible iniciar sesión.",
+        true
+      );
+    } finally {
+      if (boton) boton.disabled = false;
     }
-
-    usuarioAutenticado = true;
-    mostrarPanel(true);
-    formLogin.reset();
-
-    await cargarResumen();
-    mostrarMensaje(mensajeAdmin, "Sesión iniciada correctamente.");
-
-  } catch (error) {
-    mostrarMensaje(
-      mensajeLogin,
-      error.message || "No fue posible iniciar sesión.",
-      true
-    );
-  } finally {
-    boton.disabled = false;
-  }
-});
+  });
+}
 
 // ============================================
 // CERRAR SESIÓN
 // ============================================
 
-document.getElementById("cerrar-sesion").addEventListener("click", async () => {
-  const { error } = await supabaseClient.auth.signOut();
+const btnCerrar = document.getElementById("cerrar-sesion");
+if (btnCerrar) {
+  btnCerrar.addEventListener("click", async () => {
+    const { error } = await supabaseClient.auth.signOut();
 
-  if (error) {
-    mostrarMensaje(mensajeAdmin, error.message, true);
-    return;
-  }
+    if (error) {
+      mostrarMensaje(mensajeAdmin, error.message, true);
+      return;
+    }
 
-  usuarioAutenticado = false;
-  mostrarPanel(false);
-  mostrarMensaje(mensajeLogin, "Sesión cerrada correctamente.");
-});
+    usuarioAutenticado = false;
+    mostrarPanel(false);
+    mostrarMensaje(mensajeLogin, "Sesión cerrada correctamente.");
+  });
+}
 
 // ============================================
 // COMPROBAR SESIÓN EXISTENTE
