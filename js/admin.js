@@ -226,9 +226,9 @@ async function cargarProductos() {
 
         console.log("Categorías recibidas:", categorias);
 
-        const categoriasActivas = categorias
-            .filter(c => c.activa === true)
-            .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+       const categoriasActivas = categorias
+            .filter(c => c.activa === true || c.activa === "true" || c.activa === null)
+            .sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
         
         console.log("Categorías activas:", categoriasActivas);
 
@@ -245,6 +245,7 @@ async function cargarProductos() {
             opcion.value = categoria.id;
             opcion.textContent = categoria.nombre;
             selectorCategoria.appendChild(opcion);
+          selectorCategoria.size = 1;
         });
 
         if (categoriasActivas.length === 0) {
