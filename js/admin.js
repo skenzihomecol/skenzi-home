@@ -232,6 +232,12 @@ async function cargarProductos() {
     ).sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
     
     console.log("Categorías activas filtradas:", categoriasActivas);
+    console.log(
+  "Selector de categoría:",
+  selectorCategoria,
+  "Opciones creadas:",
+  selectorCategoria.options.length
+);
 
     selectorCategoria.innerHTML = "";
 
