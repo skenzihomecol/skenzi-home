@@ -110,40 +110,468 @@ function mostrarError(id, error) {
 }
 
 // ============================================
-// PRODUCTOS
+// PRODUCTOS - ADMINISTRACIÓN COMPLETA
 // ============================================
 
 async function cargarProductos() {
   const contenedor = document.getElementById("lista-productos");
-  contenedor.textContent = "Cargando productos...";
 
+  contenedor.innerHTML = `
+    <h3>Agregar producto</h3>
+
+    <form id="form-producto" class="admin-form-producto">
+      <input type="hidden" id="producto-id">
+
+      <label for="producto-nombre">Nombre del producto *</label>
+      <input class="admin-campo" id="producto-nombre" required>
+
+      <label for="producto-descripcion">Descripción</label>
+      <textarea class="admin-campo" id="producto-descripcion" rows="3"></textarea>
+
+      <label for="producto-categoria">Categoría *</label>
+      <select class="admin-campo" id="producto-categoria" required>
+        <option value="">Cargando categorías...</option>
+      </select>
+
+      <label for="producto-sku">SKU o código de barras</label>
+      <input class="admin-campo" id="producto-sku">
+
+      <label for="producto-costo">Costo de compra (COP) *</label>
+      <input class="admin-campo" id="producto-costo"
+        type="number" min="0" step="1" required>
+
+      <label for="producto-precio">Precio de venta (COP) *</label>
+      <input class="admin-campo" id="producto-precio"
+        type="number" min="0" step="1" required>
+
+      <label for="producto-existencias">Existencias iniciales *</label>
+      <input class="admin-campo" id="producto-existencias"
+        type="number" min="0" step="1" required>
+
+      <label for="producto-stock-minimo">Stock mínimo</label>
+      <input class="admin-campo" id="producto-stock-minimo"
+        type="number" min="0" step="1" value="2">
+
+      <label for="producto-proveedor">Proveedor</label>
+      <input class="admin-campo" id="producto-proveedor">
+
+      <label for="producto-imagen">Fotografía del producto</label>
+      <input class="admin-campo" id="producto-imagen"
+        type="file" accept="image/*">
+
+      <img id="producto-vista-previa"
+        alt="Vista previa del producto"
+        style="display:none;max-width:220px;max-height:220px;
+        object-fit:contain;border-radius:10px;margin:10px 0;">
+
+      <label>
+        <input type="checkbox" id="producto-novedad">
+        Marcar como novedad
+      </label>
+
+      <br><br>
+
+      <label>
+        <input type="checkbox" id="producto-destacado">
+        Producto destacado
+      </label>
+
+      <br><br>
+
+      <label>
+        <input type="checkbox" id="producto-oferta">
+        Producto en oferta
+      </label>
+
+      <br><br>
+
+      <button class="admin-boton" type="submit">
+        Guardar producto
+      </button>
+
+      <button class="admin-boton" type="button"
+        id="cancelar-edicion" style="display:none;">
+        Cancelar edición
+      </button>
+
+      <p id="mensaje-producto" role="status"></p>
+    </form>
+
+    <hr style="margin:30px 0;">
+
+    <h3>Productos registrados</h3>
+
+    <div id="tabla-productos">Cargando productos...</div>
+  `;
+
+  const formulario = document.getElementById("form-producto");
+  const selectorCategoria = document.getElementById("producto-categoria");
+  const archivoImagen = document.getElementById("producto-imagen");
+  const vistaPrevia = document.getElementById("producto-vista-previa");
+  const mensaje = document.getElementById("mensaje-producto");
+  const botonCancelar = document.getElementById("cancelar-edicion");
+
+  let productosActuales = [];
+  let imagenActual = "";
+  let imagenSeleccionada = null;
+
+  // Cargar categorías desde Supabase.
   try {
-    const productos = await consultar(
-      "productos",
-      "id,codigo_barras,sku,nombre,categoria_id,costo_compra,precio_venta,existencias,stock_minimo,proveedor,activo"
+    const categorias = await consultar(
+      "categorias",
+      "id,nombre,activa"
     );
 
-    const filas = productos.map(p => `
-      <tr>
-        <td>${escapar(p.sku || p.codigo_barras || "—")}</td>
-        <td>${escapar(p.nombre)}</td>
-        <td>${dinero(p.costo_compra)}</td>
-        <td>${dinero(p.precio_venta)}</td>
-        <td>${Number(p.existencias || 0)}</td>
-        <td>${p.activo ? "Activo" : "Inactivo"}</td>
-      </tr>
-    `);
-
-    contenedor.innerHTML = prepararTabla(
-      ["SKU / Código", "Producto", "Costo", "Precio", "Existencias", "Estado"],
-      filas
-    );
+    selectorCategoria.innerHTML =
+      '<option value="">Selecciona una categoría</option>' +
+      categorias
+        .filter(c => c.activa)
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
+        .map(c => `
+          <option value="${escapar(c.id)}">
+            ${escapar(c.nombre)}
+          </option>
+        `).join("");
 
   } catch (error) {
-    mostrarError("lista-productos", error);
+    console.error("Error al cargar categorías:", error);
+    selectorCategoria.innerHTML =
+      '<option value="">No se pudieron cargar las categorías</option>';
   }
-}
 
+  // Vista previa de la fotografía.
+  archivoImagen.addEventListener("change", () => {
+    imagenSeleccionada =
+      archivoImagen.files && archivoImagen.files[0]
+        ? archivoImagen.files[0]
+        : null;
+
+    if (!imagenSeleccionada) {
+      vistaPrevia.style.display = imagenActual ? "block" : "none";
+      vistaPrevia.src = imagenActual;
+      return;
+    }
+
+    if (!imagenSeleccionada.type.startsWith("image/")) {
+      mostrarMensaje(mensaje, "Selecciona un archivo de imagen válido.", true);
+      archivoImagen.value = "";
+      imagenSeleccionada = null;
+      return;
+    }
+
+    if (imagenSeleccionada.size > 5 * 1024 * 1024) {
+      mostrarMensaje(mensaje, "La imagen no puede superar los 5 MB.", true);
+      archivoImagen.value = "";
+      imagenSeleccionada = null;
+      return;
+    }
+
+    vistaPrevia.src = URL.createObjectURL(imagenSeleccionada);
+    vistaPrevia.style.display = "block";
+  });
+
+  // Cargar y mostrar productos.
+  async function actualizarLista() {
+    const tabla = document.getElementById("tabla-productos");
+    tabla.textContent = "Cargando productos...";
+
+    try {
+      productosActuales = await consultar(
+        "productos",
+        "id,codigo_barras,sku,nombre,descripcion,categoria_id,costo_compra,precio_venta,existencias,stock_minimo,proveedor,imagen_url,es_novedad,es_destacado,en_oferta,activo"
+      );
+
+      productosActuales.sort((a, b) =>
+        a.nombre.localeCompare(b.nombre, "es")
+      );
+
+      if (!productosActuales.length) {
+        tabla.innerHTML = "<p>Aún no hay productos registrados.</p>";
+        return;
+      }
+
+      tabla.innerHTML = `
+        <div style="overflow-x:auto">
+          <table class="admin-tabla">
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Existencias</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${productosActuales.map(p => `
+                <tr>
+                  <td>
+                    ${p.imagen_url
+                      ? `<img src="${escapar(p.imagen_url)}"
+                          alt="${escapar(p.nombre)}"
+                          loading="lazy"
+                          style="width:65px;height:65px;object-fit:contain;">`
+                      : "Sin foto"}
+                  </td>
+                  <td>${escapar(p.nombre)}</td>
+                  <td>${dinero(p.precio_venta)}</td>
+                  <td>${Number(p.existencias || 0)}</td>
+                  <td>${p.activo ? "Activo" : "Inactivo"}</td>
+                  <td>
+                    <button type="button" class="admin-boton"
+                      data-editar-producto="${escapar(p.id)}">
+                      Editar
+                    </button>
+
+                    <button type="button" class="admin-boton"
+                      data-eliminar-producto="${escapar(p.id)}">
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      // Botones para editar.
+      tabla.querySelectorAll("[data-editar-producto]").forEach(boton => {
+        boton.addEventListener("click", () => {
+          const producto = productosActuales.find(
+            p => p.id === boton.dataset.editarProducto
+          );
+
+          if (!producto) return;
+
+          document.getElementById("producto-id").value = producto.id;
+          document.getElementById("producto-nombre").value = producto.nombre || "";
+          document.getElementById("producto-descripcion").value = producto.descripcion || "";
+          selectorCategoria.value = producto.categoria_id || "";
+          document.getElementById("producto-sku").value =
+            producto.sku || producto.codigo_barras || "";
+          document.getElementById("producto-costo").value = producto.costo_compra ?? 0;
+          document.getElementById("producto-precio").value = producto.precio_venta ?? 0;
+          document.getElementById("producto-existencias").value = producto.existencias ?? 0;
+          document.getElementById("producto-stock-minimo").value = producto.stock_minimo ?? 0;
+          document.getElementById("producto-proveedor").value = producto.proveedor || "";
+          document.getElementById("producto-novedad").checked = !!producto.es_novedad;
+          document.getElementById("producto-destacado").checked = !!producto.es_destacado;
+          document.getElementById("producto-oferta").checked = !!producto.en_oferta;
+
+          imagenActual = producto.imagen_url || "";
+          imagenSeleccionada = null;
+          archivoImagen.value = "";
+
+          vistaPrevia.src = imagenActual;
+          vistaPrevia.style.display = imagenActual ? "block" : "none";
+
+          botonCancelar.style.display = "inline-block";
+          formulario.querySelector('[type="submit"]').textContent =
+            "Guardar cambios";
+
+          formulario.scrollIntoView({ behavior: "smooth", block: "start" });
+          mostrarMensaje(mensaje, "Editando: " + producto.nombre);
+        });
+      });
+
+      // Botones para eliminar.
+      tabla.querySelectorAll("[data-eliminar-producto]").forEach(boton => {
+        boton.addEventListener("click", async () => {
+          const producto = productosActuales.find(
+            p => p.id === boton.dataset.eliminarProducto
+          );
+
+          if (!producto) return;
+
+          if (!confirm(
+            `¿Quieres desactivar "${producto.nombre}" del catálogo?`
+          )) return;
+
+          try {
+            const { error } = await supabaseClient
+              .from("productos")
+              .update({ activo: false })
+              .eq("id", producto.id);
+
+            if (error) throw error;
+
+            mostrarMensaje(
+              mensaje,
+              "Producto desactivado. Se conservó su historial."
+            );
+
+            await actualizarLista();
+            await cargarResumen();
+
+          } catch (error) {
+            console.error(error);
+            mostrarMensaje(
+              mensaje,
+              error.message || "No se pudo desactivar el producto.",
+              true
+            );
+          }
+        });
+      });
+
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+      tabla.innerHTML =
+        '<p style="color:#b42318">No se pudieron cargar los productos. Revisa los permisos de Supabase.</p>';
+    }
+  }
+
+  // Subir la imagen a Storage.
+  async function subirImagen(archivo) {
+    if (!archivo) return imagenActual;
+
+    const extension = archivo.name.includes(".")
+      ? archivo.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "")
+      : "jpg";
+
+    const ruta = `${crypto.randomUUID()}.${extension || "jpg"}`;
+
+    const { error } = await supabaseClient.storage
+      .from("productos")
+      .upload(ruta, archivo, {
+        upsert: false,
+        contentType: archivo.type
+      });
+
+    if (error) throw error;
+
+    const { data } = supabaseClient.storage
+      .from("productos")
+      .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
+
+  // Guardar producto nuevo o cambios.
+  formulario.addEventListener("submit", async evento => {
+    evento.preventDefault();
+
+    const botonGuardar = formulario.querySelector('[type="submit"]');
+    botonGuardar.disabled = true;
+
+    mostrarMensaje(mensaje, "Guardando producto...");
+
+    try {
+      const id = document.getElementById("producto-id").value;
+
+      const nombre = document.getElementById("producto-nombre").value.trim();
+      const sku = document.getElementById("producto-sku").value.trim();
+
+      if (!nombre) {
+        throw new Error("Escribe el nombre del producto.");
+      }
+
+      const costo = Number(document.getElementById("producto-costo").value);
+      const precio = Number(document.getElementById("producto-precio").value);
+      const existencias = Number(document.getElementById("producto-existencias").value);
+      const stockMinimo = Number(document.getElementById("producto-stock-minimo").value);
+
+      if (![costo, precio, existencias, stockMinimo].every(Number.isFinite) ||
+          costo < 0 || precio < 0 || existencias < 0 || stockMinimo < 0 ||
+          !Number.isInteger(existencias) || !Number.isInteger(stockMinimo)) {
+        throw new Error("Revisa los costos, precios y cantidades.");
+      }
+
+      let imagenUrl = imagenActual;
+
+      if (imagenSeleccionada) {
+        imagenUrl = await subirImagen(imagenSeleccionada);
+      }
+
+      const datos = {
+        nombre,
+        descripcion: document.getElementById("producto-descripcion").value.trim(),
+        categoria_id: selectorCategoria.value || null,
+        sku: sku || null,
+        codigo_barras: sku || null,
+        costo_compra: costo,
+        precio_venta: precio,
+        existencias,
+        stock_minimo: stockMinimo,
+        proveedor: document.getElementById("producto-proveedor").value.trim() || null,
+        imagen_url: imagenUrl || null,
+        es_novedad: document.getElementById("producto-novedad").checked,
+        es_destacado: document.getElementById("producto-destacado").checked,
+        en_oferta: document.getElementById("producto-oferta").checked,
+        activo: true,
+        actualizado_en: new Date().toISOString()
+      };
+
+      let resultado;
+
+      if (id) {
+        resultado = await supabaseClient
+          .from("productos")
+          .update(datos)
+          .eq("id", id)
+          .select("id");
+      } else {
+        resultado = await supabaseClient
+          .from("productos")
+          .insert(datos)
+          .select("id");
+      }
+
+      if (resultado.error) throw resultado.error;
+
+      if (!resultado.data || resultado.data.length === 0) {
+        throw new Error(
+          "Supabase no confirmó el guardado. Revisa las políticas de la tabla productos."
+        );
+      }
+
+      mostrarMensaje(mensaje, id
+        ? "Producto actualizado correctamente."
+        : "Producto registrado correctamente."
+      );
+
+      formulario.reset();
+      document.getElementById("producto-id").value = "";
+      imagenActual = "";
+      imagenSeleccionada = null;
+      vistaPrevia.removeAttribute("src");
+      vistaPrevia.style.display = "none";
+      botonCancelar.style.display = "none";
+      botonGuardar.textContent = "Guardar producto";
+
+      await actualizarLista();
+      await cargarResumen();
+
+    } catch (error) {
+      console.error("Error al guardar producto:", error);
+      mostrarMensaje(
+        mensaje,
+        error.message || "No se pudo guardar el producto.",
+        true
+      );
+    } finally {
+      botonGuardar.disabled = false;
+    }
+  });
+
+  // Cancelar edición.
+  botonCancelar.addEventListener("click", () => {
+    formulario.reset();
+    document.getElementById("producto-id").value = "";
+    imagenActual = "";
+    imagenSeleccionada = null;
+    vistaPrevia.removeAttribute("src");
+    vistaPrevia.style.display = "none";
+    botonCancelar.style.display = "none";
+    formulario.querySelector('[type="submit"]').textContent =
+      "Guardar producto";
+    mostrarMensaje(mensaje, "Edición cancelada.");
+  });
+
+  await actualizarLista();
+}
 // ============================================
 // INVENTARIO
 // ============================================
