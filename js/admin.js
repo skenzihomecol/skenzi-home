@@ -231,13 +231,24 @@ async function cargarProductos() {
       .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
     console.log("Categorías activas:", categoriasActivas);
 
-    selectorCategoria.innerHTML =
-      '<option value="">Selecciona una categoría</option>' +
-      categoriasActivas.map(c => `
-        <option value="${escapar(c.id)}">
-          ${escapar(c.nombre)}
-        </option>
-      `).join("");
+   selectorCategoria.replaceChildren();
+
+const opcionInicial = document.createElement("option");
+opcionInicial.value = "";
+opcionInicial.textContent = "Selecciona una categoría";
+selectorCategoria.appendChild(opcionInicial);
+
+categoriasActivas.forEach(categoria => {
+  const opcion = document.createElement("option");
+  opcion.value = categoria.id;
+  opcion.textContent = categoria.nombre;
+  selectorCategoria.appendChild(opcion);
+});
+
+console.log(
+  "Opciones agregadas al selector:",
+  selectorCategoria.options.length
+);
 
     if (categoriasActivas.length === 0) {
       selectorCategoria.innerHTML =
