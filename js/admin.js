@@ -247,6 +247,8 @@ async function cargarProductos() {
         opcion.textContent = categoria.nombre;
         selectorCategoria.appendChild(opcion);
       });
+      console.log("Cantidad de opciones:", selectorCategoria.options.length);
+    console.log("Categorías en el selector:", selectorCategoria.innerHTML);
     } else {
       const opcionVacia = document.createElement("option");
       opcionVacia.value = "";
