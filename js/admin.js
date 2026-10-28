@@ -215,29 +215,36 @@ async function cargarProductos() {
   let imagenActual = "";
   let imagenSeleccionada = null;
 
-  // Cargar categorías desde Supabase.
-  try {
-    const categorias = await consultar(
-      "categorias",
-      "id,nombre,activa"
-    );
+ // Cargar categorías desde Supabase.
+try {
+  const categorias = await consultar(
+    "categorias",
+    "id,nombre,activa"
+  );
 
-    selectorCategoria.innerHTML =
-      '<option value="">Selecciona una categoría</option>' +
-      categorias
-        .filter(c => c.activa)
-        .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
-        .map(c => `
-          <option value="${escapar(c.id)}">
-            ${escapar(c.nombre)}
-          </option>
-        `).join("");
+  const categoriasActivas = categorias
+    .filter(c => c.activa === true)
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
 
-  } catch (error) {
-    console.error("Error al cargar categorías:", error);
+  selectorCategoria.innerHTML =
+    '<option value="">Selecciona una categoría</option>' +
+    categoriasActivas.map(c => `
+      <option value="${escapar(c.id)}">
+        ${escapar(c.nombre)}
+      </option>
+    `).join("");
+
+  if (categoriasActivas.length === 0) {
     selectorCategoria.innerHTML =
-      '<option value="">No se pudieron cargar las categorías</option>';
+      '<option value="">No hay categorías activas</option>';
   }
+
+} catch (error) {
+  console.error("Error al cargar categorías:", error);
+
+  selectorCategoria.innerHTML =
+    '<option value="">Error al cargar categorías</option>';
+}
 
   // Vista previa de la fotografía.
   archivoImagen.addEventListener("change", () => {
