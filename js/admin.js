@@ -509,6 +509,7 @@ async function cargarProductos() {
 
       const nombre = document.getElementById("producto-nombre").value.trim();
       const sku = document.getElementById("producto-sku").value.trim();
+      const codigoBarras = document.getElementById("producto-codigo").value.trim();
 
       if (!nombre) {
         throw new Error("Escribe el nombre del producto.");
