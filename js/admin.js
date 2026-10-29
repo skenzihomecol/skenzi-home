@@ -129,10 +129,20 @@ async function cargarProductos() {
       <label for="producto-descripcion">Descripción</label>
       <textarea class="admin-campo" id="producto-descripcion" rows="3"></textarea>
 
-      <label for="producto-categoria">Categoría *</label>
-      <select class="admin-campo" id="producto-categoria" required>
-        <option value="">Cargando categorías...</option>
-      </select>
+    <label for="producto-categoria">Categoría *</label>
+<select class="admin-campo" id="producto-categoria" required>
+    <option value="">Selecciona una categoría</option>
+    <option value="d071a9d3-fba9-4123-b84d-e66514af2ecc">Belleza</option>
+    <option value="98f0170b-12df-44bf-a959-c247340d59b7">Cocina</option>
+    <option value="37336a66-9f6b-45af-afb6-3a39b33fb02e">Deporte</option>
+    <option value="d86e959f-4595-4bd9-b6a6-2ca0d545c2c8">Hogar</option>
+    <option value="97b0d3aa-b7a4-4af2-9d88-a7aa7f67c814">Industrial</option>
+    <option value="4a91b30f-4e38-4ba4-87a2-2b4ac24132ec">Juguetes</option>
+    <option value="10d56c63-692b-4c2a-80d7-bdfc7102133f">Ofertas</option>
+    <option value="11a3d2b3-c8b0-4a7b-9636-992276f54427">Organizadores</option>
+    <option value="68249bd4-df97-4997-8dd2-aa313883f3ac">Tecnología</option>
+    <option value="66f29909-182e-4967-9ddf-9c8c654a2e66">Textiles</option>
+</select>
 
       <label for="producto-sku">SKU o código de barras</label>
       <input class="admin-campo" id="producto-sku">
