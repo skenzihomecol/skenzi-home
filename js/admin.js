@@ -144,8 +144,13 @@ async function cargarProductos() {
     <option value="66f29909-182e-4967-9ddf-9c8c654a2e66">Textiles</option>
 </select>
 
-      <label for="producto-sku">SKU o código de barras</label>
-      <input class="admin-campo" id="producto-sku">
+    
+<label for="producto-sku">SKU</label>
+<input class="admin-campo" id="producto-sku">
+
+<label for="producto-codigo">Código de barras</label>
+<input class="admin-campo" id="producto-codigo">
+
 
       <label for="producto-costo">Costo de compra (COP) *</label>
       <input class="admin-campo" id="producto-costo"
