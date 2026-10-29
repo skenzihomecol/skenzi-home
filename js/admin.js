@@ -395,8 +395,13 @@ async function cargarProductos() {
           document.getElementById("producto-nombre").value = producto.nombre || "";
           document.getElementById("producto-descripcion").value = producto.descripcion || "";
           selectorCategoria.value = producto.categoria_id || "";
-          document.getElementById("producto-sku").value =
-            producto.sku || producto.codigo_barras || "";
+        
+document.getElementById("producto-sku").value =
+  producto.sku || "";
+
+document.getElementById("producto-codigo").value =
+  producto.codigo_barras || "";
+
           document.getElementById("producto-costo").value = producto.costo_compra ?? 0;
           document.getElementById("producto-precio").value = producto.precio_venta ?? 0;
           document.getElementById("producto-existencias").value = producto.existencias ?? 0;
