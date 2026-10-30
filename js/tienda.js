@@ -418,30 +418,38 @@ function configurarMenu() {
     const boton = document.querySelector("[data-boton-categorias]");
     const menu = document.querySelector(".menu-categorias");
 
-    if (!boton || !menu) return;
+    if (!boton || !menu) {
+        console.error("No se encontró el botón o el menú de categorías.");
+        return;
+    }
 
-    boton.addEventListener("click", evento => {
+    // Evitar que el menú quede oculto por una clase anterior.
+    menu.classList.remove("abierto");
+    boton.setAttribute("aria-expanded", "false");
+
+    boton.addEventListener("click", function (evento) {
+        evento.preventDefault();
         evento.stopPropagation();
+
         const abierto = menu.classList.toggle("abierto");
+
         boton.setAttribute("aria-expanded", String(abierto));
     });
 
-    document.addEventListener("click", evento => {
-        if (!menu.contains(evento.target)) {
+    document.addEventListener("click", function (evento) {
+        if (!menu.contains(evento.target) && !boton.contains(evento.target)) {
             menu.classList.remove("abierto");
             boton.setAttribute("aria-expanded", "false");
         }
     });
 
-    document.addEventListener("keydown", evento => {
+    document.addEventListener("keydown", function (evento) {
         if (evento.key === "Escape") {
             menu.classList.remove("abierto");
             boton.setAttribute("aria-expanded", "false");
         }
     });
 }
-
-
 /* ==========================================================
    6. BÚSQUEDA DE PRODUCTOS
    ========================================================== */
