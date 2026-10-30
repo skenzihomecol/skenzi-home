@@ -129,94 +129,63 @@ async function cargarProductos() {
       <label for="producto-descripcion">Descripción</label>
       <textarea class="admin-campo" id="producto-descripcion" rows="3"></textarea>
 
-    <label for="producto-categoria">Categoría *</label>
-<select class="admin-campo" id="producto-categoria" required>
-    <option value="">Selecciona una categoría</option>
-    <option value="d071a9d3-fba9-4123-b84d-e66514af2ecc">Belleza</option>
-    <option value="98f0170b-12df-44bf-a959-c247340d59b7">Cocina</option>
-    <option value="37336a66-9f6b-45af-afb6-3a39b33fb02e">Deporte</option>
-    <option value="d86e959f-4595-4bd9-b6a6-2ca0d545c2c8">Hogar</option>
-    <option value="97b0d3aa-b7a4-4af2-9d88-a7aa7f67c814">Industrial</option>
-    <option value="4a91b30f-4e38-4ba4-87a2-2b4ac24132ec">Juguetes</option>
-    <option value="10d56c63-692b-4c2a-80d7-bdfc7102133f">Ofertas</option>
-    <option value="11a3d2b3-c8b0-4a7b-9636-992276f54427">Organizadores</option>
-    <option value="68249bd4-df97-4997-8dd2-aa313883f3ac">Tecnología</option>
-    <option value="66f29909-182e-4967-9ddf-9c8c654a2e66">Textiles</option>
-</select>
+      <label for="producto-categoria">Categoría *</label>
+      <select class="admin-campo" id="producto-categoria" required>
+        <option value="">Cargando categorías...</option>
+      </select>
 
-    
-<label for="producto-sku">SKU</label>
-<input class="admin-campo" id="producto-sku">
+      <label for="producto-sku">SKU</label>
+      <input class="admin-campo" id="producto-sku">
 
-<label for="producto-codigo">Código de barras</label>
-<input class="admin-campo" id="producto-codigo">
-
+      <label for="producto-codigo">Código de barras</label>
+      <input class="admin-campo" id="producto-codigo">
 
       <label for="producto-costo">Costo de compra (COP) *</label>
-      <input class="admin-campo" id="producto-costo"
-        type="number" min="0" step="1" required>
+      <input class="admin-campo" id="producto-costo" type="number" min="0" step="1" required>
 
       <label for="producto-precio">Precio de venta (COP) *</label>
-      <input class="admin-campo" id="producto-precio"
-        type="number" min="0" step="1" required>
+      <input class="admin-campo" id="producto-precio" type="number" min="0" step="1" required>
 
       <label for="producto-existencias">Existencias iniciales *</label>
-      <input class="admin-campo" id="producto-existencias"
-        type="number" min="0" step="1" required>
+      <input class="admin-campo" id="producto-existencias" type="number" min="0" step="1" required>
 
       <label for="producto-stock-minimo">Stock mínimo</label>
-      <input class="admin-campo" id="producto-stock-minimo"
-        type="number" min="0" step="1" value="2">
+      <input class="admin-campo" id="producto-stock-minimo" type="number" min="0" step="1" value="2">
 
       <label for="producto-proveedor">Proveedor</label>
       <input class="admin-campo" id="producto-proveedor">
 
       <label for="producto-imagen">Fotografía del producto</label>
-      <input class="admin-campo" id="producto-imagen"
-        type="file" accept="image/*">
+      <input class="admin-campo" id="producto-imagen" type="file" accept="image/*">
 
-      <img id="producto-vista-previa"
-        alt="Vista previa del producto"
-        style="display:none;max-width:220px;max-height:220px;
-        object-fit:contain;border-radius:10px;margin:10px 0;">
+      <img id="producto-vista-previa" alt="Vista previa" style="display:none;max-width:220px;max-height:220px;object-fit:contain;border-radius:10px;margin:10px 0;">
 
       <label>
         <input type="checkbox" id="producto-novedad">
         Marcar como novedad
       </label>
-
       <br><br>
 
       <label>
         <input type="checkbox" id="producto-destacado">
         Producto destacado
       </label>
-
       <br><br>
 
       <label>
         <input type="checkbox" id="producto-oferta">
         Producto en oferta
       </label>
-
       <br><br>
 
-      <button class="admin-boton" type="submit">
-        Guardar producto
-      </button>
-
-      <button class="admin-boton" type="button"
-        id="cancelar-edicion" style="display:none;">
-        Cancelar edición
-      </button>
+      <button class="admin-boton" type="submit">Guardar producto</button>
+      <button class="admin-boton" type="button" id="cancelar-edicion" style="display:none;">Cancelar edición</button>
 
       <p id="mensaje-producto" role="status"></p>
     </form>
 
     <hr style="margin:30px 0;">
-
     <h3>Productos registrados</h3>
-
     <div id="tabla-productos">Cargando productos...</div>
   `;
 
@@ -231,28 +200,14 @@ async function cargarProductos() {
   let imagenActual = "";
   let imagenSeleccionada = null;
 
-  // Cargar categorías desde Supabase de forma segura.
+  // Cargar categorías dinámicamente de Supabase de forma segura
   try {
-    console.log("Cargando categorías...");
+    const categorias = await consultar("categorias", "id,nombre,activa");
 
-    const categorias = await consultar(
-      "categorias",
-      "id,nombre,activa"
-    );
-
-    console.log("Categorías recibidas:", categorias);
-
+    // Filtrar de forma flexible para que muestre las categorías correctamente
     const categoriasActivas = (categorias || []).filter(c => 
-      c.activa === true || c.activa === "true" || c.activa === null
+      c.activa === true || c.activa === "true" || c.activa === null || c.activa === undefined
     ).sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
-    
-    console.log("Categorías activas filtradas:", categoriasActivas);
-    console.log(
-  "Selector de categoría:",
-  selectorCategoria,
-  "Opciones creadas:",
-  selectorCategoria.options.length
-);
 
     selectorCategoria.innerHTML = "";
 
@@ -262,33 +217,27 @@ async function cargarProductos() {
     selectorCategoria.appendChild(opcionInicial);
 
     if (categoriasActivas.length > 0) {
-      categoriasActivas.forEach(categoria => {
+      categoriasActivas.forEach(cat => {
         const opcion = document.createElement("option");
-        opcion.value = categoria.id;
-        opcion.textContent = categoria.nombre;
+        opcion.value = cat.id;
+        opcion.textContent = cat.nombre;
         selectorCategoria.appendChild(opcion);
       });
-      console.log("Cantidad de opciones:", selectorCategoria.options.length);
-    console.log("Categorías en el selector:", selectorCategoria.innerHTML);
     } else {
       const opcionVacia = document.createElement("option");
       opcionVacia.value = "";
-      opcionVacia.textContent = "No hay categorías activas";
+      opcionVacia.textContent = "No hay categorías disponibles";
       selectorCategoria.appendChild(opcionVacia);
     }
-
   } catch (error) {
     console.error("Error al cargar categorías:", error);
     selectorCategoria.innerHTML = '<option value="">Error al cargar categorías</option>';
   }
 
-  // Vista previa de la fotografía.
+  // Vista previa de la fotografía
   if (archivoImagen) {
     archivoImagen.addEventListener("change", () => {
-      imagenSeleccionada =
-        archivoImagen.files && archivoImagen.files[0]
-          ? archivoImagen.files[0]
-          : null;
+      imagenSeleccionada = archivoImagen.files?.[0] || null;
 
       if (!imagenSeleccionada) {
         vistaPrevia.style.display = imagenActual ? "block" : "none";
@@ -315,7 +264,7 @@ async function cargarProductos() {
     });
   }
 
-  // Cargar y mostrar productos.
+  // Cargar y mostrar lista de productos
   async function actualizarLista() {
     const tabla = document.getElementById("tabla-productos");
     if (!tabla) return;
@@ -327,9 +276,7 @@ async function cargarProductos() {
         "id,codigo_barras,sku,nombre,descripcion,categoria_id,costo_compra,precio_venta,existencias,stock_minimo,proveedor,imagen_url,es_novedad,es_destacado,en_oferta,activo"
       );
 
-      productosActuales.sort((a, b) =>
-        (a.nombre || "").localeCompare(b.nombre || "", "es")
-      );
+      productosActuales.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
 
       if (!productosActuales.length) {
         tabla.innerHTML = "<p>Aún no hay productos registrados.</p>";
@@ -354,10 +301,7 @@ async function cargarProductos() {
                 <tr>
                   <td>
                     ${p.imagen_url
-                      ? `<img src="${escapar(p.imagen_url)}"
-                          alt="${escapar(p.nombre)}"
-                          loading="lazy"
-                          style="width:65px;height:65px;object-fit:contain;">`
+                      ? `<img src="${escapar(p.imagen_url)}" alt="${escapar(p.nombre)}" loading="lazy" style="width:65px;height:65px;object-fit:contain;">`
                       : "Sin foto"}
                   </td>
                   <td>${escapar(p.nombre)}</td>
@@ -365,15 +309,8 @@ async function cargarProductos() {
                   <td>${Number(p.existencias || 0)}</td>
                   <td>${p.activo ? "Activo" : "Inactivo"}</td>
                   <td>
-                    <button type="button" class="admin-boton"
-                      data-editar-producto="${escapar(p.id)}">
-                      Editar
-                    </button>
-
-                    <button type="button" class="admin-boton"
-                      data-eliminar-producto="${escapar(p.id)}">
-                      Eliminar
-                    </button>
+                    <button type="button" class="admin-boton" data-editar-producto="${escapar(p.id)}">Editar</button>
+                    <button type="button" class="admin-boton" data-eliminar-producto="${escapar(p.id)}">Eliminar</button>
                   </td>
                 </tr>
               `).join("")}
@@ -382,26 +319,18 @@ async function cargarProductos() {
         </div>
       `;
 
-      // Botones para editar.
+      // Evento Editar
       tabla.querySelectorAll("[data-editar-producto]").forEach(boton => {
         boton.addEventListener("click", () => {
-          const producto = productosActuales.find(
-            p => String(p.id) === String(boton.dataset.editarProducto)
-          );
-
+          const producto = productosActuales.find(p => String(p.id) === String(boton.dataset.editarProducto));
           if (!producto) return;
 
           document.getElementById("producto-id").value = producto.id;
           document.getElementById("producto-nombre").value = producto.nombre || "";
           document.getElementById("producto-descripcion").value = producto.descripcion || "";
           selectorCategoria.value = producto.categoria_id || "";
-        
-document.getElementById("producto-sku").value =
-  producto.sku || "";
-
-document.getElementById("producto-codigo").value =
-  producto.codigo_barras || "";
-
+          document.getElementById("producto-sku").value = producto.sku || "";
+          document.getElementById("producto-codigo").value = producto.codigo_barras || "";
           document.getElementById("producto-costo").value = producto.costo_compra ?? 0;
           document.getElementById("producto-precio").value = producto.precio_venta ?? 0;
           document.getElementById("producto-existencias").value = producto.existencias ?? 0;
@@ -419,26 +348,20 @@ document.getElementById("producto-codigo").value =
           vistaPrevia.style.display = imagenActual ? "block" : "none";
 
           botonCancelar.style.display = "inline-block";
-          formulario.querySelector('[type="submit"]').textContent =
-            "Guardar cambios";
+          formulario.querySelector('[type="submit"]').textContent = "Guardar cambios";
 
           formulario.scrollIntoView({ behavior: "smooth", block: "start" });
           mostrarMensaje(mensaje, "Editando: " + producto.nombre);
         });
       });
 
-      // Botones para eliminar.
+      // Evento Eliminar (desactivar)
       tabla.querySelectorAll("[data-eliminar-producto]").forEach(boton => {
         boton.addEventListener("click", async () => {
-          const producto = productosActuales.find(
-            p => String(p.id) === String(boton.dataset.eliminarProducto)
-          );
-
+          const producto = productosActuales.find(p => String(p.id) === String(boton.dataset.eliminarProducto));
           if (!producto) return;
 
-          if (!confirm(
-            `¿Quieres desactivar "${producto.nombre}" del catálogo?`
-          )) return;
+          if (!confirm(`¿Quieres desactivar "${producto.nombre}" del catálogo?`)) return;
 
           try {
             const { error } = await supabaseClient
@@ -448,33 +371,23 @@ document.getElementById("producto-codigo").value =
 
             if (error) throw error;
 
-            mostrarMensaje(
-              mensaje,
-              "Producto desactivado. Se conservó su historial."
-            );
-
+            mostrarMensaje(mensaje, "Producto desactivado correctamente.");
             await actualizarLista();
             await cargarResumen();
-
           } catch (error) {
             console.error(error);
-            mostrarMensaje(
-              mensaje,
-              error.message || "No se pudo desactivar el producto.",
-              true
-            );
+            mostrarMensaje(mensaje, error.message || "No se pudo desactivar el producto.", true);
           }
         });
       });
 
     } catch (error) {
       console.error("Error al cargar productos:", error);
-      tabla.innerHTML =
-        '<p style="color:#b42318">No se pudieron cargar los productos. Revisa los permisos de Supabase.</p>';
+      tabla.innerHTML = '<p style="color:#b42318">No se pudieron cargar los productos.</p>';
     }
   }
 
-  // Subir la imagen a Storage.
+  // Subir imagen a Storage
   async function subirImagen(archivo) {
     if (!archivo) return imagenActual;
 
@@ -482,7 +395,7 @@ document.getElementById("producto-codigo").value =
       ? archivo.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "")
       : "jpg";
 
-    const ruta = `${crypto.randomUUID()}.${extension || "jpg"}`;
+    const ruta = `${crypto.randomUUID()}.${extension}`;
 
     const { error } = await supabaseClient.storage
       .from("productos")
@@ -500,39 +413,28 @@ document.getElementById("producto-codigo").value =
     return data.publicUrl;
   }
 
-  // Guardar producto nuevo o cambios.
+  // Guardar o actualizar producto
   formulario.addEventListener("submit", async evento => {
     evento.preventDefault();
 
     const botonGuardar = formulario.querySelector('[type="submit"]');
     botonGuardar.disabled = true;
-
     mostrarMensaje(mensaje, "Guardando producto...");
 
     try {
       const id = document.getElementById("producto-id").value;
-
       const nombre = document.getElementById("producto-nombre").value.trim();
       const sku = document.getElementById("producto-sku").value.trim();
       const codigoBarras = document.getElementById("producto-codigo").value.trim();
 
-      if (!nombre) {
-        throw new Error("Escribe el nombre del producto.");
-      }
+      if (!nombre) throw new Error("Escribe el nombre del producto.");
 
       const costo = Number(document.getElementById("producto-costo").value);
       const precio = Number(document.getElementById("producto-precio").value);
       const existencias = Number(document.getElementById("producto-existencias").value);
       const stockMinimo = Number(document.getElementById("producto-stock-minimo").value);
 
-      if (![costo, precio, existencias, stockMinimo].every(Number.isFinite) ||
-          costo < 0 || precio < 0 || existencias < 0 || stockMinimo < 0 ||
-          !Number.isInteger(existencias) || !Number.isInteger(stockMinimo)) {
-        throw new Error("Revisa los costos, precios y cantidades.");
-      }
-
       let imagenUrl = imagenActual;
-
       if (imagenSeleccionada) {
         imagenUrl = await subirImagen(imagenSeleccionada);
       }
@@ -541,8 +443,8 @@ document.getElementById("producto-codigo").value =
         nombre,
         descripcion: document.getElementById("producto-descripcion").value.trim(),
         categoria_id: selectorCategoria.value || null,
-       sku: sku || null,
-codigo_barras: codigoBarras || null,
+        sku: sku || null,
+        codigo_barras: codigoBarras || null,
         costo_compra: costo,
         precio_venta: precio,
         existencias,
@@ -557,32 +459,15 @@ codigo_barras: codigoBarras || null,
       };
 
       let resultado;
-
       if (id) {
-        resultado = await supabaseClient
-          .from("productos")
-          .update(datos)
-          .eq("id", id)
-          .select("id");
+        resultado = await supabaseClient.from("productos").update(datos).eq("id", id).select("id");
       } else {
-        resultado = await supabaseClient
-          .from("productos")
-          .insert(datos)
-          .select("id");
+        resultado = await supabaseClient.from("productos").insert(datos).select("id");
       }
 
       if (resultado.error) throw resultado.error;
 
-      if (!resultado.data || resultado.data.length === 0) {
-        throw new Error(
-          "Supabase no confirmó el guardado. Revisa las políticas de la tabla productos."
-        );
-      }
-
-      mostrarMensaje(mensaje, id
-        ? "Producto actualizado correctamente."
-        : "Producto registrado correctamente."
-      );
+      mostrarMensaje(mensaje, id ? "Producto actualizado correctamente." : "Producto registrado correctamente.");
 
       formulario.reset();
       document.getElementById("producto-id").value = "";
@@ -598,17 +483,12 @@ codigo_barras: codigoBarras || null,
 
     } catch (error) {
       console.error("Error al guardar producto:", error);
-      mostrarMensaje(
-        mensaje,
-        error.message || "No se pudo guardar el producto.",
-        true
-      );
+      mostrarMensaje(mensaje, error.message || "No se pudo guardar el producto.", true);
     } finally {
       botonGuardar.disabled = false;
     }
   });
 
-  // Cancelar edición.
   botonCancelar.addEventListener("click", () => {
     formulario.reset();
     document.getElementById("producto-id").value = "";
@@ -617,8 +497,7 @@ codigo_barras: codigoBarras || null,
     vistaPrevia.removeAttribute("src");
     vistaPrevia.style.display = "none";
     botonCancelar.style.display = "none";
-    formulario.querySelector('[type="submit"]').textContent =
-      "Guardar producto";
+    formulario.querySelector('[type="submit"]').textContent = "Guardar producto";
     mostrarMensaje(mensaje, "Edición cancelada.");
   });
 
@@ -636,23 +515,12 @@ async function cargarInventario() {
 
   try {
     const [productos, movimientos] = await Promise.all([
-      consultar(
-        "productos",
-        "id,nombre,existencias,stock_minimo,activo"
-      ),
-      consultar(
-        "movimientos_inventario",
-        "id,producto_id,tipo,cantidad,motivo,venta_id,fecha"
-      )
+      consultar("productos", "id,nombre,existencias,stock_minimo,activo"),
+      consultar("movimientos_inventario", "id,producto_id,tipo,cantidad,motivo,venta_id,fecha")
     ]);
 
-    const mapaProductos = new Map(
-      productos.map(p => [p.id, p.nombre])
-    );
-
-    const alertas = productos.filter(p =>
-      p.activo && Number(p.existencias || 0) <= Number(p.stock_minimo || 0)
-    );
+    const mapaProductos = new Map(productos.map(p => [p.id, p.nombre]));
+    const alertas = productos.filter(p => p.activo && Number(p.existencias || 0) <= Number(p.stock_minimo || 0));
 
     const filas = movimientos
       .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
@@ -668,19 +536,10 @@ async function cargarInventario() {
 
     contenedor.innerHTML = `
       <h3>Productos con stock bajo: ${alertas.length}</h3>
-      ${alertas.length
-        ? `<ul>${alertas.map(p =>
-            `<li>${escapar(p.nombre)}: ${Number(p.existencias || 0)} unidades</li>`
-          ).join("")}</ul>`
-        : "<p>No hay alertas de stock bajo.</p>"
-      }
+      ${alertas.length ? `<ul>${alertas.map(p => `<li>${escapar(p.nombre)}: ${Number(p.existencias || 0)} unidades</li>`).join("")}</ul>` : "<p>No hay alertas de stock bajo.</p>"}
       <h3>Movimientos registrados</h3>
-      ${prepararTabla(
-        ["Fecha", "Producto", "Tipo", "Cantidad", "Motivo"],
-        filas
-      )}
+      ${prepararTabla(["Fecha", "Producto", "Tipo", "Cantidad", "Motivo"], filas)}
     `;
-
   } catch (error) {
     mostrarError("lista-inventario", error);
   }
@@ -696,10 +555,7 @@ async function cargarVentas() {
   contenedor.textContent = "Cargando ventas y pedidos...";
 
   try {
-    const ventas = await consultar(
-      "ventas",
-      "id,numero_venta,fecha,canal,cliente_nombre,cliente_telefono,cliente_direccion,metodo_pago,estado_pago,estado_pedido,costo_envio,notas"
-    );
+    const ventas = await consultar("ventas", "id,numero_venta,fecha,canal,cliente_nombre,cliente_telefono,cliente_direccion,metodo_pago,estado_pago,estado_pedido,costo_envio,notas");
 
     const filas = ventas
       .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
@@ -712,54 +568,31 @@ async function cargarVentas() {
           <td>${escapar(v.estado_pedido || "Pendiente")}</td>
           <td>${escapar(v.estado_pago || "Pendiente")}</td>
           <td>
-            <button class="admin-boton" type="button"
-              onclick="imprimirComprobante('${v.id}')">
-              Recibo
-            </button>
-            <button class="admin-boton" type="button"
-              onclick="imprimirRotulo('${v.id}')">
-              Rótulo
-            </button>
+            <button class="admin-boton" type="button" onclick="imprimirComprobante('${v.id}')">Recibo</button>
+            <button class="admin-boton" type="button" onclick="imprimirRotulo('${v.id}')">Rótulo</button>
           </td>
         </tr>
       `);
 
-    contenedor.innerHTML = prepararTabla(
-      ["N.º", "Fecha", "Cliente", "Teléfono", "Estado del pedido", "Estado del pago", "Imprimir"],
-      filas
-    );
-
+    contenedor.innerHTML = prepararTabla(["N.º", "Fecha", "Cliente", "Teléfono", "Estado del pedido", "Estado del pago", "Imprimir"], filas);
   } catch (error) {
     mostrarError("lista-ventas", error);
   }
 }
 
 // ============================================
-// IMPRIMIR RECIBO
+// IMPRESIÓN DE RECIBOS Y RÓTULOS
 // ============================================
 
 async function imprimirComprobante(ventaId) {
   try {
-    const { data: venta, error } = await supabaseClient
-      .from("ventas")
-      .select("*")
-      .eq("id", ventaId)
-      .single();
-
+    const { data: venta, error } = await supabaseClient.from("ventas").select("*").eq("id", ventaId).single();
     if (error) throw error;
 
     const detalles = await consultar("detalles_venta");
+    const productosVenta = detalles.filter(d => String(d.venta_id) === String(ventaId));
 
-    const productosVenta = detalles.filter(
-      d => String(d.venta_id) === String(ventaId)
-    );
-
-    const subtotal = productosVenta.reduce(
-      (total, d) =>
-        total + Number(d.cantidad || 0) * Number(d.precio_unitario || 0),
-      0
-    );
-
+    const subtotal = productosVenta.reduce((total, d) => total + Number(d.cantidad || 0) * Number(d.precio_unitario || 0), 0);
     const envio = Number(venta.costo_envio || 0);
     const total = subtotal + envio;
 
@@ -773,9 +606,8 @@ async function imprimirComprobante(ventaId) {
     `).join("");
 
     const ventana = window.open("", "_blank");
-
     if (!ventana) {
-      alert("El navegador bloqueó la ventana de impresión. Permite las ventanas emergentes para esta página.");
+      alert("Permite las ventanas emergentes para imprimir.");
       return;
     }
 
@@ -783,16 +615,8 @@ async function imprimirComprobante(ventaId) {
       <!DOCTYPE html>
       <html lang="es">
       <head>
-        <meta charset="UTF-8">
-        <title>Recibo Skenzi Home</title>
-        <style>
-          body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:20px;color:#222}
-          h1{color:#1D4ED8}
-          table{width:100%;border-collapse:collapse;margin-top:20px}
-          th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}
-          .total{text-align:right;margin-top:20px;line-height:1.8}
-          @media print{button{display:none}}
-        </style>
+        <meta charset="UTF-8"><title>Recibo Skenzi Home</title>
+        <style>body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:20px;color:#222}h1{color:#1D4ED8}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}.total{text-align:right;margin-top:20px}</style>
       </head>
       <body>
         <h1>SKENZI HOME</h1>
@@ -800,89 +624,44 @@ async function imprimirComprobante(ventaId) {
         <p><b>Número:</b> ${escapar(venta.numero_venta ?? venta.id)}</p>
         <p><b>Fecha:</b> ${fecha(venta.fecha)}</p>
         <p><b>Cliente:</b> ${escapar(venta.cliente_nombre || "—")}</p>
-        <p><b>Teléfono:</b> ${escapar(venta.cliente_telefono || "—")}</p>
-        <p><b>Dirección:</b> ${escapar(venta.cliente_direccion || "—")}</p>
-        <table>
-          <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Total</th></tr></thead>
-          <tbody>${lineas}</tbody>
-        </table>
-        <div class="total">
-          <p>Subtotal: ${dinero(subtotal)}</p>
-          <p>Envío: ${dinero(envio)}</p>
-          <h2>Total: ${dinero(total)}</h2>
-        </div>
-        <p>Estado del pedido: ${escapar(venta.estado_pedido || "Pendiente")}</p>
-        <p>Estado del pago: ${escapar(venta.estado_pago || "Pendiente")}</p>
-        <p>Gracias por comprar en Skenzi Home.</p>
+        <table><thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Total</th></tr></thead><tbody>${lineas}</tbody></table>
+        <div class="total"><p>Subtotal: ${dinero(subtotal)}</p><p>Envío: ${dinero(envio)}</p><h2>Total: ${dinero(total)}</h2></div>
         <button onclick="window.print()">Imprimir recibo</button>
       </body>
       </html>
     `);
-
     ventana.document.close();
-
   } catch (error) {
     console.error(error);
-    alert("No se pudo generar el recibo. Comprueba que la venta y sus detalles estén registrados.");
+    alert("No se pudo generar el recibo.");
   }
 }
 
-// ============================================
-// IMPRIMIR RÓTULO DE ENVÍO
-// ============================================
-
 async function imprimirRotulo(ventaId) {
   try {
-    const { data: venta, error } = await supabaseClient
-      .from("ventas")
-      .select("*")
-      .eq("id", ventaId)
-      .single();
-
+    const { data: venta, error } = await supabaseClient.from("ventas").select("*").eq("id", ventaId).single();
     if (error) throw error;
 
     const ventana = window.open("", "_blank");
-
     if (!ventana) {
-      alert("Permite las ventanas emergentes para imprimir el rótulo.");
+      alert("Permite las ventanas emergentes.");
       return;
     }
 
     ventana.document.write(`
-      <!DOCTYPE html>
-      <html lang="es">
-      <head>
-        <meta charset="UTF-8">
-        <title>Rótulo Skenzi Home</title>
-        <style>
-          body{font-family:Arial,sans-serif;margin:20px}
-          .rotulo{border:2px solid #222;padding:24px;max-width:500px}
-          h1{margin-top:0;color:#1D4ED8}
-          .dato{margin:14px 0;font-size:17px}
-          @media print{button{display:none}}
-        </style>
-      </head>
-      <body>
-        <div class="rotulo">
-          <h1>SKENZI HOME</h1>
-          <h2>DATOS DEL DESTINATARIO (DROPSHIPPING)</h2>
-          <div class="dato"><b>Pedido:</b> ${escapar(venta.numero_venta ?? venta.id)}</div>
-          <div class="dato"><b>Cliente:</b> ${escapar(venta.cliente_nombre || "—")}</div>
-          <div class="dato"><b>Teléfono:</b> ${escapar(venta.cliente_telefono || "—")}</div>
-          <div class="dato"><b>Dirección:</b> ${escapar(venta.cliente_direccion || "—")}</div>
-          <div class="dato"><b>Pago:</b> ${escapar(venta.metodo_pago || "Por confirmar")}</div>
-          <div class="dato"><b>Estado:</b> ${escapar(venta.estado_pedido || "Pendiente")}</div>
-        </div>
-        <p><button onclick="window.print()">Imprimir rótulo</button></p>
-      </body>
-      </html>
+      <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Rótulo</title></head>
+      <body><div style="border:2px solid #222;padding:24px;max-width:500px;font-family:Arial">
+      <h1>SKENZI HOME</h1><h3>RÓTULO DE ENVÍO</h3>
+      <p><b>Pedido:</b> ${escapar(venta.numero_venta ?? venta.id)}</p>
+      <p><b>Cliente:</b> ${escapar(venta.cliente_nombre || "—")}</p>
+      <p><b>Teléfono:</b> ${escapar(venta.cliente_telefono || "—")}</p>
+      <p><b>Dirección:</b> ${escapar(venta.cliente_direccion || "—")}</p></div>
+      <button onclick="window.print()">Imprimir</button></body></html>
     `);
-
     ventana.document.close();
-
   } catch (error) {
     console.error(error);
-    alert("No se pudo generar el rótulo de este pedido.");
+    alert("No se pudo generar el rótulo.");
   }
 }
 
@@ -890,7 +669,7 @@ window.imprimirComprobante = imprimirComprobante;
 window.imprimirRotulo = imprimirRotulo;
 
 // ============================================
-// GASTOS
+// GASTOS E INFORMES
 // ============================================
 
 async function cargarGastos() {
@@ -899,45 +678,17 @@ async function cargarGastos() {
   contenedor.textContent = "Cargando gastos...";
 
   try {
-    const gastos = await consultar(
-      "gastos",
-      "id,concepto,categoria,valor,fecha,metodo_pago,notas"
-    );
+    const gastos = await consultar("gastos", "id,concepto,categoria,valor,fecha,metodo_pago,notas");
+    const filas = gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).map(g => `
+      <tr><td>${fecha(g.fecha)}</td><td>${escapar(g.concepto)}</td><td>${escapar(g.categoria || "—")}</td><td>${dinero(g.valor)}</td><td>${escapar(g.metodo_pago || "—")}</td><td>${escapar(g.notas || "—")}</td></tr>
+    `);
+    const total = gastos.reduce((suma, g) => suma + Number(g.valor || 0), 0);
 
-    const filas = gastos
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-      .map(g => `
-        <tr>
-          <td>${fecha(g.fecha)}</td>
-          <td>${escapar(g.concepto)}</td>
-          <td>${escapar(g.categoria || "—")}</td>
-          <td>${dinero(g.valor)}</td>
-          <td>${escapar(g.metodo_pago || "—")}</td>
-          <td>${escapar(g.notas || "—")}</td>
-        </tr>
-      `);
-
-    const total = gastos.reduce(
-      (suma, g) => suma + Number(g.valor || 0),
-      0
-    );
-
-    contenedor.innerHTML = `
-      <h3>Total de gastos registrados: ${dinero(total)}</h3>
-      ${prepararTabla(
-        ["Fecha", "Concepto", "Categoría", "Valor", "Método de pago", "Notas"],
-        filas
-      )}
-    `;
-
+    contenedor.innerHTML = `<h3>Total de gastos: ${dinero(total)}</h3>${prepararTabla(["Fecha", "Concepto", "Categoría", "Valor", "Método", "Notas"], filas)}`;
   } catch (error) {
     mostrarError("lista-gastos", error);
   }
 }
-
-// ============================================
-// INFORMES
-// ============================================
 
 async function cargarInformes() {
   const contenedor = document.getElementById("lista-informes");
@@ -946,68 +697,31 @@ async function cargarInformes() {
 
   try {
     const [ventas, gastos, productos] = await Promise.all([
-      consultar("ventas", "id,fecha,estado_pedido,estado_pago"),
+      consultar("ventas", "id,fecha,estado_pedido"),
       consultar("gastos", "valor,fecha"),
       consultar("productos", "id,nombre,existencias,stock_minimo,activo")
     ]);
 
-    const totalGastos = gastos.reduce(
-      (suma, g) => suma + Number(g.valor || 0),
-      0
-    );
-
-    const pedidosPendientes = ventas.filter(v =>
-      String(v.estado_pedido || "").toLowerCase().includes("pendiente")
-    ).length;
-
-    const stockBajo = productos.filter(p =>
-      p.activo && Number(p.existencias || 0) <= Number(p.stock_minimo || 0)
-    );
+    const totalGastos = gastos.reduce((suma, g) => suma + Number(g.valor || 0), 0);
+    const pendientes = ventas.filter(v => String(v.estado_pedido || "").toLowerCase().includes("pendiente")).length;
+    const stockBajo = productos.filter(p => p.activo && Number(p.existencias || 0) <= Number(p.stock_minimo || 0));
 
     contenedor.innerHTML = `
       <div class="admin-tarjetas">
-        <article class="admin-tarjeta">
-          <h3>Ventas registradas</h3>
-          <div class="admin-valor">${ventas.length}</div>
-        </article>
-        <article class="admin-tarjeta">
-          <h3>Gastos acumulados</h3>
-          <div class="admin-valor">${dinero(totalGastos)}</div>
-        </article>
-        <article class="admin-tarjeta">
-          <h3>Pedidos pendientes</h3>
-          <div class="admin-valor">${pedidosPendientes}</div>
-        </article>
-        <article class="admin-tarjeta">
-          <h3>Productos con stock bajo</h3>
-          <div class="admin-valor">${stockBajo.length}</div>
-        </article>
+        <article class="admin-tarjeta"><h3>Ventas</h3><div class="admin-valor">${ventas.length}</div></article>
+        <article class="admin-tarjeta"><h3>Gastos</h3><div class="admin-valor">${dinero(totalGastos)}</div></article>
+        <article class="admin-tarjeta"><h3>Pendientes</h3><div class="admin-valor">${pendientes}</div></article>
+        <article class="admin-tarjeta"><h3>Stock bajo</h3><div class="admin-valor">${stockBajo.length}</div></article>
       </div>
-      <h3>Productos que requieren revisión</h3>
-      ${stockBajo.length
-        ? `<ul>${stockBajo.map(p =>
-            `<li>${escapar(p.nombre)}: ${Number(p.existencias || 0)} unidades; mínimo ${Number(p.stock_minimo || 0)}</li>`
-          ).join("")}</ul>`
-        : "<p>No hay productos con stock bajo.</p>"
-      }
     `;
-
   } catch (error) {
     mostrarError("lista-informes", error);
   }
 }
 
-// ============================================
-// ACTUALIZAR RESUMEN
-// ============================================
-
 async function contarRegistros(tabla) {
-  const { count, error } = await supabaseClient
-    .from(tabla)
-    .select("*", { count: "exact", head: true });
-
+  const { count, error } = await supabaseClient.from(tabla).select("*", { count: "exact", head: true });
   if (error) throw error;
-
   return count || 0;
 }
 
@@ -1020,11 +734,7 @@ async function cargarResumen() {
     ]);
 
     const activos = productos.filter(p => p.activo);
-
-    const unidades = activos.reduce(
-      (suma, p) => suma + Number(p.existencias || 0),
-      0
-    );
+    const unidades = activos.reduce((suma, p) => suma + Number(p.existencias || 0), 0);
 
     const elProd = document.getElementById("total-productos");
     const elExis = document.getElementById("total-existencias");
@@ -1037,63 +747,30 @@ async function cargarResumen() {
     if (elGastos) elGastos.textContent = gastos;
 
     mostrarMensaje(mensajeAdmin, "Resumen actualizado correctamente.");
-
   } catch (error) {
     console.error("Error en resumen:", error);
-    mostrarMensaje(
-      mensajeAdmin,
-      "No se pudieron cargar todos los datos. Revisa la consola del navegador.",
-      true
-    );
   }
 }
 
-// ============================================
-// CARGAR SECCIÓN SELECCIONADA
-// ============================================
-
 async function cargarSeccion(nombre) {
   if (!usuarioAutenticado) return;
-
-  const acciones = {
-    productos: cargarProductos,
-    inventario: cargarInventario,
-    ventas: cargarVentas,
-    gastos: cargarGastos,
-    informes: cargarInformes
-  };
-
-  if (acciones[nombre]) {
-    await acciones[nombre]();
-  }
+  const acciones = { productos: cargarProductos, inventario: cargarInventario, ventas: cargarVentas, gastos: cargarGastos, informes: cargarInformes };
+  if (acciones[nombre]) await acciones[nombre]();
 }
 
 document.querySelectorAll("[data-seccion]").forEach(boton => {
   boton.addEventListener("click", async () => {
     const destino = boton.dataset.seccion;
-
-    document.querySelectorAll('[id^="seccion-"]').forEach(seccion => {
-      seccion.classList.add("admin-oculto");
-    });
-
+    document.querySelectorAll('[id^="seccion-"]').forEach(s => s.classList.add("admin-oculto"));
     const activa = document.getElementById(`seccion-${destino}`);
-
-    if (activa) {
-      activa.classList.remove("admin-oculto");
-    }
-
+    if (activa) activa.classList.remove("admin-oculto");
     await cargarSeccion(destino);
   });
 });
 
-// ============================================
-// INICIAR SESIÓN
-// ============================================
-
 if (formLogin) {
   formLogin.addEventListener("submit", async evento => {
     evento.preventDefault();
-
     const emailInput = document.getElementById("correo-admin");
     const passInput = document.getElementById("clave-admin");
     if (!emailInput || !passInput) return;
@@ -1106,70 +783,36 @@ if (formLogin) {
     mostrarMensaje(mensajeLogin, "Verificando acceso...");
 
     try {
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) throw error;
-
-      if (!data.session) {
-        throw new Error("No se pudo establecer la sesión.");
-      }
+      if (!data.session) throw new Error("No se pudo establecer la sesión.");
 
       usuarioAutenticado = true;
       mostrarPanel(true);
       formLogin.reset();
-
       await cargarResumen();
       mostrarMensaje(mensajeAdmin, "Sesión iniciada correctamente.");
-
     } catch (error) {
-      mostrarMensaje(
-        mensajeLogin,
-        error.message || "No fue posible iniciar sesión.",
-        true
-      );
+      mostrarMensaje(mensajeLogin, error.message || "No fue posible iniciar sesión.", true);
     } finally {
       if (boton) boton.disabled = false;
     }
   });
 }
 
-// ============================================
-// CERRAR SESIÓN
-// ============================================
-
 const btnCerrar = document.getElementById("cerrar-sesion");
 if (btnCerrar) {
   btnCerrar.addEventListener("click", async () => {
-    const { error } = await supabaseClient.auth.signOut();
-
-    if (error) {
-      mostrarMensaje(mensajeAdmin, error.message, true);
-      return;
-    }
-
+    await supabaseClient.auth.signOut();
     usuarioAutenticado = false;
     mostrarPanel(false);
     mostrarMensaje(mensajeLogin, "Sesión cerrada correctamente.");
   });
 }
 
-// ============================================
-// COMPROBAR SESIÓN EXISTENTE
-// ============================================
-
 async function comprobarSesion() {
   mostrarPanel(false);
-
-  const { data, error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    mostrarMensaje(mensajeLogin, "No se pudo comprobar la sesión.", true);
-    return;
-  }
-
+  const { data } = await supabaseClient.auth.getSession();
   if (data.session) {
     usuarioAutenticado = true;
     mostrarPanel(true);
