@@ -7,7 +7,7 @@
 
 /* 1. CONFIGURACIÓN Y SUPABASE */
 
-const NUMERO_WHATSAPP = ""; // Configura aquí tu número comercial (ej: 573101234567).
+const NUMERO_WHATSAPP = ""; //  (3175001079).
 
 const SUPABASE_URL = "https://xjqoforlmxmpykjynlsm.supabase.co";
 const SUPABASE_KEY = "sb_publishable_ovZCy27ft6esmpYC2PSLSQ_AOpFH0Zv";
