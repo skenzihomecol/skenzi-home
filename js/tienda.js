@@ -5,9 +5,17 @@
    Catálogo, categorías, ofertas, búsqueda y carrito
    ===================================================== */
 
-/* 1. CONFIGURACIÓN */
+/* 1. CONFIGURACIÓN Y SUPABASE */
 
-const NUMERO_WHATSAPP = ""; // Configura aquí tu número comercial.
+const NUMERO_WHATSAPP = ""; // Configura aquí tu número comercial (ej: 573101234567).
+
+const SUPABASE_URL = "https://xjqoforlmxmpykjynlsm.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ovZCy27ft6esmpYC2PSLSQ_AOpFH0Zv";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 const CATEGORIAS = [
     { id: "hogar", nombre: "Hogar", icono: "🏠" },
@@ -18,13 +26,8 @@ const CATEGORIAS = [
     { id: "belleza", nombre: "Belleza", icono: "💄" }
 ];
 
-/*
-  PRODUCTOS DE DEMOSTRACIÓN.
-  Los precios e imágenes son ilustrativos.
-  No son ofertas comerciales reales.
-*/
-
-const PRODUCTOS = [
+/* PRODUCTOS INICIALES (DEMOSTRACIÓN) */
+let PRODUCTOS = [
     {
         id: "demo-hogar-1",
         nombre: "Organizador para el hogar (DEMO)",
@@ -122,12 +125,14 @@ const leerCarrito = () => {
         const datos = JSON.parse(
             localStorage.getItem("skenzi_carrito") || "[]"
         );
-
         return Array.isArray(datos) ? datos : [];
     } catch {
         return [];
     }
 };
+
+// Alias para evitar errores si otra función llama a obtenerCarrito
+const obtenerCarrito = leerCarrito;
 
 const guardarCarrito = productos => {
     localStorage.setItem(
@@ -229,6 +234,7 @@ function obtenerDescuento(producto) {
 
     return "";
 }
+
 /* ==========================================================
    3. TARJETAS DE PRODUCTOS
    ========================================================== */
@@ -239,16 +245,16 @@ function tarjetaProducto(producto) {
         : "Precio por confirmar";
 
     const oferta = producto.oferta
-        ? '<span class="etiqueta-oferta">OFERTA DEMO</span>'
+        ? '<span class="etiqueta-oferta">OFERTA</span>'
         : "";
 
-    const esDemo = producto.id.startsWith("demo-");
+    const esDemo = String(producto.id).startsWith("demo-");
 
     const avisoDemo = esDemo
-        ? '<p class="estado"><strong>DEMOSTRACIÓN:</strong> precio e imagen ilustrativos; no es una oferta real.</p>'
+        ? '<p class="estado"><strong>DEMOSTRACIÓN:</strong> precio e imagen ilustrativos.</p>'
         : "";
 
-    const boton = productoTienePrecio(producto) && !esDemo
+    const boton = productoTienePrecio(producto)
         ? `
             <button type="button" data-agregar="${escapar(producto.id)}">
                 Agregar al carrito
@@ -256,7 +262,7 @@ function tarjetaProducto(producto) {
         `
         : `
             <button type="button" data-consultar="${escapar(producto.id)}">
-                ${esDemo ? "Producto de demostración" : "Consultar producto"}
+                Consultar producto
             </button>
         `;
 
@@ -290,7 +296,7 @@ function tarjetaProducto(producto) {
     `;
 }
 
-function mostrarProductos(lista, idContenedor = "productos") {
+function mostrarProductos(lista, idContenedor = "galeria-productos") {
     const contenedor = document.getElementById(idContenedor);
 
     if (!contenedor) return;
@@ -330,10 +336,7 @@ function mostrarOfertaDelDia() {
         contenedor.innerHTML = `
             <div class="vacio">
                 <p><strong>Oferta del día</strong></p>
-                <p>
-                    Estamos preparando nuestras ofertas especiales.
-                    Pronto encontrarás aquí un producto destacado.
-                </p>
+                <p>Estamos preparando nuestras ofertas especiales.</p>
             </div>
         `;
         return;
@@ -347,28 +350,17 @@ function mostrarOfertaDelDia() {
 
             <div class="producto-cuerpo">
                 <h3>${escapar(destacado.nombre)}</h3>
-
                 ${obtenerPrecioAnterior(destacado)}
-
                 <p class="precio-oferta">
                     ${FORMATO_COP.format(destacado.precio)}
                     ${obtenerDescuento(destacado)}
                 </p>
-
                 <p class="estado">
-                    Disponibilidad:
-                    ${escapar(destacado.disponible || "Por confirmar")}
+                    Disponibilidad: ${escapar(destacado.disponible || "Por confirmar")}
                 </p>
-
-                <p class="estado">
-                    <strong>DEMOSTRACIÓN:</strong>
-                    precio ilustrativo; no publicar como oferta real.
-                </p>
-
                 <div class="acciones-producto">
-                    <button type="button"
-                        data-consultar="${escapar(destacado.id)}">
-                        Ver ejemplo
+                    <button type="button" data-consultar="${escapar(destacado.id)}">
+                        Consultar
                     </button>
                 </div>
             </div>
@@ -388,11 +380,7 @@ function mostrarCarruselOfertas() {
     );
 
     if (!ofertas.length) {
-        contenedor.innerHTML = `
-            <div class="vacio">
-                Aún no hay productos en oferta.
-            </div>
-        `;
+        contenedor.innerHTML = `<div class="vacio">Aún no hay productos en oferta.</div>`;
         return;
     }
 
@@ -434,7 +422,6 @@ function configurarMenu() {
 
     boton.addEventListener("click", evento => {
         evento.stopPropagation();
-
         const abierto = menu.classList.toggle("abierto");
         boton.setAttribute("aria-expanded", String(abierto));
     });
@@ -453,6 +440,8 @@ function configurarMenu() {
         }
     });
 }
+
+
 /* ==========================================================
    6. BÚSQUEDA DE PRODUCTOS
    ========================================================== */
@@ -472,12 +461,10 @@ function configurarBusqueda() {
             if (!producto.activo) return false;
 
             const nombre = (producto.nombre || "").toLowerCase();
-            const categoria = (producto.categoria || "").toLowerCase();
             const descripcion = (producto.descripcion || "").toLowerCase();
 
             return (
                 nombre.includes(texto) ||
-                categoria.includes(texto) ||
                 descripcion.includes(texto)
             );
         });
@@ -485,7 +472,6 @@ function configurarBusqueda() {
         mostrarProductos(resultados, "galeria-productos");
 
         const titulo = document.getElementById("titulo-productos");
-
         if (titulo) {
             titulo.textContent = texto
                 ? `Resultados para: ${texto}`
@@ -505,17 +491,10 @@ function configurarBusqueda() {
    ========================================================== */
 
 function agregarAlCarrito(idProducto) {
-    const producto = PRODUCTOS.find(item => item.id === idProducto);
+    const producto = PRODUCTOS.find(item => String(item.id) === String(idProducto));
 
     if (!producto) {
         mostrarMensaje("No encontramos este producto.");
-        return;
-    }
-
-    if (producto.id.startsWith("demo-")) {
-        mostrarMensaje(
-            "Este es un producto de demostración. Debes configurar tus productos reales antes de vender."
-        );
         return;
     }
 
@@ -529,8 +508,8 @@ function agregarAlCarrito(idProducto) {
         return;
     }
 
-    const carrito =leerCarrito();
-    const existente = carrito.find(item => item.id === idProducto);
+    const carrito = leerCarrito();
+    const existente = carrito.find(item => String(item.id) === String(idProducto));
 
     if (existente) {
         existente.cantidad += 1;
@@ -543,12 +522,11 @@ function agregarAlCarrito(idProducto) {
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
-
     mostrarMensaje("Producto agregado al carrito.");
 }
 
 function quitarDelCarrito(idProducto) {
-    const carrito = obtenerCarrito().filter(item => item.id !== idProducto);
+    const carrito = leerCarrito().filter(item => String(item.id) !== String(idProducto));
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
@@ -556,8 +534,8 @@ function quitarDelCarrito(idProducto) {
 }
 
 function cambiarCantidad(idProducto, cantidad) {
-    const carrito = obtenerCarrito();
-    const item = carrito.find(producto => producto.id === idProducto);
+    const carrito = leerCarrito();
+    const item = carrito.find(producto => String(producto.id) === String(idProducto));
 
     if (!item) return;
 
@@ -581,7 +559,7 @@ function mostrarCarrito() {
 
     if (!contenedor) return;
 
-    const carrito = obtenerCarrito();
+    const carrito = leerCarrito();
 
     if (!carrito.length) {
         contenedor.innerHTML = `
@@ -601,7 +579,7 @@ function mostrarCarrito() {
     let total = 0;
 
     contenedor.innerHTML = carrito.map(item => {
-        const producto = PRODUCTOS.find(p => p.id === item.id);
+        const producto = PRODUCTOS.find(p => String(p.id) === String(item.id));
 
         if (!producto || !productoTienePrecio(producto)) {
             return "";
@@ -619,10 +597,7 @@ function mostrarCarrito() {
                 <div class="producto-cuerpo">
                     <h3>${escapar(producto.nombre)}</h3>
 
-                    <p>
-                        Precio:
-                        ${FORMATO_COP.format(producto.precio)}
-                    </p>
+                    <p>Precio: ${FORMATO_COP.format(producto.precio)}</p>
 
                     <label>
                         Cantidad:
@@ -634,15 +609,9 @@ function mostrarCarrito() {
                         >
                     </label>
 
-                    <p>
-                        Subtotal:
-                        ${FORMATO_COP.format(subtotal)}
-                    </p>
+                    <p>Subtotal: ${FORMATO_COP.format(subtotal)}</p>
 
-                    <button
-                        type="button"
-                        data-quitar="${escapar(item.id)}"
-                    >
+                    <button type="button" data-quitar="${escapar(item.id)}">
                         Quitar
                     </button>
                 </div>
@@ -661,7 +630,7 @@ function mostrarCarrito() {
    ========================================================== */
 
 function consultarProducto(idProducto) {
-    const producto = PRODUCTOS.find(item => item.id === idProducto);
+    const producto = PRODUCTOS.find(item => String(item.id) === String(idProducto));
 
     if (!producto) {
         mostrarMensaje("No encontramos este producto.");
@@ -677,9 +646,7 @@ function consultarProducto(idProducto) {
     );
 
     if (!NUMERO_WHATSAPP) {
-        mostrarMensaje(
-            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
-        );
+        mostrarMensaje("Falta configurar el número de WhatsApp de Skenzi Home en tienda.js.");
         return;
     }
 
@@ -694,13 +661,11 @@ function consultarProducto(idProducto) {
 
 function enviarPedidoWhatsApp() {
     if (!NUMERO_WHATSAPP) {
-        mostrarMensaje(
-            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
-        );
+        mostrarMensaje("Falta configurar el número de WhatsApp de Skenzi Home en tienda.js.");
         return;
     }
 
-    const carrito = obtenerCarrito();
+    const carrito = leerCarrito();
 
     if (!carrito.length) {
         mostrarMensaje("Tu carrito está vacío.");
@@ -711,16 +676,9 @@ function enviarPedidoWhatsApp() {
     const lineas = [];
 
     for (const item of carrito) {
-        const producto = PRODUCTOS.find(p => p.id === item.id);
+        const producto = PRODUCTOS.find(p => String(p.id) === String(item.id));
 
         if (!producto || !productoTienePrecio(producto)) continue;
-
-        if (producto.id.startsWith("demo-")) {
-            mostrarMensaje(
-                "El carrito contiene productos de demostración. Configura tus productos reales antes de hacer un pedido."
-            );
-            return;
-        }
 
         const subtotal = producto.precio * item.cantidad;
         total += subtotal;
@@ -736,7 +694,7 @@ function enviarPedidoWhatsApp() {
     }
 
     const mensaje = encodeURIComponent(
-        `Hola, Skenzi Home. Quiero realizar el siguiente pedido:\n\n${lineas.join("\n")}\n\nTotal de productos: ${FORMATO_COP.format(total)}\n\nPor favor, confirmen disponibilidad, costo del domicilio y medios de pago.`
+        `Hola, Skenzi Home. Quiero realizar el siguiente pedido:\n\n${lineas.join("\n")}\n\nTotal: ${FORMATO_COP.format(total)}\n\nPor favor, confirmen disponibilidad, costo del domicilio y medios de pago.`
     );
 
     const numero = NUMERO_WHATSAPP.replace(/\D/g, "");
@@ -747,40 +705,33 @@ function enviarPedidoWhatsApp() {
         "noopener,noreferrer"
     );
 }
+
+
 /* ==========================================================
-   9. EVENTOS DE LA TIENDA
+   9. EVENTOS Y LISTENERS
    ========================================================== */
 
 document.addEventListener("click", evento => {
     const botonAgregar = evento.target.closest("[data-agregar]");
-
     if (botonAgregar) {
         agregarAlCarrito(botonAgregar.dataset.agregar);
         return;
     }
 
     const botonConsultar = evento.target.closest("[data-consultar]");
-
     if (botonConsultar) {
         consultarProducto(botonConsultar.dataset.consultar);
         return;
     }
 
     const botonQuitar = evento.target.closest("[data-quitar]");
-
     if (botonQuitar) {
         quitarDelCarrito(botonQuitar.dataset.quitar);
     }
 });
 
-
-/* ==========================================================
-   10. CAMBIOS DE CANTIDAD EN EL CARRITO
-   ========================================================== */
-
 document.addEventListener("change", evento => {
     const entradaCantidad = evento.target.closest("[data-cantidad]");
-
     if (entradaCantidad) {
         cambiarCantidad(
             entradaCantidad.dataset.cantidad,
@@ -789,28 +740,49 @@ document.addEventListener("change", evento => {
     }
 });
 
-
-/* ==========================================================
-   11. BOTÓN PARA REALIZAR EL PEDIDO
-   ========================================================== */
-
 function configurarBotonPedido() {
     const boton = document.getElementById("pedido-whatsapp");
-
     if (!boton) return;
-
     boton.addEventListener("click", enviarPedidoWhatsApp);
 }
 
 
 /* ==========================================================
-   12. INICIO DE LA TIENDA SKENZI HOME
+   10. INICIO Y CARGA DESDE SUPABASE
    ========================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     configurarMenu();
     configurarBusqueda();
     configurarBotonPedido();
+
+    try {
+        // Cargar productos reales desde Supabase
+        const { data: productosSupabase, error } = await supabaseClient
+            .from("productos")
+            .select("id, nombre, descripcion, precio_venta, existencias, activo, es_novedad, es_destacado, en_oferta, imagen_url, categoria_id")
+            .eq("activo", true);
+
+        if (!error && productosSupabase && productosSupabase.length > 0) {
+            // Mapear los datos de Supabase al formato que usa la tienda
+            PRODUCTOS = productosSupabase.map(p => ({
+                id: p.id,
+                nombre: p.nombre,
+                categoria: p.categoria_id,
+                precio: Number(p.precio_venta) || 0,
+                precioAnterior: 0,
+                disponible: Number(p.existencias) > 0 ? "Disponible" : "Agotado",
+                imagen: p.imagen_url || "",
+                descripcion: p.descripcion || "",
+                oferta: Boolean(p.en_oferta),
+                novedad: Boolean(p.es_novedad),
+                destacado: Boolean(p.es_destacado),
+                activo: Boolean(p.activo)
+            }));
+        }
+    } catch (err) {
+        console.warn("No se pudieron cargar productos de Supabase, usando demostración:", err);
+    }
 
     const categoriaActual = document.body.dataset.categoria;
     const paginaActual = document.body.dataset.pagina;
@@ -818,27 +790,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (categoriaActual) {
         const productosCategoria = PRODUCTOS.filter(producto =>
             producto.activo &&
-            producto.categoria === categoriaActual
+            (producto.categoria === categoriaActual || String(producto.categoria) === String(categoriaActual))
         );
-
         mostrarProductos(productosCategoria, "galeria-productos");
     } else if (paginaActual === "ofertas") {
-        const ofertas = PRODUCTOS.filter(producto =>
-            producto.activo && producto.oferta
-        );
-
+        const ofertas = PRODUCTOS.filter(producto => producto.activo && producto.oferta);
         mostrarProductos(ofertas, "galeria-productos");
     } else if (paginaActual === "novedades") {
-        const novedades = PRODUCTOS.filter(producto =>
-            producto.activo && producto.novedad
-        );
-
+        const novedades = PRODUCTOS.filter(producto => producto.activo && producto.novedad);
         mostrarProductos(novedades, "galeria-productos");
     } else {
-        const productosActivos = PRODUCTOS.filter(producto =>
-            producto.activo
-        );
-
+        const productosActivos = PRODUCTOS.filter(producto => producto.activo);
         mostrarProductos(productosActivos, "galeria-productos");
     }
 
