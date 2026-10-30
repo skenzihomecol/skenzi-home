@@ -456,7 +456,7 @@ function agregarAlCarrito(idProducto) {
 }
 
 function quitarDelCarrito(idProducto) {
-    const carrito = obtenerCarrito().filter(item => item.id !== idProducto);
+ const carrito = leerCarrito().filter(item => item.id !== idProducto);
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
@@ -464,7 +464,7 @@ function quitarDelCarrito(idProducto) {
 }
 
 function cambiarCantidad(idProducto, cantidad) {
-    const carrito = obtenerCarrito();
+  const carrito = leerCarrito().filter(item => item.id !== idProducto);
     const item = carrito.find(producto => producto.id === idProducto);
 
     if (!item) return;
@@ -489,7 +489,7 @@ function mostrarCarrito() {
 
     if (!contenedor) return;
 
-    const carrito = obtenerCarrito();
+   const carrito = leerCarrito().filter(item => item.id !== idProducto);
 
     if (!carrito.length) {
         contenedor.innerHTML = `
@@ -608,7 +608,7 @@ function enviarPedidoWhatsApp() {
         return;
     }
 
-    const carrito = obtenerCarrito();
+  const carrito = leerCarrito().filter(item => item.id !== idProducto);
 
     if (!carrito.length) {
         mostrarMensaje("Tu carrito está vacío.");
