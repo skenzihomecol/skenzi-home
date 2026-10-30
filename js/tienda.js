@@ -1,21 +1,13 @@
-"use strict";
+
 
 /* =====================================================
    SKENZI HOME — SISTEMA PRINCIPAL DE LA TIENDA
    Catálogo, categorías, ofertas, búsqueda y carrito
    ===================================================== */
 
-/* 1. CONFIGURACIÓN Y SUPABASE */
+/* 1. CONFIGURACIÓN */
 
-const NUMERO_WHATSAPP = ""; //  (3175001079).
-
-const SUPABASE_URL = "https://xjqoforlmxmpykjynlsm.supabase.co";
-const SUPABASE_KEY = "sb_publishable_ovZCy27ft6esmpYC2PSLSQ_AOpFH0Zv";
-
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const NUMERO_WHATSAPP = ""; // Configura aquí tu número comercial.
 
 const CATEGORIAS = [
     { id: "hogar", nombre: "Hogar", icono: "🏠" },
@@ -26,8 +18,13 @@ const CATEGORIAS = [
     { id: "belleza", nombre: "Belleza", icono: "💄" }
 ];
 
-/* PRODUCTOS INICIALES (DEMOSTRACIÓN) */
-let PRODUCTOS = [
+/*
+  PRODUCTOS DE DEMOSTRACIÓN.
+  Los precios e imágenes son ilustrativos.
+  No son ofertas comerciales reales.
+*/
+
+const PRODUCTOS = [
     {
         id: "demo-hogar-1",
         nombre: "Organizador para el hogar (DEMO)",
@@ -125,14 +122,12 @@ const leerCarrito = () => {
         const datos = JSON.parse(
             localStorage.getItem("skenzi_carrito") || "[]"
         );
+
         return Array.isArray(datos) ? datos : [];
     } catch {
         return [];
     }
 };
-
-// Alias para evitar errores si otra función llama a obtenerCarrito
-const obtenerCarrito = leerCarrito;
 
 const guardarCarrito = productos => {
     localStorage.setItem(
@@ -234,7 +229,6 @@ function obtenerDescuento(producto) {
 
     return "";
 }
-
 /* ==========================================================
    3. TARJETAS DE PRODUCTOS
    ========================================================== */
@@ -245,16 +239,16 @@ function tarjetaProducto(producto) {
         : "Precio por confirmar";
 
     const oferta = producto.oferta
-        ? '<span class="etiqueta-oferta">OFERTA</span>'
+        ? '<span class="etiqueta-oferta">OFERTA DEMO</span>'
         : "";
 
-    const esDemo = String(producto.id).startsWith("demo-");
+    const esDemo = producto.id.startsWith("demo-");
 
     const avisoDemo = esDemo
-        ? '<p class="estado"><strong>DEMOSTRACIÓN:</strong> precio e imagen ilustrativos.</p>'
+        ? '<p class="estado"><strong>DEMOSTRACIÓN:</strong> precio e imagen ilustrativos; no es una oferta real.</p>'
         : "";
 
-    const boton = productoTienePrecio(producto)
+    const boton = productoTienePrecio(producto) && !esDemo
         ? `
             <button type="button" data-agregar="${escapar(producto.id)}">
                 Agregar al carrito
@@ -262,7 +256,7 @@ function tarjetaProducto(producto) {
         `
         : `
             <button type="button" data-consultar="${escapar(producto.id)}">
-                Consultar producto
+                ${esDemo ? "Producto de demostración" : "Consultar producto"}
             </button>
         `;
 
@@ -296,7 +290,7 @@ function tarjetaProducto(producto) {
     `;
 }
 
-function mostrarProductos(lista, idContenedor = "galeria-productos") {
+function mostrarProductos(lista, idContenedor = "productos") {
     const contenedor = document.getElementById(idContenedor);
 
     if (!contenedor) return;
@@ -336,7 +330,10 @@ function mostrarOfertaDelDia() {
         contenedor.innerHTML = `
             <div class="vacio">
                 <p><strong>Oferta del día</strong></p>
-                <p>Estamos preparando nuestras ofertas especiales.</p>
+                <p>
+                    Estamos preparando nuestras ofertas especiales.
+                    Pronto encontrarás aquí un producto destacado.
+                </p>
             </div>
         `;
         return;
@@ -350,17 +347,28 @@ function mostrarOfertaDelDia() {
 
             <div class="producto-cuerpo">
                 <h3>${escapar(destacado.nombre)}</h3>
+
                 ${obtenerPrecioAnterior(destacado)}
+
                 <p class="precio-oferta">
                     ${FORMATO_COP.format(destacado.precio)}
                     ${obtenerDescuento(destacado)}
                 </p>
+
                 <p class="estado">
-                    Disponibilidad: ${escapar(destacado.disponible || "Por confirmar")}
+                    Disponibilidad:
+                    ${escapar(destacado.disponible || "Por confirmar")}
                 </p>
+
+                <p class="estado">
+                    <strong>DEMOSTRACIÓN:</strong>
+                    precio ilustrativo; no publicar como oferta real.
+                </p>
+
                 <div class="acciones-producto">
-                    <button type="button" data-consultar="${escapar(destacado.id)}">
-                        Consultar
+                    <button type="button"
+                        data-consultar="${escapar(destacado.id)}">
+                        Ver ejemplo
                     </button>
                 </div>
             </div>
@@ -380,7 +388,11 @@ function mostrarCarruselOfertas() {
     );
 
     if (!ofertas.length) {
-        contenedor.innerHTML = `<div class="vacio">Aún no hay productos en oferta.</div>`;
+        contenedor.innerHTML = `
+            <div class="vacio">
+                Aún no hay productos en oferta.
+            </div>
+        `;
         return;
     }
 
@@ -418,32 +430,23 @@ function configurarMenu() {
     const boton = document.querySelector("[data-boton-categorias]");
     const menu = document.querySelector(".menu-categorias");
 
-    if (!boton || !menu) {
-        console.error("No se encontró el botón o el menú de categorías.");
-        return;
-    }
+    if (!boton || !menu) return;
 
-    // Evitar que el menú quede oculto por una clase anterior.
-    menu.classList.remove("abierto");
-    boton.setAttribute("aria-expanded", "false");
-
-    boton.addEventListener("click", function (evento) {
-        evento.preventDefault();
+    boton.addEventListener("click", evento => {
         evento.stopPropagation();
 
         const abierto = menu.classList.toggle("abierto");
-
         boton.setAttribute("aria-expanded", String(abierto));
     });
 
-    document.addEventListener("click", function (evento) {
-        if (!menu.contains(evento.target) && !boton.contains(evento.target)) {
+    document.addEventListener("click", evento => {
+        if (!menu.contains(evento.target)) {
             menu.classList.remove("abierto");
             boton.setAttribute("aria-expanded", "false");
         }
     });
 
-    document.addEventListener("keydown", function (evento) {
+    document.addEventListener("keydown", evento => {
         if (evento.key === "Escape") {
             menu.classList.remove("abierto");
             boton.setAttribute("aria-expanded", "false");
@@ -469,10 +472,12 @@ function configurarBusqueda() {
             if (!producto.activo) return false;
 
             const nombre = (producto.nombre || "").toLowerCase();
+            const categoria = (producto.categoria || "").toLowerCase();
             const descripcion = (producto.descripcion || "").toLowerCase();
 
             return (
                 nombre.includes(texto) ||
+                categoria.includes(texto) ||
                 descripcion.includes(texto)
             );
         });
@@ -480,6 +485,7 @@ function configurarBusqueda() {
         mostrarProductos(resultados, "galeria-productos");
 
         const titulo = document.getElementById("titulo-productos");
+
         if (titulo) {
             titulo.textContent = texto
                 ? `Resultados para: ${texto}`
@@ -499,10 +505,17 @@ function configurarBusqueda() {
    ========================================================== */
 
 function agregarAlCarrito(idProducto) {
-    const producto = PRODUCTOS.find(item => String(item.id) === String(idProducto));
+    const producto = PRODUCTOS.find(item => item.id === idProducto);
 
     if (!producto) {
         mostrarMensaje("No encontramos este producto.");
+        return;
+    }
+
+    if (producto.id.startsWith("demo-")) {
+        mostrarMensaje(
+            "Este es un producto de demostración. Debes configurar tus productos reales antes de vender."
+        );
         return;
     }
 
@@ -516,8 +529,8 @@ function agregarAlCarrito(idProducto) {
         return;
     }
 
-    const carrito = leerCarrito();
-    const existente = carrito.find(item => String(item.id) === String(idProducto));
+    const carrito =leerCarrito();
+    const existente = carrito.find(item => item.id === idProducto);
 
     if (existente) {
         existente.cantidad += 1;
@@ -530,11 +543,12 @@ function agregarAlCarrito(idProducto) {
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
+
     mostrarMensaje("Producto agregado al carrito.");
 }
 
 function quitarDelCarrito(idProducto) {
-    const carrito = leerCarrito().filter(item => String(item.id) !== String(idProducto));
+    const carrito = obtenerCarrito().filter(item => item.id !== idProducto);
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
@@ -542,8 +556,8 @@ function quitarDelCarrito(idProducto) {
 }
 
 function cambiarCantidad(idProducto, cantidad) {
-    const carrito = leerCarrito();
-    const item = carrito.find(producto => String(producto.id) === String(idProducto));
+    const carrito = obtenerCarrito();
+    const item = carrito.find(producto => producto.id === idProducto);
 
     if (!item) return;
 
@@ -567,7 +581,7 @@ function mostrarCarrito() {
 
     if (!contenedor) return;
 
-    const carrito = leerCarrito();
+    const carrito = obtenerCarrito();
 
     if (!carrito.length) {
         contenedor.innerHTML = `
@@ -587,7 +601,7 @@ function mostrarCarrito() {
     let total = 0;
 
     contenedor.innerHTML = carrito.map(item => {
-        const producto = PRODUCTOS.find(p => String(p.id) === String(item.id));
+        const producto = PRODUCTOS.find(p => p.id === item.id);
 
         if (!producto || !productoTienePrecio(producto)) {
             return "";
@@ -605,7 +619,10 @@ function mostrarCarrito() {
                 <div class="producto-cuerpo">
                     <h3>${escapar(producto.nombre)}</h3>
 
-                    <p>Precio: ${FORMATO_COP.format(producto.precio)}</p>
+                    <p>
+                        Precio:
+                        ${FORMATO_COP.format(producto.precio)}
+                    </p>
 
                     <label>
                         Cantidad:
@@ -617,9 +634,15 @@ function mostrarCarrito() {
                         >
                     </label>
 
-                    <p>Subtotal: ${FORMATO_COP.format(subtotal)}</p>
+                    <p>
+                        Subtotal:
+                        ${FORMATO_COP.format(subtotal)}
+                    </p>
 
-                    <button type="button" data-quitar="${escapar(item.id)}">
+                    <button
+                        type="button"
+                        data-quitar="${escapar(item.id)}"
+                    >
                         Quitar
                     </button>
                 </div>
@@ -638,7 +661,7 @@ function mostrarCarrito() {
    ========================================================== */
 
 function consultarProducto(idProducto) {
-    const producto = PRODUCTOS.find(item => String(item.id) === String(idProducto));
+    const producto = PRODUCTOS.find(item => item.id === idProducto);
 
     if (!producto) {
         mostrarMensaje("No encontramos este producto.");
@@ -654,7 +677,9 @@ function consultarProducto(idProducto) {
     );
 
     if (!NUMERO_WHATSAPP) {
-        mostrarMensaje("Falta configurar el número de WhatsApp de Skenzi Home en tienda.js.");
+        mostrarMensaje(
+            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
+        );
         return;
     }
 
@@ -669,11 +694,13 @@ function consultarProducto(idProducto) {
 
 function enviarPedidoWhatsApp() {
     if (!NUMERO_WHATSAPP) {
-        mostrarMensaje("Falta configurar el número de WhatsApp de Skenzi Home en tienda.js.");
+        mostrarMensaje(
+            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
+        );
         return;
     }
 
-    const carrito = leerCarrito();
+    const carrito = obtenerCarrito();
 
     if (!carrito.length) {
         mostrarMensaje("Tu carrito está vacío.");
@@ -684,9 +711,16 @@ function enviarPedidoWhatsApp() {
     const lineas = [];
 
     for (const item of carrito) {
-        const producto = PRODUCTOS.find(p => String(p.id) === String(item.id));
+        const producto = PRODUCTOS.find(p => p.id === item.id);
 
         if (!producto || !productoTienePrecio(producto)) continue;
+
+        if (producto.id.startsWith("demo-")) {
+            mostrarMensaje(
+                "El carrito contiene productos de demostración. Configura tus productos reales antes de hacer un pedido."
+            );
+            return;
+        }
 
         const subtotal = producto.precio * item.cantidad;
         total += subtotal;
@@ -702,7 +736,7 @@ function enviarPedidoWhatsApp() {
     }
 
     const mensaje = encodeURIComponent(
-        `Hola, Skenzi Home. Quiero realizar el siguiente pedido:\n\n${lineas.join("\n")}\n\nTotal: ${FORMATO_COP.format(total)}\n\nPor favor, confirmen disponibilidad, costo del domicilio y medios de pago.`
+        `Hola, Skenzi Home. Quiero realizar el siguiente pedido:\n\n${lineas.join("\n")}\n\nTotal de productos: ${FORMATO_COP.format(total)}\n\nPor favor, confirmen disponibilidad, costo del domicilio y medios de pago.`
     );
 
     const numero = NUMERO_WHATSAPP.replace(/\D/g, "");
@@ -713,33 +747,40 @@ function enviarPedidoWhatsApp() {
         "noopener,noreferrer"
     );
 }
-
-
 /* ==========================================================
-   9. EVENTOS Y LISTENERS
+   9. EVENTOS DE LA TIENDA
    ========================================================== */
 
 document.addEventListener("click", evento => {
     const botonAgregar = evento.target.closest("[data-agregar]");
+
     if (botonAgregar) {
         agregarAlCarrito(botonAgregar.dataset.agregar);
         return;
     }
 
     const botonConsultar = evento.target.closest("[data-consultar]");
+
     if (botonConsultar) {
         consultarProducto(botonConsultar.dataset.consultar);
         return;
     }
 
     const botonQuitar = evento.target.closest("[data-quitar]");
+
     if (botonQuitar) {
         quitarDelCarrito(botonQuitar.dataset.quitar);
     }
 });
 
+
+/* ==========================================================
+   10. CAMBIOS DE CANTIDAD EN EL CARRITO
+   ========================================================== */
+
 document.addEventListener("change", evento => {
     const entradaCantidad = evento.target.closest("[data-cantidad]");
+
     if (entradaCantidad) {
         cambiarCantidad(
             entradaCantidad.dataset.cantidad,
@@ -748,65 +789,28 @@ document.addEventListener("change", evento => {
     }
 });
 
+
+/* ==========================================================
+   11. BOTÓN PARA REALIZAR EL PEDIDO
+   ========================================================== */
+
 function configurarBotonPedido() {
     const boton = document.getElementById("pedido-whatsapp");
+
     if (!boton) return;
+
     boton.addEventListener("click", enviarPedidoWhatsApp);
 }
 
 
 /* ==========================================================
-   10. INICIO Y CARGA DESDE SUPABASE
+   12. INICIO DE LA TIENDA SKENZI HOME
    ========================================================== */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     configurarMenu();
     configurarBusqueda();
     configurarBotonPedido();
-
-    try {
-
-const { data: productosSupabase, error } = await supabaseClient
-    .from("productos")
-    .select(`
-        id,
-        nombre,
-        descripcion,
-        precio_venta,
-        existencias,
-        activo,
-        es_novedad,
-        es_destacado,
-        en_oferta,
-        imagen_url,
-        categoria_id,
-        categorias(nombre)
-    `)
-    .eq("activo", true);
-
-if (error) {
-    console.error("Error al cargar productos:", error);
-} else {
-    PRODUCTOS = (productosSupabase || []).map(p => ({
-        id: String(p.id),
-        nombre: p.nombre,
-        categoria: p.categorias?.nombre?.toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, ""),
-        precio: Number(p.precio_venta) || 0,
-        precioAnterior: 0,
-        disponible: Number(p.existencias) > 0 ? "Disponible" : "Agotado",
-        imagen: p.imagen_url || "",
-        descripcion: p.descripcion || "",
-        oferta: Boolean(p.en_oferta),
-        novedad: Boolean(p.es_novedad),
-        destacado: Boolean(p.es_destacado),
-        activo: Boolean(p.activo)
-    }));
-
-    console.log("Productos cargados:", PRODUCTOS);
-}
-
 
     const categoriaActual = document.body.dataset.categoria;
     const paginaActual = document.body.dataset.pagina;
@@ -814,17 +818,27 @@ if (error) {
     if (categoriaActual) {
         const productosCategoria = PRODUCTOS.filter(producto =>
             producto.activo &&
-            (producto.categoria === categoriaActual || String(producto.categoria) === String(categoriaActual))
+            producto.categoria === categoriaActual
         );
+
         mostrarProductos(productosCategoria, "galeria-productos");
     } else if (paginaActual === "ofertas") {
-        const ofertas = PRODUCTOS.filter(producto => producto.activo && producto.oferta);
+        const ofertas = PRODUCTOS.filter(producto =>
+            producto.activo && producto.oferta
+        );
+
         mostrarProductos(ofertas, "galeria-productos");
     } else if (paginaActual === "novedades") {
-        const novedades = PRODUCTOS.filter(producto => producto.activo && producto.novedad);
+        const novedades = PRODUCTOS.filter(producto =>
+            producto.activo && producto.novedad
+        );
+
         mostrarProductos(novedades, "galeria-productos");
     } else {
-        const productosActivos = PRODUCTOS.filter(producto => producto.activo);
+        const productosActivos = PRODUCTOS.filter(producto =>
+            producto.activo
+        );
+
         mostrarProductos(productosActivos, "galeria-productos");
     }
 
