@@ -757,32 +757,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarBotonPedido();
 
     try {
-        // Cargar productos reales desde Supabase
-        const { data: productosSupabase, error } = await supabaseClient
-            .from("productos")
-            .select("id, nombre, descripcion, precio_venta, existencias, activo, es_novedad, es_destacado, en_oferta, imagen_url, categoria_id")
-            .eq("activo", true);
 
-        if (!error && productosSupabase && productosSupabase.length > 0) {
-            // Mapear los datos de Supabase al formato que usa la tienda
-            PRODUCTOS = productosSupabase.map(p => ({
-                id: p.id,
-                nombre: p.nombre,
-                categoria: p.categoria_id,
-                precio: Number(p.precio_venta) || 0,
-                precioAnterior: 0,
-                disponible: Number(p.existencias) > 0 ? "Disponible" : "Agotado",
-                imagen: p.imagen_url || "",
-                descripcion: p.descripcion || "",
-                oferta: Boolean(p.en_oferta),
-                novedad: Boolean(p.es_novedad),
-                destacado: Boolean(p.es_destacado),
-                activo: Boolean(p.activo)
-            }));
-        }
-    } catch (err) {
-        console.warn("No se pudieron cargar productos de Supabase, usando demostración:", err);
-    }
+const { data: productosSupabase, error } = await supabaseClient
+    .from("productos")
+    .select(`
+        id,
+        nombre,
+        descripcion,
+        precio_venta,
+        existencias,
+        activo,
+        es_novedad,
+        es_destacado,
+        en_oferta,
+        imagen_url,
+        categoria_id,
+        categorias(nombre)
+    `)
+    .eq("activo", true);
+
+if (error) {
+    console.error("Error al cargar productos:", error);
+} else {
+    PRODUCTOS = (productosSupabase || []).map(p => ({
+        id: String(p.id),
+        nombre: p.nombre,
+        categoria: p.categorias?.nombre?.toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, ""),
+        precio: Number(p.precio_venta) || 0,
+        precioAnterior: 0,
+        disponible: Number(p.existencias) > 0 ? "Disponible" : "Agotado",
+        imagen: p.imagen_url || "",
+        descripcion: p.descripcion || "",
+        oferta: Boolean(p.en_oferta),
+        novedad: Boolean(p.es_novedad),
+        destacado: Boolean(p.es_destacado),
+        activo: Boolean(p.activo)
+    }));
+
+    console.log("Productos cargados:", PRODUCTOS);
+}
+
 
     const categoriaActual = document.body.dataset.categoria;
     const paginaActual = document.body.dataset.pagina;
