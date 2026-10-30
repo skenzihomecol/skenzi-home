@@ -711,14 +711,93 @@ function configurarBotonPedido() {
 }
 
 
+
 /* ==========================================================
    12. INICIO DE LA TIENDA SKENZI HOME
+   Carga productos reales desde Supabase
    ========================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+async function iniciarTienda() {
     configurarMenu();
     configurarBusqueda();
     configurarBotonPedido();
+
+    const contenedor = document.getElementById("galeria-productos");
+
+    try {
+        if (typeof supabaseClient === "undefined") {
+            throw new Error("No se encontró la conexión supabaseClient.");
+        }
+
+        const { data: productosSupabase, error } = await supabaseClient
+            .from("productos")
+            .select(`
+                id,
+                nombre,
+                descripcion,
+                precio_venta,
+                existencias,
+                imagen_url,
+                activo,
+                es_novedad,
+                es_destacado,
+                en_oferta,
+                categoria_id,
+                categorias (
+                    nombre
+                )
+            `)
+            .eq("activo", true);
+
+        if (error) {
+            throw error;
+        }
+
+        PRODUCTOS = (productosSupabase || []).map(p => {
+            const nombreCategoria = p.categorias?.nombre || "";
+
+            const categoriaNormalizada = nombreCategoria
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+
+            return {
+                id: String(p.id),
+                nombre: p.nombre || "",
+                descripcion: p.descripcion || "",
+                precio: Number(p.precio_venta) || 0,
+                precioAnterior: 0,
+                disponible: Number(p.existencias) > 0
+                    ? "Disponible"
+                    : "Agotado",
+                existencias: Number(p.existencias) || 0,
+                imagen: p.imagen_url || "",
+                categoria: categoriaNormalizada,
+                categoriaId: p.categoria_id,
+                oferta: Boolean(p.en_oferta),
+                novedad: Boolean(p.es_novedad),
+                destacado: Boolean(p.es_destacado),
+                activo: Boolean(p.activo)
+            };
+        });
+
+        console.log("Productos reales cargados:", PRODUCTOS);
+
+    } catch (error) {
+        console.error("Error al cargar los productos desde Supabase:", error);
+
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <p class="vacio">
+                    No pudimos cargar los productos.
+                    Intenta nuevamente más tarde.
+                </p>
+            `;
+        }
+
+        return;
+    }
 
     const categoriaActual = document.body.dataset.categoria;
     const paginaActual = document.body.dataset.pagina;
@@ -730,18 +809,21 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         mostrarProductos(productosCategoria, "galeria-productos");
+
     } else if (paginaActual === "ofertas") {
         const ofertas = PRODUCTOS.filter(producto =>
             producto.activo && producto.oferta
         );
 
         mostrarProductos(ofertas, "galeria-productos");
+
     } else if (paginaActual === "novedades") {
         const novedades = PRODUCTOS.filter(producto =>
             producto.activo && producto.novedad
         );
 
         mostrarProductos(novedades, "galeria-productos");
+
     } else {
         const productosActivos = PRODUCTOS.filter(producto =>
             producto.activo
@@ -758,4 +840,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("lista-carrito")) {
         mostrarCarrito();
     }
-});
+}
+
+document.addEventListener("DOMContentLoaded", iniciarTienda);
+
