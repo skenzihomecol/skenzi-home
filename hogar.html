@@ -1,93 +1,83 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#20221D">
-  <title>Hogar | Skenzi Home</title>
-  <link rel="stylesheet" href="css/estilos.css">
-  <script src="js/tienda.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skenzi Home — Categoría</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
-
+<!-- CAMBIA data-categoria O data-pagina SEGÚN CORRESPONDA:
+     - Para hogar: <body data-categoria="hogar">
+     - Para deporte: <body data-categoria="deporte">
+     - Para belleza: <body data-categoria="belleza">
+     - Para herramientas: <body data-categoria="herramientas">
+     - Para destacados: <body data-pagina="destacados">
+     - Para novedades: <body data-pagina="novedades"> -->
 <body data-categoria="hogar">
 
-<header class="encabezado">
-  <div class="fila-superior">
-    <a class="marca" href="index.html">SKENZI<span>HOME</span></a>
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <header class="header-tienda">
+        <div class="header-superior">
+            <div class="logo">
+                <h1><a href="index.html" style="color: white; text-decoration: none;">SKENZI HOME</a></h1>
+            </div>
 
-    <form class="busqueda" data-busqueda role="search">
-      <input type="search" aria-label="Buscar productos" placeholder="Buscar productos...">
-      <button type="submit">Buscar</button>
-    </form>
+            <!-- Buscador -->
+            <form class="buscador" data-busqueda>
+                <input type="text" placeholder="¿Qué estás buscando?">
+                <button type="submit">Buscar</button>
+            </form>
 
-    <a class="carrito-enlace" href="carrito.html">
-      🛒 Carrito (<span data-contador-carrito>0</span>)
-    </a>
-  </div>
-
-  <nav aria-label="Navegación principal">
-    <div class="menu">
-      <div class="menu-categorias">
-        <button type="button" data-boton-categorias aria-expanded="false">
-          CATEGORÍAS ▾
-        </button>
-
-        <div class="lista-categorias">
-          <a href="hogar.html">Hogar</a>
-          <a href="deporte.html">Deporte</a>
-          <a href="tecnologia.html">Tecnología</a>
-          <a href="industrial.html">Industrial</a>
-          <a href="juguetes.html">Juguetes</a>
-          <a href="belleza.html">Belleza</a>
+            <!-- Carrito -->
+            <div class="contenedor-carrito-enlace">
+                <a class="carrito-enlace" href="carrito.html">
+                    🛒 Carrito (<span data-contador-carrito>0</span>)
+                </a>
+            </div>
         </div>
-      </div>
 
-      <a href="novedades.html">NOVEDADES</a>
-      <a href="contacto.html">CONTACTO</a>
-    </div>
-  </nav>
-</header>
+        <!-- Menú de navegación principal con el botón desplegable vertical -->
+        <nav aria-label="Navegación principal">
+            <div class="menu">
+                <div class="contenedor-categorias">
+                    <button type="button" data-boton-categorias aria-expanded="false" class="btn-categorias">
+                        CATEGORÍAS ▾
+                    </button>
+                    <div class="menu-categorias">
+                        <a href="hogar.html">Hogar</a>
+                        <a href="juguetes.html">Juguetes</a>
+                        <a href="herramientas.html">Herramientas</a>
+                        <a href="deporte.html">Deporte</a>
+                        <a href="belleza.html">Belleza</a>
+                    </div>
+                </div>
 
-<main class="contenedor">
-  <section class="hero">
-    <div class="hero-contenido">
-      <span class="etiqueta">Categoría · Hogar</span>
-      <h1>🏠 Productos para el hogar</h1>
-      <p>Encuentra productos prácticos para organizar y disfrutar tus espacios.</p>
-      <a class="boton" href="categorias.html">Ver catálogo completo</a>
-    </div>
-  </section>
+                <a href="novedades.html">Novedades</a>
+                <a href="contacto.html">Contacto</a>
+            </div>
+        </nav>
+    </header>
 
-  <section class="seccion" id="catalogo">
-    <div class="seccion-cabecera">
-      <div>
-        <h2>Productos para el hogar</h2>
-        <p>Consulta el precio y la disponibilidad antes de confirmar tu compra.</p>
-      </div>
-    </div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-container">
+        <section id="productos" class="seccion-catalogo">
+            <h2 id="titulo-productos">Productos de esta sección</h2>
+            
+            <div id="galeria-productos" class="galeria-grid">
+                <p class="vacio">Cargando productos...</p>
+            </div>
+        </section>
 
-    <div id="productos" class="grid-productos"></div>
-  </section>
-</main>
+        <div id="mensaje-tienda" class="mensaje-alerta" hidden></div>
+    </main>
 
-<footer class="pie">
-  <div class="pie-interior">
-    <div>
-      <strong>SKENZI HOME</strong><br>
-      <small>Tu hogar, tu estilo.</small>
-    </div>
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2026 Skenzi Home. Todos los derechos reservados.</p>
+    </footer>
 
-    <div>
-      <a href="contacto.html">Contacto</a> ·
-      <a href="carrito.html">Carrito</a>
-    </div>
-
-    <small>La disponibilidad, el precio final y el envío se confirman antes de aceptar el pedido.</small>
-  </div>
-</footer>
-
-<div id="mensaje-tienda" class="contenedor" role="status" hidden style="padding:.8rem 0"></div>
-
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="tienda.js"></script>
 </body>
 </html>
