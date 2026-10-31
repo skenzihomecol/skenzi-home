@@ -25,7 +25,6 @@ let usuarioAutenticado = false;
 
 function mostrarMensaje(elemento, texto, error = false) {
   if (!elemento) return;
-
   elemento.textContent = texto;
   elemento.style.color = error ? "#b42318" : "#455532";
 }
@@ -50,13 +49,10 @@ function dinero(valor) {
 
 function fecha(valor) {
   if (!valor) return "—";
-
   const fechaObjeto = new Date(valor);
-
   if (Number.isNaN(fechaObjeto.getTime())) {
     return escapar(valor);
   }
-
   return fechaObjeto.toLocaleDateString("es-CO");
 }
 
@@ -90,20 +86,16 @@ async function consultar(tabla, columnas = "*") {
     .select(columnas);
 
   if (error) throw error;
-
   return data || [];
 }
 
 function mostrarError(id, error) {
   console.error("Error en " + id, error);
-
   const contenedor = document.getElementById(id);
-
   if (contenedor) {
     contenedor.innerHTML = `
       <p style="color:#b42318">
-        No se pudieron cargar los datos.
-        Revisa los permisos de Supabase.
+        No se pudieron cargar los datos. Revisa los permisos de Supabase.
       </p>
     `;
   }
@@ -160,23 +152,9 @@ async function cargarProductos() {
 
       <img id="producto-vista-previa" alt="Vista previa" style="display:none;max-width:220px;max-height:220px;object-fit:contain;border-radius:10px;margin:10px 0;">
 
-      <label>
-        <input type="checkbox" id="producto-novedad">
-        Marcar como novedad
-      </label>
-      <br><br>
-
-      <label>
-        <input type="checkbox" id="producto-destacado">
-        Producto destacado
-      </label>
-      <br><br>
-
-      <label>
-        <input type="checkbox" id="producto-oferta">
-        Producto en oferta
-      </label>
-      <br><br>
+      <label><input type="checkbox" id="producto-novedad"> Marcar como novedad</label><br><br>
+      <label><input type="checkbox" id="producto-destacado"> Producto destacado</label><br><br>
+      <label><input type="checkbox" id="producto-oferta"> Producto en oferta</label><br><br>
 
       <button class="admin-boton" type="submit">Guardar producto</button>
       <button class="admin-boton" type="button" id="cancelar-edicion" style="display:none;">Cancelar edición</button>
@@ -200,71 +178,37 @@ async function cargarProductos() {
   let imagenActual = "";
   let imagenSeleccionada = null;
 
-  // Cargar categorías dinámicamente de Supabase de forma segura
+  // Cargar categorías dinámicamente desde Supabase
   try {
     const categorias = await consultar("categorias", "id,nombre,activa");
+    const categoriasActivas = (categorias || []).sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
 
-    // Filtrar de forma flexible para que muestre las categorías correctamente
-    const categoriasActivas = (categorias || []).filter(c => 
-      c.activa === true || c.activa === "true" || c.activa === null || c.activa === undefined
-    ).sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
-
-    selectorCategoria.innerHTML = "";
-
-    const opcionInicial = document.createElement("option");
-    opcionInicial.value = "";
-    opcionInicial.textContent = "Selecciona una categoría";
-    selectorCategoria.appendChild(opcionInicial);
-
-    if (categoriasActivas.length > 0) {
-      categoriasActivas.forEach(cat => {
-        const opcion = document.createElement("option");
-        opcion.value = cat.id;
-        opcion.textContent = cat.nombre;
-        selectorCategoria.appendChild(opcion);
-      });
-    } else {
-      const opcionVacia = document.createElement("option");
-      opcionVacia.value = "";
-      opcionVacia.textContent = "No hay categorías disponibles";
-      selectorCategoria.appendChild(opcionVacia);
-    }
+    selectorCategoria.innerHTML = '<option value="">Selecciona una categoría</option>';
+    categoriasActivas.forEach(cat => {
+      const opcion = document.createElement("option");
+      opcion.value = cat.id;
+      opcion.textContent = cat.nombre;
+      selectorCategoria.appendChild(opcion);
+    });
   } catch (error) {
     console.error("Error al cargar categorías:", error);
     selectorCategoria.innerHTML = '<option value="">Error al cargar categorías</option>';
   }
 
-  // Vista previa de la fotografía
+  // Vista previa de la imagen
   if (archivoImagen) {
     archivoImagen.addEventListener("change", () => {
       imagenSeleccionada = archivoImagen.files?.[0] || null;
-
       if (!imagenSeleccionada) {
         vistaPrevia.style.display = imagenActual ? "block" : "none";
         vistaPrevia.src = imagenActual;
         return;
       }
-
-      if (!imagenSeleccionada.type.startsWith("image/")) {
-        mostrarMensaje(mensaje, "Selecciona un archivo de imagen válido.", true);
-        archivoImagen.value = "";
-        imagenSeleccionada = null;
-        return;
-      }
-
-      if (imagenSeleccionada.size > 5 * 1024 * 1024) {
-        mostrarMensaje(mensaje, "La imagen no puede superar los 5 MB.", true);
-        archivoImagen.value = "";
-        imagenSeleccionada = null;
-        return;
-      }
-
       vistaPrevia.src = URL.createObjectURL(imagenSeleccionada);
       vistaPrevia.style.display = "block";
     });
   }
 
-  // Cargar y mostrar lista de productos
   async function actualizarLista() {
     const tabla = document.getElementById("tabla-productos");
     if (!tabla) return;
@@ -275,8 +219,6 @@ async function cargarProductos() {
         "productos",
         "id,codigo_barras,sku,nombre,descripcion,categoria_id,costo_compra,precio_venta,existencias,stock_minimo,proveedor,imagen_url,es_novedad,es_destacado,en_oferta,activo"
       );
-
-      productosActuales.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", "es"));
 
       if (!productosActuales.length) {
         tabla.innerHTML = "<p>Aún no hay productos registrados.</p>";
@@ -300,9 +242,7 @@ async function cargarProductos() {
               ${productosActuales.map(p => `
                 <tr>
                   <td>
-                    ${p.imagen_url
-                      ? `<img src="${escapar(p.imagen_url)}" alt="${escapar(p.nombre)}" loading="lazy" style="width:65px;height:65px;object-fit:contain;">`
-                      : "Sin foto"}
+                    ${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" style="width:50px;height:50px;object-fit:contain;">` : "Sin foto"}
                   </td>
                   <td>${escapar(p.nombre)}</td>
                   <td>${dinero(p.precio_venta)}</td>
@@ -310,7 +250,7 @@ async function cargarProductos() {
                   <td>${p.activo ? "Activo" : "Inactivo"}</td>
                   <td>
                     <button type="button" class="admin-boton" data-editar-producto="${escapar(p.id)}">Editar</button>
-                    <button type="button" class="admin-boton" data-eliminar-producto="${escapar(p.id)}">Eliminar</button>
+                    <button type="button" class="admin-boton" data-eliminar-producto="${escapar(p.id)}">Desactivar</button>
                   </td>
                 </tr>
               `).join("")}
@@ -319,7 +259,7 @@ async function cargarProductos() {
         </div>
       `;
 
-      // Evento Editar
+      // Editar producto
       tabla.querySelectorAll("[data-editar-producto]").forEach(boton => {
         boton.addEventListener("click", () => {
           const producto = productosActuales.find(p => String(p.id) === String(boton.dataset.editarProducto));
@@ -342,482 +282,17 @@ async function cargarProductos() {
 
           imagenActual = producto.imagen_url || "";
           imagenSeleccionada = null;
-          if (archivoImagen) archivoImagen.value = "";
-
           vistaPrevia.src = imagenActual;
           vistaPrevia.style.display = imagenActual ? "block" : "none";
 
           botonCancelar.style.display = "inline-block";
           formulario.querySelector('[type="submit"]').textContent = "Guardar cambios";
-
-          formulario.scrollIntoView({ behavior: "smooth", block: "start" });
-          mostrarMensaje(mensaje, "Editando: " + producto.nombre);
+          formulario.scrollIntoView({ behavior: "smooth" });
         });
       });
 
-      // Evento Eliminar (desactivar)
+      // Eliminar / Desactivar producto
       tabla.querySelectorAll("[data-eliminar-producto]").forEach(boton => {
         boton.addEventListener("click", async () => {
           const producto = productosActuales.find(p => String(p.id) === String(boton.dataset.eliminarProducto));
-          if (!producto) return;
-
-          if (!confirm(`¿Quieres desactivar "${producto.nombre}" del catálogo?`)) return;
-
-          try {
-            const { error } = await supabaseClient
-              .from("productos")
-              .update({ activo: false })
-              .eq("id", producto.id);
-
-            if (error) throw error;
-
-            mostrarMensaje(mensaje, "Producto desactivado correctamente.");
-            await actualizarLista();
-            await cargarResumen();
-          } catch (error) {
-            console.error(error);
-            mostrarMensaje(mensaje, error.message || "No se pudo desactivar el producto.", true);
-          }
-        });
-      });
-
-    } catch (error) {
-      console.error("Error al cargar productos:", error);
-      tabla.innerHTML = '<p style="color:#b42318">No se pudieron cargar los productos.</p>';
-    }
-  }
-
-  // Subir imagen a Storage
-  async function subirImagen(archivo) {
-    if (!archivo) return imagenActual;
-
-    const extension = archivo.name.includes(".")
-      ? archivo.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "")
-      : "jpg";
-
-    const ruta = `${crypto.randomUUID()}.${extension}`;
-
-    const { error } = await supabaseClient.storage
-      .from("productos")
-      .upload(ruta, archivo, {
-        upsert: false,
-        contentType: archivo.type
-      });
-
-    if (error) throw error;
-
-    const { data } = supabaseClient.storage
-      .from("productos")
-      .getPublicUrl(ruta);
-
-    return data.publicUrl;
-  }
-
-  // Guardar o actualizar producto
-  formulario.addEventListener("submit", async evento => {
-    evento.preventDefault();
-
-    const botonGuardar = formulario.querySelector('[type="submit"]');
-    botonGuardar.disabled = true;
-    mostrarMensaje(mensaje, "Guardando producto...");
-
-    try {
-      const id = document.getElementById("producto-id").value;
-      const nombre = document.getElementById("producto-nombre").value.trim();
-      const sku = document.getElementById("producto-sku").value.trim();
-      const codigoBarras = document.getElementById("producto-codigo").value.trim();
-
-      if (!nombre) throw new Error("Escribe el nombre del producto.");
-
-      const costo = Number(document.getElementById("producto-costo").value);
-      const precio = Number(document.getElementById("producto-precio").value);
-      const existencias = Number(document.getElementById("producto-existencias").value);
-      const stockMinimo = Number(document.getElementById("producto-stock-minimo").value);
-
-      let imagenUrl = imagenActual;
-      if (imagenSeleccionada) {
-        imagenUrl = await subirImagen(imagenSeleccionada);
-      }
-
-      const datos = {
-        nombre,
-        descripcion: document.getElementById("producto-descripcion").value.trim(),
-        categoria_id: selectorCategoria.value || null,
-        sku: sku || null,
-        codigo_barras: codigoBarras || null,
-        costo_compra: costo,
-        precio_venta: precio,
-        existencias,
-        stock_minimo: stockMinimo,
-        proveedor: document.getElementById("producto-proveedor").value.trim() || null,
-        imagen_url: imagenUrl || null,
-        es_novedad: document.getElementById("producto-novedad").checked,
-        es_destacado: document.getElementById("producto-destacado").checked,
-        en_oferta: document.getElementById("producto-oferta").checked,
-        activo: true,
-        actualizado_en: new Date().toISOString()
-      };
-
-      let resultado;
-      if (id) {
-        resultado = await supabaseClient.from("productos").update(datos).eq("id", id).select("id");
-      } else {
-        resultado = await supabaseClient.from("productos").insert(datos).select("id");
-      }
-
-      if (resultado.error) throw resultado.error;
-
-      mostrarMensaje(mensaje, id ? "Producto actualizado correctamente." : "Producto registrado correctamente.");
-
-      formulario.reset();
-      document.getElementById("producto-id").value = "";
-      imagenActual = "";
-      imagenSeleccionada = null;
-      vistaPrevia.removeAttribute("src");
-      vistaPrevia.style.display = "none";
-      botonCancelar.style.display = "none";
-      botonGuardar.textContent = "Guardar producto";
-
-      await actualizarLista();
-      await cargarResumen();
-
-    } catch (error) {
-      console.error("Error al guardar producto:", error);
-      mostrarMensaje(mensaje, error.message || "No se pudo guardar el producto.", true);
-    } finally {
-      botonGuardar.disabled = false;
-    }
-  });
-
-  botonCancelar.addEventListener("click", () => {
-    formulario.reset();
-    document.getElementById("producto-id").value = "";
-    imagenActual = "";
-    imagenSeleccionada = null;
-    vistaPrevia.removeAttribute("src");
-    vistaPrevia.style.display = "none";
-    botonCancelar.style.display = "none";
-    formulario.querySelector('[type="submit"]').textContent = "Guardar producto";
-    mostrarMensaje(mensaje, "Edición cancelada.");
-  });
-
-  await actualizarLista();
-}
-
-// ============================================
-// INVENTARIO
-// ============================================
-
-async function cargarInventario() {
-  const contenedor = document.getElementById("lista-inventario");
-  if (!contenedor) return;
-  contenedor.textContent = "Cargando inventario...";
-
-  try {
-    const [productos, movimientos] = await Promise.all([
-      consultar("productos", "id,nombre,existencias,stock_minimo,activo"),
-      consultar("movimientos_inventario", "id,producto_id,tipo,cantidad,motivo,venta_id,fecha")
-    ]);
-
-    const mapaProductos = new Map(productos.map(p => [p.id, p.nombre]));
-    const alertas = productos.filter(p => p.activo && Number(p.existencias || 0) <= Number(p.stock_minimo || 0));
-
-    const filas = movimientos
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-      .map(m => `
-        <tr>
-          <td>${fecha(m.fecha)}</td>
-          <td>${escapar(mapaProductos.get(m.producto_id) || "Producto no encontrado")}</td>
-          <td>${escapar(m.tipo)}</td>
-          <td>${Number(m.cantidad || 0)}</td>
-          <td>${escapar(m.motivo || "—")}</td>
-        </tr>
-      `);
-
-    contenedor.innerHTML = `
-      <h3>Productos con stock bajo: ${alertas.length}</h3>
-      ${alertas.length ? `<ul>${alertas.map(p => `<li>${escapar(p.nombre)}: ${Number(p.existencias || 0)} unidades</li>`).join("")}</ul>` : "<p>No hay alertas de stock bajo.</p>"}
-      <h3>Movimientos registrados</h3>
-      ${prepararTabla(["Fecha", "Producto", "Tipo", "Cantidad", "Motivo"], filas)}
-    `;
-  } catch (error) {
-    mostrarError("lista-inventario", error);
-  }
-}
-
-// ============================================
-// VENTAS Y PEDIDOS
-// ============================================
-
-async function cargarVentas() {
-  const contenedor = document.getElementById("lista-ventas");
-  if (!contenedor) return;
-  contenedor.textContent = "Cargando ventas y pedidos...";
-
-  try {
-    const ventas = await consultar("ventas", "id,numero_venta,fecha,canal,cliente_nombre,cliente_telefono,cliente_direccion,metodo_pago,estado_pago,estado_pedido,costo_envio,notas");
-
-    const filas = ventas
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-      .map(v => `
-        <tr>
-          <td>${escapar(v.numero_venta ?? v.id)}</td>
-          <td>${fecha(v.fecha)}</td>
-          <td>${escapar(v.cliente_nombre || "Sin nombre")}</td>
-          <td>${escapar(v.cliente_telefono || "—")}</td>
-          <td>${escapar(v.estado_pedido || "Pendiente")}</td>
-          <td>${escapar(v.estado_pago || "Pendiente")}</td>
-          <td>
-            <button class="admin-boton" type="button" onclick="imprimirComprobante('${v.id}')">Recibo</button>
-            <button class="admin-boton" type="button" onclick="imprimirRotulo('${v.id}')">Rótulo</button>
-          </td>
-        </tr>
-      `);
-
-    contenedor.innerHTML = prepararTabla(["N.º", "Fecha", "Cliente", "Teléfono", "Estado del pedido", "Estado del pago", "Imprimir"], filas);
-  } catch (error) {
-    mostrarError("lista-ventas", error);
-  }
-}
-
-// ============================================
-// IMPRESIÓN DE RECIBOS Y RÓTULOS
-// ============================================
-
-async function imprimirComprobante(ventaId) {
-  try {
-    const { data: venta, error } = await supabaseClient.from("ventas").select("*").eq("id", ventaId).single();
-    if (error) throw error;
-
-    const detalles = await consultar("detalles_venta");
-    const productosVenta = detalles.filter(d => String(d.venta_id) === String(ventaId));
-
-    const subtotal = productosVenta.reduce((total, d) => total + Number(d.cantidad || 0) * Number(d.precio_unitario || 0), 0);
-    const envio = Number(venta.costo_envio || 0);
-    const total = subtotal + envio;
-
-    const lineas = productosVenta.map(d => `
-      <tr>
-        <td>${escapar(d.nombre_producto)}</td>
-        <td>${Number(d.cantidad || 0)}</td>
-        <td>${dinero(d.precio_unitario)}</td>
-        <td>${dinero(Number(d.cantidad || 0) * Number(d.precio_unitario || 0))}</td>
-      </tr>
-    `).join("");
-
-    const ventana = window.open("", "_blank");
-    if (!ventana) {
-      alert("Permite las ventanas emergentes para imprimir.");
-      return;
-    }
-
-    ventana.document.write(`
-      <!DOCTYPE html>
-      <html lang="es">
-      <head>
-        <meta charset="UTF-8"><title>Recibo Skenzi Home</title>
-        <style>body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:20px;color:#222}h1{color:#1D4ED8}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}.total{text-align:right;margin-top:20px}</style>
-      </head>
-      <body>
-        <h1>SKENZI HOME</h1>
-        <h2>Recibo de venta</h2>
-        <p><b>Número:</b> ${escapar(venta.numero_venta ?? venta.id)}</p>
-        <p><b>Fecha:</b> ${fecha(venta.fecha)}</p>
-        <p><b>Cliente:</b> ${escapar(venta.cliente_nombre || "—")}</p>
-        <table><thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Total</th></tr></thead><tbody>${lineas}</tbody></table>
-        <div class="total"><p>Subtotal: ${dinero(subtotal)}</p><p>Envío: ${dinero(envio)}</p><h2>Total: ${dinero(total)}</h2></div>
-        <button onclick="window.print()">Imprimir recibo</button>
-      </body>
-      </html>
-    `);
-    ventana.document.close();
-  } catch (error) {
-    console.error(error);
-    alert("No se pudo generar el recibo.");
-  }
-}
-
-async function imprimirRotulo(ventaId) {
-  try {
-    const { data: venta, error } = await supabaseClient.from("ventas").select("*").eq("id", ventaId).single();
-    if (error) throw error;
-
-    const ventana = window.open("", "_blank");
-    if (!ventana) {
-      alert("Permite las ventanas emergentes.");
-      return;
-    }
-
-    ventana.document.write(`
-      <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Rótulo</title></head>
-      <body><div style="border:2px solid #222;padding:24px;max-width:500px;font-family:Arial">
-      <h1>SKENZI HOME</h1><h3>RÓTULO DE ENVÍO</h3>
-      <p><b>Pedido:</b> ${escapar(venta.numero_venta ?? venta.id)}</p>
-      <p><b>Cliente:</b> ${escapar(venta.cliente_nombre || "—")}</p>
-      <p><b>Teléfono:</b> ${escapar(venta.cliente_telefono || "—")}</p>
-      <p><b>Dirección:</b> ${escapar(venta.cliente_direccion || "—")}</p></div>
-      <button onclick="window.print()">Imprimir</button></body></html>
-    `);
-    ventana.document.close();
-  } catch (error) {
-    console.error(error);
-    alert("No se pudo generar el rótulo.");
-  }
-}
-
-window.imprimirComprobante = imprimirComprobante;
-window.imprimirRotulo = imprimirRotulo;
-
-// ============================================
-// GASTOS E INFORMES
-// ============================================
-
-async function cargarGastos() {
-  const contenedor = document.getElementById("lista-gastos");
-  if (!contenedor) return;
-  contenedor.textContent = "Cargando gastos...";
-
-  try {
-    const gastos = await consultar("gastos", "id,concepto,categoria,valor,fecha,metodo_pago,notas");
-    const filas = gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).map(g => `
-      <tr><td>${fecha(g.fecha)}</td><td>${escapar(g.concepto)}</td><td>${escapar(g.categoria || "—")}</td><td>${dinero(g.valor)}</td><td>${escapar(g.metodo_pago || "—")}</td><td>${escapar(g.notas || "—")}</td></tr>
-    `);
-    const total = gastos.reduce((suma, g) => suma + Number(g.valor || 0), 0);
-
-    contenedor.innerHTML = `<h3>Total de gastos: ${dinero(total)}</h3>${prepararTabla(["Fecha", "Concepto", "Categoría", "Valor", "Método", "Notas"], filas)}`;
-  } catch (error) {
-    mostrarError("lista-gastos", error);
-  }
-}
-
-async function cargarInformes() {
-  const contenedor = document.getElementById("lista-informes");
-  if (!contenedor) return;
-  contenedor.textContent = "Calculando informes...";
-
-  try {
-    const [ventas, gastos, productos] = await Promise.all([
-      consultar("ventas", "id,fecha,estado_pedido"),
-      consultar("gastos", "valor,fecha"),
-      consultar("productos", "id,nombre,existencias,stock_minimo,activo")
-    ]);
-
-    const totalGastos = gastos.reduce((suma, g) => suma + Number(g.valor || 0), 0);
-    const pendientes = ventas.filter(v => String(v.estado_pedido || "").toLowerCase().includes("pendiente")).length;
-    const stockBajo = productos.filter(p => p.activo && Number(p.existencias || 0) <= Number(p.stock_minimo || 0));
-
-    contenedor.innerHTML = `
-      <div class="admin-tarjetas">
-        <article class="admin-tarjeta"><h3>Ventas</h3><div class="admin-valor">${ventas.length}</div></article>
-        <article class="admin-tarjeta"><h3>Gastos</h3><div class="admin-valor">${dinero(totalGastos)}</div></article>
-        <article class="admin-tarjeta"><h3>Pendientes</h3><div class="admin-valor">${pendientes}</div></article>
-        <article class="admin-tarjeta"><h3>Stock bajo</h3><div class="admin-valor">${stockBajo.length}</div></article>
-      </div>
-    `;
-  } catch (error) {
-    mostrarError("lista-informes", error);
-  }
-}
-
-async function contarRegistros(tabla) {
-  const { count, error } = await supabaseClient.from(tabla).select("*", { count: "exact", head: true });
-  if (error) throw error;
-  return count || 0;
-}
-
-async function cargarResumen() {
-  try {
-    const [productos, ventas, gastos] = await Promise.all([
-      consultar("productos", "existencias,activo"),
-      contarRegistros("ventas"),
-      contarRegistros("gastos")
-    ]);
-
-    const activos = productos.filter(p => p.activo);
-    const unidades = activos.reduce((suma, p) => suma + Number(p.existencias || 0), 0);
-
-    const elProd = document.getElementById("total-productos");
-    const elExis = document.getElementById("total-existencias");
-    const elVentas = document.getElementById("total-ventas");
-    const elGastos = document.getElementById("total-gastos");
-
-    if (elProd) elProd.textContent = activos.length;
-    if (elExis) elExis.textContent = unidades;
-    if (elVentas) elVentas.textContent = ventas;
-    if (elGastos) elGastos.textContent = gastos;
-
-    mostrarMensaje(mensajeAdmin, "Resumen actualizado correctamente.");
-  } catch (error) {
-    console.error("Error en resumen:", error);
-  }
-}
-
-async function cargarSeccion(nombre) {
-  if (!usuarioAutenticado) return;
-  const acciones = { productos: cargarProductos, inventario: cargarInventario, ventas: cargarVentas, gastos: cargarGastos, informes: cargarInformes };
-  if (acciones[nombre]) await acciones[nombre]();
-}
-
-document.querySelectorAll("[data-seccion]").forEach(boton => {
-  boton.addEventListener("click", async () => {
-    const destino = boton.dataset.seccion;
-    document.querySelectorAll('[id^="seccion-"]').forEach(s => s.classList.add("admin-oculto"));
-    const activa = document.getElementById(`seccion-${destino}`);
-    if (activa) activa.classList.remove("admin-oculto");
-    await cargarSeccion(destino);
-  });
-});
-
-if (formLogin) {
-  formLogin.addEventListener("submit", async evento => {
-    evento.preventDefault();
-    const emailInput = document.getElementById("correo-admin");
-    const passInput = document.getElementById("clave-admin");
-    if (!emailInput || !passInput) return;
-
-    const email = emailInput.value.trim();
-    const password = passInput.value;
-    const boton = formLogin.querySelector('button[type="submit"]');
-
-    if (boton) boton.disabled = true;
-    mostrarMensaje(mensajeLogin, "Verificando acceso...");
-
-    try {
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      if (!data.session) throw new Error("No se pudo establecer la sesión.");
-
-      usuarioAutenticado = true;
-      mostrarPanel(true);
-      formLogin.reset();
-      await cargarResumen();
-      mostrarMensaje(mensajeAdmin, "Sesión iniciada correctamente.");
-    } catch (error) {
-      mostrarMensaje(mensajeLogin, error.message || "No fue posible iniciar sesión.", true);
-    } finally {
-      if (boton) boton.disabled = false;
-    }
-  });
-}
-
-const btnCerrar = document.getElementById("cerrar-sesion");
-if (btnCerrar) {
-  btnCerrar.addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
-    usuarioAutenticado = false;
-    mostrarPanel(false);
-    mostrarMensaje(mensajeLogin, "Sesión cerrada correctamente.");
-  });
-}
-
-async function comprobarSesion() {
-  mostrarPanel(false);
-  const { data } = await supabaseClient.auth.getSession();
-  if (data.session) {
-    usuarioAutenticado = true;
-    mostrarPanel(true);
-    await cargarResumen();
-  }
-}
-
-comprobarSesion();
+          if (!producto ||
