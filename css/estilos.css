@@ -129,3 +129,59 @@ body {
     grid-column: 1 / -1;
     padding: 20px;
 }
+/* Posicionamiento del contenedor */
+.contenedor-categorias {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-categorias {
+    background-color: #455532;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+/* Estructura del menú desplegable vertical (oculto por defecto) */
+.menu-categorias {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #222222;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+    z-index: 1000;
+    border-radius: 4px;
+    padding: 8px 0;
+}
+
+/* Cada opción de categoría acomodada en columna (vertical) */
+.menu-categorias a {
+    color: #ffffff;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block; /* Forzar el diseño vertical */
+    font-weight: normal;
+    font-size: 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.menu-categorias a:last-child {
+    border-bottom: none;
+}
+
+.menu-categorias a:hover {
+    background-color: #444444;
+    color: #a3c1ad;
+}
+
+/* Clase que activa el JavaScript al hacer clic para mostrarlo verticalmente */
+.menu-categorias.abierto {
+    display: block;
+}
