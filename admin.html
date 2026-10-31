@@ -1,116 +1,1281 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skenzi Home — Panel Administrativo</title>
-    <!-- Estilos generales y específicos del panel -->
-    <link rel="stylesheet" href="estilos.css">
-    <style>
-        /* Estilos específicos para el panel de administración */
-        body { background-color: #f0f2f5; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        .admin-oculto { display: none !important; }
-        .admin-login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .admin-campo { width: 100%; padding: 10px; margin: 8px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .admin-boton { background-color: #455532; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .admin-boton:hover { background-color: #364426; }
-        
-        /* Layout del panel principal */
-        .admin-layout { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 250px; background-color: #1a1a1a; color: white; padding: 20px; }
-        .admin-sidebar h2 { font-size: 18px; margin-bottom: 20px; color: #a3c1ad; }
-        .admin-sidebar button { display: block; width: 100%; background: none; border: none; color: white; text-align: left; padding: 12px; cursor: pointer; font-size: 15px; border-radius: 4px; margin-bottom: 5px; }
-        .admin-sidebar button:hover { background-color: #333; }
-        
-        .admin-content { flex: 1; padding: 30px; background-color: #fff; overflow-y: auto; }
-        .admin-tabla { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .admin-tabla th, .admin-tabla td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-        .admin-tabla th { background-color: #f8f9fa; }
-        
-        .admin-tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .admin-tarjeta { background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .admin-tarjeta h3 { margin: 0 0 10px 0; font-size: 14px; color: #6c757d; }
-        .admin-tarjeta .admin-valor { font-size: 24px; font-weight: bold; color: #212529; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Administrador | Variedades Skenzi</title>
+
+  <style>
+    :root {
+      --crema: #F7F2E8;
+      --terracota: #C76F45;
+      --negro: #292929;
+      --blanco: #FFFCF7;
+      --beige: #E7D8C5;
+      --gris: #77736E;
+      --verde: #47765A;
+      --rojo: #B94B42;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--crema);
+      color: var(--negro);
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 255px;
+      background: var(--negro);
+      color: white;
+      padding: 28px 18px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      padding: 5px 10px 28px;
+      border-bottom: 1px solid #4b4b4b;
+      margin-bottom: 25px;
+    }
+
+    .brand h1 {
+      font-size: 23px;
+      letter-spacing: 1px;
+    }
+
+    .brand span {
+      color: #E5A17F;
+    }
+
+    .brand p {
+      margin-top: 8px;
+      color: #d1c7bc;
+      font-size: 12px;
+    }
+
+    .menu-title {
+      color: #b7afa5;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 12px 10px;
+    }
+
+    .menu-button {
+      width: 100%;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border: none;
+      background: transparent;
+      color: #eee8e0;
+      padding: 13px 12px;
+      margin: 3px 0;
+      text-align: left;
+      border-radius: 9px;
+      transition: .2s;
+    }
+
+    .menu-button:hover,
+    .menu-button.active {
+      background: var(--terracota);
+      color: white;
+    }
+
+    .sidebar-footer {
+      margin-top: 35px;
+      padding: 15px 10px;
+      border-top: 1px solid #4b4b4b;
+      color: #d1c7bc;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    .topbar h2 {
+      font-size: 26px;
+    }
+
+    .topbar p {
+      margin-top: 6px;
+      color: var(--gris);
+      font-size: 14px;
+    }
+
+    .status {
+      background: #e0ecdf;
+      color: #356443;
+      border-radius: 30px;
+      padding: 9px 13px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h3 {
+      font-size: 21px;
+    }
+
+    .section-heading p {
+      color: var(--gris);
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    .button {
+      background: var(--terracota);
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .button:hover {
+      filter: brightness(.94);
+    }
+
+    .button.secondary {
+      background: var(--negro);
+    }
+
+    .button.light {
+      background: var(--beige);
+      color: var(--negro);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 17px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: var(--blanco);
+      padding: 21px;
+      border: 1px solid var(--beige);
+      border-radius: 13px;
+      box-shadow: 0 3px 12px #29292908;
+    }
+
+    .card .label {
+      font-size: 13px;
+      color: var(--gris);
+    }
+
+    .card .number {
+      font-size: 27px;
+      font-weight: bold;
+      margin-top: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .card .note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--gris);
+    }
+
+    .panel {
+      background: var(--blanco);
+      border: 1px solid var(--beige);
+      border-radius: 13px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .panel h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .empty {
+      color: var(--gris);
+      text-align: center;
+      padding: 35px 15px;
+      line-height: 1.7;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9cbbb;
+      background: white;
+      border-radius: 8px;
+      color: var(--negro);
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: 2px solid #c76f4566;
+      border-color: var(--terracota);
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .preview {
+      width: 100px;
+      height: 100px;
+      border: 1px dashed #c7b7a4;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: var(--gris);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+
+    th, td {
+      padding: 13px 12px;
+      border-bottom: 1px solid #eee4d7;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--gris);
+      background: #f5eee4;
+      font-size: 12px;
+    }
+
+    .product-image {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid var(--beige);
+    }
+
+    .small-button {
+      padding: 7px 9px;
+      border: none;
+      border-radius: 6px;
+      margin: 2px;
+      font-size: 12px;
+      background: var(--beige);
+      color: var(--negro);
+    }
+
+    .small-button.delete {
+      background: #f5dfdc;
+      color: var(--rojo);
+    }
+
+    .notice {
+      padding: 13px 15px;
+      background: #f6eadc;
+      border-left: 4px solid var(--terracota);
+      border-radius: 6px;
+      color: #69452f;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .zone-row {
+      display: grid;
+      grid-template-columns: 1fr 170px auto;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .zone-row input {
+      min-width: 0;
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d9cbbb;
+      border-radius: 8px;
+    }
+
+    .preview-order {
+      background: white;
+      border: 1px solid var(--beige);
+      padding: 18px;
+      border-radius: 9px;
+      margin-top: 18px;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .muted {
+      color: var(--gris);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1050px) {
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .sidebar {
+        width: 220px;
+      }
+
+      .main {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 16px;
+      }
+
+      .brand {
+        padding-bottom: 15px;
+        margin-bottom: 10px;
+      }
+
+      .menu-title,
+      .sidebar-footer {
+        display: none;
+      }
+
+      .sidebar nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+      }
+
+      .menu-button {
+        font-size: 12px;
+        padding: 11px 8px;
+      }
+
+      .main {
+        padding: 17px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar h2 {
+        font-size: 23px;
+      }
+
+      .cards {
+        gap: 10px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .card .number {
+        font-size: 22px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .zone-row {
+        grid-template-columns: 1fr;
+        border-bottom: 1px solid var(--beige);
+        padding-bottom: 12px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+<div class="layout">
 
-    <!-- ============================================ -->
-    <!-- 1. PANTALLA DE INICIO DE SESIÓN -->
-    <!-- ============================================ -->
-    <div id="admin-login" class="admin-login-container">
-        <h2>Panel Administrativo</h2>
-        <p>Inicia sesión para gestionar Skenzi Home.</p>
-        
-        <form id="form-login">
-            <label for="correo-admin">Correo electrónico</label>
-            <input type="email" id="correo-admin" class="admin-campo" required>
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>VARIEDADES <span>SKENZI</span></h1>
+      <p>Panel de administración</p>
+    </div>
 
-            <label for="clave-admin">Contraseña</label>
-            <input type="password" id="clave-admin" class="admin-campo" required>
+    <div class="menu-title">Menú principal</div>
 
-            <button type="submit" class="admin-boton" style="width: 100%;">Ingresar</button>
-            <p id="mensaje-login" style="margin-top: 15px; font-weight: bold;"></p>
+    <nav>
+      <button class="menu-button active" data-section="inicio">📊 Resumen</button>
+      <button class="menu-button" data-section="inventario">📦 Inventario</button>
+      <button class="menu-button" data-section="productos">➕ Crear producto</button>
+      <button class="menu-button" data-section="pedidos">🛒 Pedidos</button>
+      <button class="menu-button" data-section="domicilios">🚚 Domicilios</button>
+      <button class="menu-button" data-section="rotulos">🏷️ Rótulos</button>
+      <button class="menu-button" data-section="recibos">🧾 Recibos</button>
+      <button class="menu-button" data-section="ventas">💰 Ventas</button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <strong>VARIEDADES SKENZI</strong><br>
+      Gestión de tu tienda<br>
+      <span id="connectionStatus">Modo de demostración</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h2 id="pageTitle">Resumen de la tienda</h2>
+        <p>Administra tus productos, pedidos e inventario.</p>
+      </div>
+      <div class="status">● Panel de demostración</div>
+    </header>
+
+    <div class="notice">
+      <strong>Importante:</strong> esta versión es una interfaz inicial.
+      Los datos se guardan temporalmente en este navegador. Todavía no están
+      conectados a Supabase ni sincronizados con la vitrina pública.
+      No registres aquí información real de clientes hasta configurar la seguridad.
+    </div>
+
+    <!-- RESUMEN -->
+    <section class="section active" id="inicio">
+      <div class="cards">
+        <article class="card">
+          <div class="label">Productos registrados</div>
+          <div class="number" id="totalProductos">0</div>
+          <div class="note">Productos del inventario</div>
+        </article>
+
+        <article class="card">
+          <div class="label">Pedidos guardados</div>
+          <div class="number" id="totalPedidos">0</div>
+          <div class="note">Pedidos de demostración</div>
+        </article>
+
+        <article class="card">
+          <div class="label">Pedidos pendientes</div>
+          <div class="number" id="pedidosPendientes">0</div>
+          <div class="note">Por revisar o confirmar</div>
+        </article>
+
+        <article class="card">
+          <div class="label">Valor de ventas registradas</div>
+          <div class="number" id="totalVentas">$0</div>
+          <div class="note">Solo ventas registradas como entregadas</div>
+        </article>
+      </div>
+
+      <div class="panel">
+        <h3>Bienvenida a tu administrador</h3>
+        <p class="muted">
+          Desde el menú puedes registrar productos, consultar el inventario,
+          administrar las tarifas de domicilio y revisar los pedidos.
+          Las funciones que dependen de la base de datos se conectarán en la
+          siguiente etapa.
+        </p>
+      </div>
+
+      <div class="panel">
+        <h3>Accesos rápidos</h3>
+        <div class="form-actions">
+          <button class="button" data-go="productos">➕ Crear producto</button>
+          <button class="button secondary" data-go="inventario">📦 Ver inventario</button>
+          <button class="button light" data-go="domicilios">🚚 Configurar domicilios</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVENTARIO -->
+    <section class="section" id="inventario">
+      <div class="section-heading">
+        <div>
+          <h3>Inventario de productos</h3>
+          <p>Consulta costos, precios de venta y existencias.</p>
+        </div>
+        <button class="button" data-go="productos">➕ Nuevo producto</button>
+      </div>
+
+      <div class="panel">
+        <div class="field" style="max-width:400px;margin-bottom:18px">
+          <label for="buscarProducto">Buscar producto</label>
+          <input id="buscarProducto" type="search" placeholder="Escribe el nombre del producto">
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Unidades</th>
+                <th>Costo</th>
+                <th>Precio venta</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaProductos">
+              <tr><td colspan="7" class="empty">Todavía no has registrado productos.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREAR PRODUCTOS -->
+    <section class="section" id="productos">
+      <div class="section-heading">
+        <div>
+          <h3 id="tituloFormularioProducto">Registrar producto</h3>
+          <p>Completa la información del artículo.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <form id="formProducto">
+          <input type="hidden" id="productoId">
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="nombreProducto">Nombre del producto *</label>
+              <input id="nombreProducto" required maxlength="120">
+            </div>
+
+            <div class="field">
+              <label for="categoriaProducto">Categoría *</label>
+              <select id="categoriaProducto" required>
+                <option value="">Seleccionar categoría</option>
+                <option>Hogar</option>
+                <option>Cocina</option>
+                <option>Organizadores</option>
+                <option>Textiles</option>
+                <option>Hogar inteligente</option>
+                <option>Deporte</option>
+                <option>Tecnología</option>
+                <option>Industrial y herramientas</option>
+                <option>Juguetes</option>
+                <option>Ofertas</option>
+                <option>Otros</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="descripcionProducto">Descripción</label>
+              <textarea id="descripcionProducto" maxlength="2000"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="costoProducto">Precio de costo (COP) *</label>
+              <input id="costoProducto" type="number" min="0" step="1" required>
+            </div>
+
+            <div class="field">
+              <label for="precioProducto">Precio de venta (COP) *</label>
+              <input id="precioProducto" type="number" min="0" step="1" required>
+            </div>
+
+            <div class="field">
+              <label for="stockProducto">Unidades disponibles *</label>
+              <input id="stockProducto" type="number" min="0" step="1" required>
+            </div>
+
+            <div class="field">
+              <label for="stockMinimo">Avisar cuando queden estas unidades</label>
+              <input id="stockMinimo" type="number" min="0" step="1" value="2">
+            </div>
+
+            <div class="field full">
+              <label for="imagenProducto">Fotografía del producto</label>
+              <input id="imagenProducto" type="file" accept="image/jpeg,image/png,image/webp">
+              <div class="preview" id="vistaImagen">Vista previa</div>
+              <p class="muted">JPG, PNG o WEBP. La subida permanente se conectará a Supabase Storage.</p>
+            </div>
+
+            <div class="field">
+              <label for="estadoProducto">Estado</label>
+              <select id="estadoProducto">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button" type="submit">Guardar producto en demostración</button>
+            <button class="button light" type="button" id="limpiarProducto">Limpiar formulario</button>
+          </div>
         </form>
-    </div>
+      </div>
+    </section>
 
-    <!-- ============================================ -->
-    <!-- 2. PANEL PRINCIPAL DE ADMINISTRACIÓN -->
-    <!-- ============================================ -->
-    <div id="admin-panel" class="admin-layout admin-oculto">
-        
-        <!-- Menú Lateral -->
-        <aside class="admin-sidebar">
-            <h2>SKENZI HOME</h2>
-            <button type="button" data-seccion="productos">📦 Productos</button>
-            <button type="button" data-seccion="inventario">📊 Inventario</button>
-            <button type="button" data-seccion="ventas">🛒 Ventas y Pedidos</button>
-            <button type="button" data-seccion="gastos">💰 Gastos</button>
-            <button type="button" data-seccion="informes">📈 Informes</button>
-            <hr style="border-color: #333; margin: 20px 0;">
-            <button type="button" id="cerrar-sesion" style="color: #ff6b6b;">🚪 Cerrar sesión</button>
-        </aside>
+    <!-- PEDIDOS -->
+    <section class="section" id="pedidos">
+      <div class="section-heading">
+        <div>
+          <h3>Pedidos de clientes</h3>
+          <p>Consulta y actualiza el estado de los pedidos guardados.</p>
+        </div>
+      </div>
 
-        <!-- Contenido Dinámico de las Secciones -->
-        <main class="admin-content">
-            <p id="mensaje-admin" style="font-weight: bold; margin-bottom: 20px;"></p>
+      <div class="panel">
+        <div class="notice">
+          Los pedidos reales se guardarán aquí cuando conectemos el formulario
+          de compra de la vitrina a la base de datos.
+        </div>
 
-            <!-- SECCIÓN: PRODUCTOS -->
-            <section id="seccion-productos">
-                <h2>Gestión de Productos</h2>
-                <div id="lista-productos">Cargando formulario de productos...</div>
-            </section>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Cliente</th>
+                <th>Celular</th>
+                <th>Dirección</th>
+                <th>Total</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPedidos">
+              <tr><td colspan="6" class="empty">Aún no hay pedidos guardados.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-            <!-- SECCIÓN: INVENTARIO -->
-            <section id="seccion-inventario" class="admin-oculto">
-                <h2>Control de Inventario</h2>
-                <div id="lista-inventario">Cargando inventario...</div>
-            </section>
+    <!-- DOMICILIOS -->
+    <section class="section" id="domicilios">
+      <div class="section-heading">
+        <div>
+          <h3>Tarifas de domicilio</h3>
+          <p>Define el precio de entrega para cada zona.</p>
+        </div>
+      </div>
 
-            <!-- SECCIÓN: VENTAS Y PEDIDOS -->
-            <section id="seccion-ventas" class="admin-oculto">
-                <h2>Ventas y Pedidos de Clientes</h2>
-                <div id="lista-ventas">Cargando ventas...</div>
-            </section>
+      <div class="panel">
+        <div class="notice">
+          La tarifa inicial para Cali urbana es de $8.000 COP.
+          Las tarifas de las demás zonas las defines tú.
+        </div>
 
-            <!-- SECCIÓN: GASTOS -->
-            <section id="seccion-gastos" class="admin-oculto">
-                <h2>Registro de Gastos</h2>
-                <div id="lista-gastos">Cargando gastos...</div>
-            </section>
+        <div id="listaZonas"></div>
 
-            <!-- SECCIÓN: INFORMES -->
-            <section id="seccion-informes" class="admin-oculto">
-                <h2>Informes Generales</h2>
-                <div id="lista-informes">Calculando informes...</div>
-            </section>
-        </main>
-    </div>
+        <div class="form-actions">
+          <button class="button" id="agregarZona" type="button">➕ Agregar zona</button>
+          <button class="button secondary" id="guardarZonas" type="button">Guardar tarifas en este navegador</button>
+        </div>
+        <p class="muted" style="margin-top:15px">
+          Esta versión guarda las tarifas únicamente en este navegador.
+          Después las conectaremos a la base de datos para administrarlas de forma segura.
+        </p>
+      </div>
+    </section>
 
-    <!-- ============================================ -->
-    <!-- SCRIPTS DE SUPABASE Y CONTROL ADMINISTRATIVO -->
-    <!-- ============================================ -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="admin.js"></script>
+    <!-- RÓTULOS -->
+    <section class="section" id="rotulos">
+      <div class="section-heading">
+        <div>
+          <h3>Rótulos y etiquetas</h3>
+          <p>Prepara etiquetas para los productos.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <form id="formRotulo">
+          <div class="form-grid">
+            <div class="field">
+              <label for="rotuloNombre">Nombre del producto</label>
+              <input id="rotuloNombre" required>
+            </div>
+            <div class="field">
+              <label for="rotuloPrecio">Precio (COP)</label>
+              <input id="rotuloPrecio" type="number" min="0" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="button" type="submit">Generar rótulo</button>
+            <button class="button light" type="button" id="imprimirRotulo">Imprimir</button>
+          </div>
+        </form>
+        <div id="vistaRotulo" class="preview-order hidden"></div>
+      </div>
+    </section>
+
+    <!-- RECIBOS -->
+    <section class="section" id="recibos">
+      <div class="section-heading">
+        <div>
+          <h3>Recibos de pago</h3>
+          <p>Genera e imprime comprobantes sencillos.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <form id="formRecibo">
+          <div class="form-grid">
+            <div class="field">
+              <label for="reciboCliente">Nombre del cliente</label>
+              <input id="reciboCliente" required>
+            </div>
+            <div class="field">
+              <label for="reciboCelular">Celular</label>
+              <input id="reciboCelular" inputmode="tel">
+            </div>
+            <div class="field">
+              <label for="reciboConcepto">Concepto o productos</label>
+              <textarea id="reciboConcepto" required></textarea>
+            </div>
+            <div class="field">
+              <label for="reciboValor">Valor recibido (COP)</label>
+              <input id="reciboValor" type="number" min="0" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="button" type="submit">Crear recibo</button>
+            <button class="button light" type="button" id="imprimirRecibo">Imprimir recibo</button>
+          </div>
+        </form>
+        <div id="vistaRecibo" class="preview-order hidden"></div>
+      </div>
+    </section>
+
+    <!-- VENTAS -->
+    <section class="section" id="ventas">
+      <div class="section-heading">
+        <div>
+          <h3>Ventas registradas</h3>
+          <p>Consulta el valor de las ventas registradas como entregadas.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="muted">
+          El informe de ventas se conectará a los pedidos y a la base de datos.
+          Un pedido pendiente no se contará como una venta realizada.
+        </p>
+        <div class="table-wrap" style="margin-top:18px">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Pedido</th>
+                <th>Productos</th>
+                <th>Valor</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tablaVentas">
+              <tr><td colspan="5" class="empty">Todavía no hay ventas registradas.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const money = value => new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0
+  }).format(Number(value) || 0);
+
+  const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+
+  const readStorage = (key, fallback) => {
+    try {
+      const value = localStorage.getItem(key);
+      return value ? JSON.parse(value) : fallback;
+    } catch {
+      return fallback;
+    }
+  };
+
+  let productos = readStorage("vs_demo_productos", []);
+  let pedidos = readStorage("vs_demo_pedidos", []);
+  let zonas = readStorage("vs_demo_zonas", [
+    { nombre: "Cali urbana", precio: 8000 }
+  ]);
+
+  let imagenTemporal = "";
+  let objectUrlTemporal = "";
+
+  function saveProducts() {
+    try {
+      localStorage.setItem("vs_demo_productos", JSON.stringify(productos));
+      return true;
+    } catch {
+      alert("No se pudo guardar el producto. La imagen podría ser demasiado grande. La subida permanente se habilitará con Supabase Storage.");
+      return false;
+    }
+  }
+
+  function saveZones() {
+    try {
+      localStorage.setItem("vs_demo_zonas", JSON.stringify(zonas));
+      return true;
+    } catch {
+      alert("No fue posible guardar las tarifas en este navegador.");
+      return false;
+    }
+  }
+
+  function goTo(sectionId) {
+    document.querySelectorAll(".section").forEach(section => {
+      section.classList.toggle("active", section.id === sectionId);
+    });
+
+    document.querySelectorAll(".menu-button").forEach(button => {
+      button.classList.toggle("active", button.dataset.section === sectionId);
+    });
+
+    const selected = document.querySelector(
+      `.menu-button[data-section="${sectionId}"]`
+    );
+
+    $("pageTitle").textContent = selected
+      ? selected.textContent.trim().replace(/^[^\wÁÉÍÓÚÑáéíóúñ]+\s*/, "")
+      : "Administrador";
+
+    if (sectionId === "inventario") renderProducts();
+    if (sectionId === "pedidos") renderOrders();
+    if (sectionId === "domicilios") renderZones();
+    if (sectionId === "inicio") updateDashboard();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-section]").forEach(button => {
+    button.addEventListener("click", () => goTo(button.dataset.section));
+  });
+
+  document.querySelectorAll("[data-go]").forEach(button => {
+    button.addEventListener("click", () => goTo(button.dataset.go));
+  });
+
+  function renderProducts() {
+    const query = $("buscarProducto").value.trim().toLowerCase();
+    const filtered = productos.filter(product =>
+      product.nombre.toLowerCase().includes(query)
+    );
+
+    $("tablaProductos").innerHTML = filtered.length ? filtered.map(product => `
+      <tr>
+        <td>${product.imagen
+          ? `<img class="product-image" src="${safe(product.imagen)}" alt="">`
+          : "—"}</td>
+        <td>${safe(product.nombre)}<br><small>${safe(product.estado)}</small></td>
+        <td>${safe(product.categoria)}</td>
+        <td>${Number(product.stock)}</td>
+        <td>${money(product.costo)}</td>
+        <td>${money(product.precio)}</td>
+        <td>
+          <button class="small-button" data-edit="${safe(product.id)}">Editar</button>
+          <button class="small-button delete" data-delete="${safe(product.id)}">Eliminar</button>
+        </td>
+      </tr>
+    `).join("") : `
+      <tr><td colspan="7" class="empty">No hay productos para mostrar.</td></tr>
+    `;
+
+    $("tablaProductos").querySelectorAll("[data-edit]").forEach(button => {
+      button.addEventListener("click", () => editProduct(button.dataset.edit));
+    });
+
+    $("tablaProductos").querySelectorAll("[data-delete]").forEach(button => {
+      button.addEventListener("click", () => deleteProduct(button.dataset.delete));
+    });
+  }
+
+  $("buscarProducto").addEventListener("input", renderProducts);
+
+  $("imagenProducto").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      alert("Selecciona una imagen JPG, PNG o WEBP.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Para esta demostración, elige una imagen de máximo 2 MB. Después subiremos las fotografías a Supabase Storage.");
+      event.target.value = "";
+      return;
+    }
+
+    if (objectUrlTemporal) URL.revokeObjectURL(objectUrlTemporal);
+    objectUrlTemporal = URL.createObjectURL(file);
+    imagenTemporal = objectUrlTemporal;
+
+    $("vistaImagen").innerHTML =
+      `<img src="${safe(imagenTemporal)}" alt="Vista previa del producto">`;
+  });
+
+  function resetProductForm() {
+    $("formProducto").reset();
+    $("productoId").value = "";
+    $("stockMinimo").value = "2";
+    $("tituloFormularioProducto").textContent = "Registrar producto";
+    imagenTemporal = "";
+
+    if (objectUrlTemporal) {
+      URL.revokeObjectURL(objectUrlTemporal);
+      objectUrlTemporal = "";
+    }
+
+    $("vistaImagen").textContent = "Vista previa";
+  }
+
+  $("limpiarProducto").addEventListener("click", resetProductForm);
+
+  $("formProducto").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const id = $("productoId").value;
+    const previous = productos.find(product => product.id === id);
+
+    const product = {
+      id: id || (crypto.randomUUID
+        ? crypto.randomUUID()
+        : String(Date.now())),
+      nombre: $("nombreProducto").value.trim(),
+      categoria: $("categoriaProducto").value,
+      descripcion: $("descripcionProducto").value.trim(),
+      costo: Number($("costoProducto").value),
+      precio: Number($("precioProducto").value),
+      stock: Number($("stockProducto").value),
+      stockMinimo: Number($("stockMinimo").value || 0),
+      estado: $("estadoProducto").value,
+      imagen: imagenTemporal || (previous ? previous.imagen : ""),
+      actualizado: new Date().toISOString()
+    };
+
+    if (!product.nombre || !product.categoria ||
+        product.costo < 0 || product.precio < 0 || product.stock < 0) {
+      alert("Revisa los datos del producto.");
+      return;
+    }
+
+    if (id) {
+      productos = productos.map(item => item.id === id ? product : item);
+    } else {
+      productos.push(product);
+    }
+
+    if (!saveProducts()) return;
+
+    renderProducts();
+    updateDashboard();
+    resetProductForm();
+    goTo("inventario");
+
+    alert("Producto guardado en esta demostración del navegador.");
+  });
+
+  function editProduct(id) {
+    const product = productos.find(item => item.id === id);
+    if (!product) return;
+
+    $("productoId").value = product.id;
+    $("nombreProducto").value = product.nombre;
+    $("categoriaProducto").value = product.categoria;
+    $("descripcionProducto").value = product.descripcion;
+    $("costoProducto").value = product.costo;
+    $("precioProducto").value = product.precio;
+    $("stockProducto").value = product.stock;
+    $("stockMinimo").value = product.stockMinimo;
+    $("estadoProducto").value = product.estado;
+
+    imagenTemporal = product.imagen || "";
+    $("vistaImagen").innerHTML = imagenTemporal
+      ? `<img src="${safe(imagenTemporal)}" alt="Imagen actual">`
+      : "Vista previa";
+
+    $("tituloFormularioProducto").textContent = "Actualizar producto";
+    goTo("productos");
+  }
+
+  function deleteProduct(id) {
+    const product = productos.find(item => item.id === id);
+    if (!product) return;
+
+    if (!confirm(`¿Eliminar "${product.nombre}" de esta demostración?`)) return;
+
+    productos = productos.filter(item => item.id !== id);
+    if (saveProducts()) {
+      renderProducts();
+      updateDashboard();
+    }
+  }
+
+  function updateDashboard() {
+    $("totalProductos").textContent = productos.length;
+    $("totalPedidos").textContent = pedidos.length;
+    $("pedidosPendientes").textContent =
+      pedidos.filter(order => order.estado === "Pendiente").length;
+
+    const sales = pedidos
+      .filter(order => order.estado === "Entregado")
+      .reduce((sum, order) => sum + Number(order.total || 0), 0);
+
+    $("totalVentas").textContent = money(sales);
+  }
+
+  function renderOrders() {
+    $("tablaPedidos").innerHTML = pedidos.length ? pedidos.map(order => `
+      <tr>
+        <td>${safe(order.numero)}</td>
+        <td>${safe(order.nombre)}</td>
+        <td>${safe(order.celular)}</td>
+        <td>${safe(order.direccion)}</td>
+        <td>${money(order.total)}</td>
+        <td>${safe(order.estado)}</td>
+      </tr>
+    `).join("") : `
+      <tr><td colspan="6" class="empty">Aún no hay pedidos guardados.</td></tr>
+    `;
+  }
+
+  function renderZones() {
+    $("listaZonas").innerHTML = zonas.map((zone, index) => `
+      <div class="zone-row">
+        <input aria-label="Nombre de la zona" data-zone-name="${index}"
+          value="${safe(zone.nombre)}" placeholder="Nombre de la zona">
+        <input aria-label="Tarifa en pesos" data-zone-price="${index}"
+          type="number" min="0" step="1" value="${Number(zone.precio)}">
+        <button class="small-button delete" type="button"
+          data-zone-delete="${index}">Eliminar</button>
+      </div>
+    `).join("");
+
+    $("listaZonas").querySelectorAll("[data-zone-delete]").forEach(button => {
+      button.addEventListener("click", () => {
+        zonas.splice(Number(button.dataset.zoneDelete), 1);
+        renderZones();
+      });
+    });
+  }
+
+  $("agregarZona").addEventListener("click", () => {
+    zonas.push({ nombre: "", precio: 0 });
+    renderZones();
+  });
+
+  $("guardarZonas").addEventListener("click", () => {
+    const names = [...$("listaZonas").querySelectorAll("[data-zone-name]")];
+    const prices = [...$("listaZonas").querySelectorAll("[data-zone-price]")];
+
+    zonas = names.map((input, index) => ({
+      nombre: input.value.trim(),
+      precio: Number(prices[index].value)
+    }));
+
+    if (zonas.some(zone => !zone.nombre || zone.precio < 0)) {
+      alert("Completa el nombre y la tarifa de todas las zonas.");
+      return;
+    }
+
+    if (saveZones()) alert("Tarifas guardadas en este navegador.");
+  });
+
+  function printBlock(element) {
+    if (!element || element.classList.contains("hidden")) {
+      alert("Primero genera el documento.");
+      return;
+    }
+
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      alert("Permite las ventanas emergentes para imprimir.");
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+      <title>Variedades Skenzi</title>
+      <style>
+        body{font-family:Arial,sans-serif;padding:30px;color:#292929}
+        .ticket{max-width:420px;margin:auto;border:1px solid #ddd;padding:24px}
+        h1{text-align:center;font-size:21px}
+        .price{text-align:center;font-size:25px;font-weight:bold}
+        p{line-height:1.6;overflow-wrap:anywhere}
+      </style></head><body>
+      <div class="ticket">${element.innerHTML}</div>
+      <script>window.onload=()=>window.print();<\/script>
+      </body></html>
+    `);
+    printWindow.document.close();
+  }
+
+  $("formRotulo").addEventListener("submit", event => {
+    event.preventDefault();
+
+    $("vistaRotulo").classList.remove("hidden");
+    $("vistaRotulo").innerHTML = `
+      <div style="text-align:center;padding:10px">
+        <strong>VARIEDADES SKENZI</strong>
+        <h3 style="margin:12px 0">${safe($("rotuloNombre").value)}</h3>
+        <p class="muted">Precio de venta</p>
+        <div class="price" style="font-size:25px;font-weight:bold;margin-top:8px">
+          ${money($("rotuloPrecio").value)}
+        </div>
+      </div>
+    `;
+  });
+
+  $("imprimirRotulo").addEventListener("click", () => {
+    printBlock($("vistaRotulo"));
+  });
+
+  $("formRecibo").addEventListener("submit", event => {
+    event.preventDefault();
+
+    $("vistaRecibo").classList.remove("hidden");
+    $("vistaRecibo").innerHTML = `
+      <h2 style="text-align:center">VARIEDADES SKENZI</h2>
+      <h3 style="text-align:center;margin:10px 0">COMPROBANTE DE PAGO</h3>
+      <p><strong>Fecha:</strong> ${new Date().toLocaleString("es-CO")}</p>
+      <p><strong>Cliente:</strong> ${safe($("reciboCliente").value)}</p>
+      <p><strong>Celular:</strong> ${safe($("reciboCelular").value || "No indicado")}</p>
+      <p><strong>Concepto:</strong><br>${safe($("reciboConcepto").value).replace(/\n/g, "<br>")}</p>
+      <p class="price" style="font-size:22px;font-weight:bold;margin-top:15px">
+        Total recibido: ${money($("reciboValor").value)}
+      </p>
+      <p style="text-align:center;margin-top:20px">¡Gracias por tu compra!</p>
+      <p class="muted" style="text-align:center">Comprobante de demostración.</p>
+    `;
+  });
+
+  $("imprimirRecibo").addEventListener("click", () => {
+    printBlock($("vistaRecibo"));
+  });
+
+  renderProducts();
+  renderOrders();
+  renderZones();
+  updateDashboard();
+})();
+</script>
 </body>
 </html>
