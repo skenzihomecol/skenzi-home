@@ -604,16 +604,13 @@ function consultarProducto(idProducto) {
         "noopener,noreferrer"
     );
 }
-
 function enviarPedidoWhatsApp() {
     if (!NUMERO_WHATSAPP) {
-        mostrarMensaje(
-            "Falta configurar el número de WhatsApp de Skenzi Home en tienda.js."
-        );
+        mostrarMensaje("Falta configurar el número de WhatsApp de Skenzi Home en tienda.js.");
         return;
     }
 
-  const carrito = leerCarrito().filter(item => item.id !== idProducto);
+    const carrito = leerCarrito();
 
     if (!carrito.length) {
         mostrarMensaje("Tu carrito está vacío.");
@@ -627,13 +624,6 @@ function enviarPedidoWhatsApp() {
         const producto = PRODUCTOS.find(p => p.id === item.id);
 
         if (!producto || !productoTienePrecio(producto)) continue;
-
-        if (producto.id.startsWith("demo-")) {
-            mostrarMensaje(
-                "El carrito contiene productos de demostración. Configura tus productos reales antes de hacer un pedido."
-            );
-            return;
-        }
 
         const subtotal = producto.precio * item.cantidad;
         total += subtotal;
@@ -660,6 +650,7 @@ function enviarPedidoWhatsApp() {
         "noopener,noreferrer"
     );
 }
+
 /* ==========================================================
    9. EVENTOS DE LA TIENDA
    ========================================================== */
