@@ -463,15 +463,14 @@ function agregarAlCarrito(idProducto) {
 }
 
 function quitarDelCarrito(idProducto) {
- const carrito = leerCarrito().filter(item => item.id !== idProducto);
-
+    const carrito = leerCarrito().filter(item => item.id !== idProducto);
     guardarCarrito(carrito);
     actualizarContadorCarrito();
     mostrarCarrito();
 }
 
 function cambiarCantidad(idProducto, cantidad) {
-  const carrito = leerCarrito().filter(item => item.id !== idProducto);
+    const carrito = leerCarrito();
     const item = carrito.find(producto => producto.id === idProducto);
 
     if (!item) return;
@@ -482,7 +481,6 @@ function cambiarCantidad(idProducto, cantidad) {
         quitarDelCarrito(idProducto);
         return;
     }
-
     item.cantidad = Math.floor(nuevaCantidad);
 
     guardarCarrito(carrito);
