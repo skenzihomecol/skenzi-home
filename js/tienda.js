@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al conectar con Supabase:", err);
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
+   const urlParams = new URLSearchParams(window.location.search);
     const catFiltro = urlParams.get("categoria");
 
     if (catFiltro) {
