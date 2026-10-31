@@ -1,260 +1,100 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#20221D">
-
-    <title>Skenzi Home | Hogar, estilo y variedad</title>
-
-    <meta name="description" content="Descubre productos para el hogar, cocina, tecnología, deporte, organización y mucho más en Skenzi Home.">
-
-    <link rel="stylesheet" href="css/estilos.css">
-  
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="js/tienda.js" defer></script>
+    <title>Skenzi Home — Tienda Principal</title>
+    <!-- Vincula tus estilos CSS aquí -->
+    <link rel="stylesheet" href="estilos.css">
 </head>
+<body data-pagina="inicio">
 
-<body data-pagina="catalogo">
+    <!-- ============================================ -->
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <!-- ============================================ -->
+    <header class="header-tienda">
+        <div class="header-superior">
+            <div class="logo">
+                <h1>SKENZI HOME</h1>
+            </div>
 
-    <!-- ENCABEZADO -->
-    <header class="encabezado">
-
-        <div class="fila-superior">
-
-            <a class="marca" href="index.html" aria-label="Skenzi Home">
-                SKENZI<span>HOME</span>
-            </a>
-
-            <form class="busqueda" data-busqueda role="search">
-                <input
-                    type="search"
-                    aria-label="Buscar productos"
-                    placeholder="¿Qué estás buscando?"
-                >
+            <!-- Barra de búsqueda -->
+            <form class="buscador" data-busqueda>
+                <input type="text" placeholder="¿Qué estás buscando?">
                 <button type="submit">Buscar</button>
             </form>
 
-            <a class="carrito-enlace" href="carrito.html">
-                🛒 Carrito
-                (<span data-contador-carrito>0</span>)
-            </a>
-
+            <!-- Carrito de compras -->
+            <div class="contenedor-carrito-enlace">
+                <a class="carrito-enlace" href="carrito.html">
+                    🛒 Carrito 
+                    (<span data-contador-carrito>0</span>)
+                </a>
+            </div>
         </div>
 
-        <!-- MENÚ PRINCIPAL -->
+        <!-- Menú de navegación principal -->
         <nav aria-label="Navegación principal">
-
             <div class="menu">
-
-     <div class="menu-categorias">
-
-                    <button
-                        type="button"
-                        data-boton-categorias
-                        aria-expanded="false"
-                    >
+                
+                <!-- Menú Desplegable de Categorías -->
+                <div class="contenedor-categorias">
+                    <button type="button" data-boton-categorias aria-expanded="false" class="btn-categorias">
                         CATEGORÍAS ▾
                     </button>
-<div class="menu-categorias lista-categorias">                        <a href="hogar.html">Hogar</a>
-                        <a href="deporte.html">Deporte</a>
-                        <a href="tecnologia.html">Tecnología</a>
-                        <a href="industrial.html">Industrial</a>
-                        <a href="juguetes.html">Juguetes</a>
-                        <a href="belleza.html">Belleza</a>
-
+                    <div class="menu-categorias">
+                        <a href="index.html?categoria=hogar">Hogar</a>
+                        <a href="index.html?categoria=juguetes">Juguetes</a>
+                        <a href="index.html?categoria=herramientas">Herramientas</a>
+                        <a href="index.html?categoria=deporte">Deporte</a>
+                        <a href="index.html?categoria=belleza">Belleza</a>
                     </div>
-
                 </div>
 
-                <a href="novedades.html">NOVEDADES</a>
-                <a href="contacto.html">CONTACTO</a>
-
+                <!-- Enlaces del menú -->
+                <a href="novedades.html">Novedades</a>
+                <a href="contacto.html">Contacto</a>
             </div>
-
         </nav>
-
     </header>
 
-
+    <!-- ============================================ -->
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="contenedor">
-
-        <!-- BANNER PRINCIPAL -->
-        <section class="hero">
-
-            <div class="hero-contenido">
-
-                <span class="etiqueta">
-                    BIENVENIDO A SKENZI HOME
-                </span>
-
-                <h1>
-                    Tu hogar,<br>
-                    tu estilo.
-                </h1>
-
-                <p>
-                    Descubre productos que hacen tu vida más práctica,
-                    cómoda y especial.
-                </p>
-
-                <a class="boton" href="#productos">
-                    DESCUBRIR PRODUCTOS
-                </a>
-
-            </div>
-
+    <!-- ============================================ -->
+    <main class="main-container">
+        
+        <!-- Sección de Oferta del Día -->
+        <section id="producto-oferta-dia" class="seccion-oferta-dia">
+            <!-- Se llena dinámicamente con JS -->
         </section>
 
-
-      
-<!-- GALERÍA DE OFERTAS -->
-<section class="galeria-ofertas" id="ofertas">
-
-    <!-- OFERTA DEL DÍA -->
-    <article class="panel-oferta-dia">
-
-        <h2>Oferta del día</h2>
-
-        <div id="producto-oferta-dia">
-            <div class="vacio">
-                Próximamente encontrarás aquí nuestra oferta destacada.
+        <!-- Galería de Productos -->
+        <section id="productos" class="seccion-catalogo">
+            <h2 id="titulo-productos">Todos nuestros productos</h2>
+            
+            <!-- Contenedor donde se insertarán las tarjetas de productos -->
+            <div id="galeria-productos" class="galeria-grid">
+                <p class="vacio">Cargando catálogo...</p>
             </div>
-        </div>
-
-    </article>
-
-    <!-- CARRUSEL DE OFERTAS -->
-    <article class="panel-carrusel-ofertas">
-
-        <div class="encabezado-ofertas">
-            <h2>Ofertas</h2>
-
-            <a class="enlace-ofertas" href="novedades.html">
-                Mostrar todas las ofertas →
-            </a>
-        </div>
-
-        <div class="carrusel-contenedor">
-
-            <div
-                id="carrusel-ofertas"
-                class="carrusel-productos"
-                aria-label="Productos en oferta"
-            >
-                <div class="vacio">
-                    Próximamente encontrarás aquí nuestros productos en oferta.
-                </div>
-            </div>
-
-            <div class="flechas-carrusel">
-
-                <button
-                    type="button"
-                    id="ofertas-anterior"
-                    aria-label="Ver ofertas anteriores"
-                >
-                    ‹
-                </button>
-
-                <button
-                    type="button"
-                    id="ofertas-siguiente"
-                    aria-label="Ver más ofertas"
-                >
-                    ›
-                </button>
-
-            </div>
-
-        </div>
-
-    </article>
-
-</section>
-
-
-        <!-- GALERÍA GENERAL DE PRODUCTOS -->
-        <section class="seccion" id="productos">
-
-            <div class="seccion-cabecera">
-
-                <div>
-                    <span class="etiqueta">DESCUBRE NUESTRA VARIEDAD</span>
-                    <h2>Explora nuestros productos</h2>
-
-                    <p>
-                        Encuentra artículos para diferentes espacios,
-                        necesidades y estilos de vida.
-                    </p>
-                </div>
-
-            </div>
-
-           <div
-    id="galeria-productos"
-    class="grid-productos"
-    data-listado-productos
-></div>
-
         </section>
 
-
-       
-
-        <!-- INFORMACIÓN DE COMPRA -->
-        <section class="seccion informacion-compra">
-
-            <div class="seccion-cabecera">
-
-                <div>
-                    <h2>Compra con tranquilidad</h2>
-
-                    <p>
-                        Antes de confirmar tu pedido, verificamos la
-                        disponibilidad, el precio final y las condiciones
-                        de envío.
-                    </p>
-                </div>
-
-            </div>
-
-        </section>
-
+        <!-- Mensajes de notificación flotantes/sistema -->
+        <div id="mensaje-tienda" class="mensaje-alerta" hidden></div>
     </main>
 
-
+    <!-- ============================================ -->
     <!-- PIE DE PÁGINA -->
-    <footer class="pie">
-
-        <div class="pie-interior">
-
-            <div>
-                <strong>SKENZI HOME</strong>
-                <br>
-                <small>Tu hogar, tu estilo.</small>
-            </div>
-
-            <div>
-                <a href="contacto.html">Contacto</a>
-                ·
-                <a href="carrito.html">Carrito</a>
-            </div>
-
-            <small>
-                La disponibilidad, el precio final y el envío se confirman
-                antes de aceptar el pedido.
-            </small>
-
-        </div>
-
+    <!-- ============================================ -->
+    <footer>
+        <p>&copy; 2026 Skenzi Home. Todos los derechos reservados.</p>
     </footer>
 
-
-    <!-- MENSAJES DE LA TIENDA -->
-    <div
-        id="mensaje-tienda"
-        class="contenedor"
-        role="
+    <!-- ============================================ -->
+    <!-- SCRIPTS (SUPABASE Y SCRIPT PRINCIPAL) -->
+    <!-- ============================================ -->
+    <!-- SDK de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Script principal de la tienda -->
+    <script src="tienda.js"></script>
+</body>
+</html>
