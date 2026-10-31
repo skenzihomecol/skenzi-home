@@ -1,3 +1,4 @@
+
 "use strict";
 
 /* =====================================================
@@ -111,6 +112,9 @@ function mostrarProductos(lista, idContenedor = "galeria-productos") {
     contenedor.innerHTML = lista.map(tarjetaProducto).join("");
 }
 
+/* ==========================================================
+   CONFIGURACIÓN DEL MENÚ DESPLEGABLE VERTICAL
+   ========================================================== */
 function configurarMenu() {
     const boton = document.querySelector("[data-boton-categorias]");
     const menu = document.querySelector(".menu-categorias");
@@ -124,6 +128,13 @@ function configurarMenu() {
 
     document.addEventListener("click", evento => {
         if (!menu.contains(evento.target)) {
+            menu.classList.remove("abierto");
+            boton.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    document.addEventListener("keydown", evento => {
+        if (evento.key === "Escape") {
             menu.classList.remove("abierto");
             boton.setAttribute("aria-expanded", "false");
         }
@@ -275,6 +286,9 @@ document.addEventListener("change", evento => {
     if (inputCant) cambiarCantidad(inputCant.dataset.cantidad, inputCant.value);
 });
 
+/* ==========================================================
+   INICIALIZACIÓN Y CARGA DESDE SUPABASE CON FILTROS
+   ========================================================== */
 document.addEventListener("DOMContentLoaded", async () => {
     configurarMenu();
     configurarBusqueda();
@@ -285,34 +299,73 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const { data: productosSupabase, error } = await supabaseClient
             .from("productos")
-            .select("id, nombre, descripcion, precio_venta, existencias, imagen_url, activo, categoria_id")
+            .select(`
+                id,
+                nombre,
+                descripcion,
+                precio_venta,
+                existencias,
+                imagen_url,
+                activo,
+                categoria_id,
+                es_novedad,
+                es_destacado,
+                en_oferta,
+                categorias (
+                    nombre
+                )
+            `)
             .eq("activo", true);
 
         if (!error && productosSupabase) {
-            PRODUCTOS = productosSupabase.map(p => ({
-                id: p.id,
-                nombre: p.nombre,
-                descripcion: p.descripcion || "",
-                precio: Number(p.precio_venta) || 0,
-                disponible: Number(p.existencias) > 0 ? "Disponible" : "Agotado",
-                imagen: p.imagen_url || "",
-                categoriaId: p.categoria_id,
-                activo: p.activo
-            }));
+            PRODUCTOS = productosSupabase.map(p => {
+                const nombreCat = p.categorias?.nombre || "";
+                const catNormalizada = nombreCat
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase()
+                    .trim();
+
+                return {
+                    id: String(p.id),
+                    nombre: p.nombre || "",
+                    descripcion: p.descripcion || "",
+                    precio: Number(p.precio_venta) || 0,
+                    disponible: Number(p.existencias) > 0 ? "Disponible" : "Agotado",
+                    imagen: p.imagen_url || "",
+                    categoria: catNormalizada,
+                    categoriaId: p.categoria_id,
+                    novedad: Boolean(p.es_novedad),
+                    destacado: Boolean(p.es_destacado),
+                    oferta: Boolean(p.en_oferta),
+                    activo: Boolean(p.activo)
+                };
+            });
         }
     } catch (err) {
         console.error("Error al conectar con Supabase:", err);
     }
 
-   const urlParams = new URLSearchParams(window.location.search);
+    const categoriaPagina = document.body.dataset.categoria;
+    const paginaActual = document.body.dataset.pagina;
+    const urlParams = new URLSearchParams(window.location.search);
     const catFiltro = urlParams.get("categoria");
 
-    if (catFiltro) {
-        // Filtro por categoría seleccionada
-        const filtrados = PRODUCTOS.filter(p => String(p.categoriaId) === String(catFiltro));
+    if (categoriaPagina) {
+        const filtrados = PRODUCTOS.filter(p => p.categoria === categoriaPagina || String(p.categoriaId) === String(categoriaPagina));
         mostrarProductos(filtrados, "galeria-productos");
+    } else if (catFiltro) {
+        const filtrados = PRODUCTOS.filter(p => String(p.categoriaId) === String(catFiltro) || p.categoria === catFiltro);
+        mostrarProductos(filtrados, "galeria-productos");
+    } else if (paginaActual === "novedades") {
+        const novedades = PRODUCTOS.filter(p => p.novedad);
+        mostrarProductos(novedades, "galeria-productos");
+    } else if (paginaActual === "destacados") {
+        const destacados = PRODUCTOS.filter(p => p.destacado);
+        mostrarProductos(destacados, "galeria-productos");
     } else {
-        mostrarProductos(PRODUCTOS, "galeria-productos");
+        const productosActivos = PRODUCTOS.filter(p => p.activo);
+        mostrarProductos(productosActivos, "galeria-productos");
     }
 
     actualizarContadorCarrito();
