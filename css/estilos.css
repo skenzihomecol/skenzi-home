@@ -364,3 +364,37 @@ a{color:inherit;text-decoration:none}button,.boton{font:inherit;border:0;border-
         padding: 20px;
     }
 }
+/* Posicionamiento y estado oculto por defecto */
+.contenedor-categorias {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-categorias {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #222222; /* Ajusta según el diseño de tu tienda */
+    min-width: 180px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+    z-index: 1000;
+    padding: 10px 0;
+    border-radius: 4px;
+}
+
+.menu-categorias a {
+    color: #ffffff;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.menu-categorias a:hover {
+    background-color: #444444;
+}
+
+/* CLASE QUE ACTIVA EL JAVASCRIPT AL HACER CLIC */
+.menu-categorias.abierto {
+    display: block;
+}
