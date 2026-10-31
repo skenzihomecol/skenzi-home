@@ -1,284 +1,116 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administración | Skenzi Home</title>
-
-  <link rel="stylesheet" href="css/estilos.css">
-
-  <style>
-    .admin-contenedor {
-      max-width: 1200px;
-      margin: 35px auto;
-      padding: 20px;
-    }
-
-    .admin-encabezado {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .admin-encabezado h1 {
-      color: #555b35;
-      margin: 0;
-    }
-
-    .admin-tarjetas {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 20px;
-      margin: 25px 0;
-    }
-
-    .admin-tarjeta {
-      background: #fff;
-      padding: 24px;
-      border-radius: 15px;
-      box-shadow: 0 4px 16px rgba(0,0,0,.07);
-    }
-
-    .admin-tarjeta h3 {
-      margin-top: 0;
-      color: #686d4c;
-    }
-
-    .admin-valor {
-      font-size: 27px;
-      font-weight: bold;
-      color: #343a25;
-    }
-
-    .admin-menu {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 25px 0;
-    }
-
-    .admin-menu button,
-    .admin-boton {
-      border: 0;
-      border-radius: 8px;
-      padding: 12px 17px;
-      cursor: pointer;
-      background: #606844;
-      color: white;
-      font-weight: 600;
-    }
-
-    .admin-menu button:hover,
-    .admin-boton:hover {
-      background: #454b30;
-    }
-
-    .admin-seccion {
-      background: #fff;
-      border-radius: 15px;
-      padding: 24px;
-      margin: 20px 0;
-      box-shadow: 0 4px 16px rgba(0,0,0,.06);
-    }
-
-    .admin-tabla {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    .admin-tabla th,
-    .admin-tabla td {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-    }
-
-    .admin-tabla th {
-      background: #f3f1e8;
-    }
-
-    .admin-aviso {
-      padding: 15px;
-      background: #f5f0df;
-      border-radius: 10px;
-      line-height: 1.6;
-    }
-
-    .admin-oculto {
-      display: none !important;
-    }
-
-    .admin-campo {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 11px;
-      margin: 7px 0 15px;
-      border: 1px solid #ddd;
-      border-radius: 7px;
-    }
-
-    #admin-login {
-      max-width: 420px;
-      margin: 60px auto;
-      background: white;
-      border-radius: 15px;
-      padding: 28px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.08);
-    }
-
-    @media (max-width: 600px) {
-      .admin-contenedor {
-        padding: 12px;
-      }
-
-      .admin-seccion {
-        padding: 15px;
-        overflow-x: auto;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skenzi Home — Panel Administrativo</title>
+    <!-- Estilos generales y específicos del panel -->
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        /* Estilos específicos para el panel de administración */
+        body { background-color: #f0f2f5; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .admin-oculto { display: none !important; }
+        .admin-login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-campo { width: 100%; padding: 10px; margin: 8px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .admin-boton { background-color: #455532; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .admin-boton:hover { background-color: #364426; }
+        
+        /* Layout del panel principal */
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 250px; background-color: #1a1a1a; color: white; padding: 20px; }
+        .admin-sidebar h2 { font-size: 18px; margin-bottom: 20px; color: #a3c1ad; }
+        .admin-sidebar button { display: block; width: 100%; background: none; border: none; color: white; text-align: left; padding: 12px; cursor: pointer; font-size: 15px; border-radius: 4px; margin-bottom: 5px; }
+        .admin-sidebar button:hover { background-color: #333; }
+        
+        .admin-content { flex: 1; padding: 30px; background-color: #fff; overflow-y: auto; }
+        .admin-tabla { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .admin-tabla th, .admin-tabla td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        .admin-tabla th { background-color: #f8f9fa; }
+        
+        .admin-tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .admin-tarjeta { background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .admin-tarjeta h3 { margin: 0 0 10px 0; font-size: 14px; color: #6c757d; }
+        .admin-tarjeta .admin-valor { font-size: 24px; font-weight: bold; color: #212529; }
+    </style>
 </head>
-
 <body>
 
-  <main class="admin-contenedor">
+    <!-- ============================================ -->
+    <!-- 1. PANTALLA DE INICIO DE SESIÓN -->
+    <!-- ============================================ -->
+    <div id="admin-login" class="admin-login-container">
+        <h2>Panel Administrativo</h2>
+        <p>Inicia sesión para gestionar Skenzi Home.</p>
+        
+        <form id="form-login">
+            <label for="correo-admin">Correo electrónico</label>
+            <input type="email" id="correo-admin" class="admin-campo" required>
 
-    <section id="admin-login">
-      <h1>Skenzi Home</h1>
-      <h2>Panel administrativo</h2>
-      <p>Inicia sesión para administrar tu negocio.</p>
+            <label for="clave-admin">Contraseña</label>
+            <input type="password" id="clave-admin" class="admin-campo" required>
 
-      <form id="form-login">
-        <label for="correo-admin">Correo electrónico</label>
-        <input
-          class="admin-campo"
-          id="correo-admin"
-          type="email"
-          autocomplete="username"
-          required
-        >
+            <button type="submit" class="admin-boton" style="width: 100%;">Ingresar</button>
+            <p id="mensaje-login" style="margin-top: 15px; font-weight: bold;"></p>
+        </form>
+    </div>
 
-        <label for="clave-admin">Contraseña</label>
-        <input
-          class="admin-campo"
-          id="clave-admin"
-          type="password"
-          autocomplete="current-password"
-          required
-        >
+    <!-- ============================================ -->
+    <!-- 2. PANEL PRINCIPAL DE ADMINISTRACIÓN -->
+    <!-- ============================================ -->
+    <div id="admin-panel" class="admin-layout admin-oculto">
+        
+        <!-- Menú Lateral -->
+        <aside class="admin-sidebar">
+            <h2>SKENZI HOME</h2>
+            <button type="button" data-seccion="productos">📦 Productos</button>
+            <button type="button" data-seccion="inventario">📊 Inventario</button>
+            <button type="button" data-seccion="ventas">🛒 Ventas y Pedidos</button>
+            <button type="button" data-seccion="gastos">💰 Gastos</button>
+            <button type="button" data-seccion="informes">📈 Informes</button>
+            <hr style="border-color: #333; margin: 20px 0;">
+            <button type="button" id="cerrar-sesion" style="color: #ff6b6b;">🚪 Cerrar sesión</button>
+        </aside>
 
-        <button class="admin-boton" type="submit">
-          Iniciar sesión
-        </button>
-      </form>
+        <!-- Contenido Dinámico de las Secciones -->
+        <main class="admin-content">
+            <p id="mensaje-admin" style="font-weight: bold; margin-bottom: 20px;"></p>
 
-      <p id="mensaje-login" role="status"></p>
-    </section>
+            <!-- SECCIÓN: PRODUCTOS -->
+            <section id="seccion-productos">
+                <h2>Gestión de Productos</h2>
+                <div id="lista-productos">Cargando formulario de productos...</div>
+            </section>
 
-    <section id="admin-panel" class="admin-oculto">
+            <!-- SECCIÓN: INVENTARIO -->
+            <section id="seccion-inventario" class="admin-oculto">
+                <h2>Control de Inventario</h2>
+                <div id="lista-inventario">Cargando inventario...</div>
+            </section>
 
-      <header class="admin-encabezado">
-        <div>
-          <h1>Skenzi Home</h1>
-          <p>Panel de control del negocio</p>
-        </div>
+            <!-- SECCIÓN: VENTAS Y PEDIDOS -->
+            <section id="seccion-ventas" class="admin-oculto">
+                <h2>Ventas y Pedidos de Clientes</h2>
+                <div id="lista-ventas">Cargando ventas...</div>
+            </section>
 
-      
-        <button class="admin-boton" id="cerrar-sesion" type="button">
-          Cerrar sesión
-        </button>
-      </header>
+            <!-- SECCIÓN: GASTOS -->
+            <section id="seccion-gastos" class="admin-oculto">
+                <h2>Registro de Gastos</h2>
+                <div id="lista-gastos">Cargando gastos...</div>
+            </section>
 
-      <div class="admin-tarjetas">
-        <article class="admin-tarjeta">
-          <h3>Productos activos</h3>
-          <div class="admin-valor" id="total-productos">—</div>
-        </article>
+            <!-- SECCIÓN: INFORMES -->
+            <section id="seccion-informes" class="admin-oculto">
+                <h2>Informes Generales</h2>
+                <div id="lista-informes">Calculando informes...</div>
+            </section>
+        </main>
+    </div>
 
-        <article class="admin-tarjeta">
-          <h3>Unidades en inventario</h3>
-          <div class="admin-valor" id="total-existencias">—</div>
-        </article>
-
-        <article class="admin-tarjeta">
-          <h3>Ventas registradas</h3>
-          <div class="admin-valor" id="total-ventas">—</div>
-        </article>
-
-        <article class="admin-tarjeta">
-          <h3>Gastos registrados</h3>
-          <div class="admin-valor" id="total-gastos">—</div>
-        </article>
-      </div>
-
-      <nav class="admin-menu" aria-label="Administración">
-        <button type="button" data-seccion="inicio">Inicio</button>
-        <button type="button" data-seccion="productos">Productos</button>
-        <button type="button" data-seccion="inventario">Inventario</button>
-        <button type="button" data-seccion="ventas">Ventas</button>
-        <button type="button" data-seccion="gastos">Gastos</button>
-        <button type="button" data-seccion="informes">Informes</button>
-      </nav>
-
-      <section class="admin-seccion" id="seccion-inicio">
-        <h2>Resumen del negocio</h2>
-        <p class="admin-aviso">
-          Aquí podrás consultar el estado de tu tienda, el inventario,
-          las ventas y los gastos.
-        </p>
-      </section>
-
-    
-<section class="admin-seccion admin-oculto" id="seccion-productos">
-
-  <h2>Administración de productos</h2>
-
-  <p>Agrega y administra tu catálogo desde este panel.</p>
-
-  <div id="lista-productos">
-    Cargando productos...
-  </div>
-
-</section>
-
-
-      <section class="admin-seccion admin-oculto" id="seccion-inventario">
-        <h2>Inventario</h2>
-        <p>Control de entradas, salidas y alertas de stock.</p>
-        <div id="lista-inventario">Conexión pendiente.</div>
-      </section>
-
-      <section class="admin-seccion admin-oculto" id="seccion-ventas">
-        <h2>Ventas y pedidos</h2>
-        <p>Registro de ventas de la tienda y ventas externas.</p>
-        <div id="lista-ventas">Conexión pendiente.</div>
-      </section>
-
-      <section class="admin-seccion admin-oculto" id="seccion-gastos">
-        <h2>Gastos del negocio</h2>
-        <p>Registro de compras, domicilios, empaques y otros gastos.</p>
-        <div id="lista-gastos">Conexión pendiente.</div>
-      </section>
-
-      <section class="admin-seccion admin-oculto" id="seccion-informes">
-        <h2>Informes</h2>
-        <p>Informes de ventas, costos, ganancias y productos sin rotación.</p>
-        <div id="lista-informes">Conexión pendiente.</div>
-      </section>
-
-      <p id="mensaje-admin" role="status"></p>
-
-    </section>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/admin.js"></script>
-
+    <!-- ============================================ -->
+    <!-- SCRIPTS DE SUPABASE Y CONTROL ADMINISTRATIVO -->
+    <!-- ============================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
-
