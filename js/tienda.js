@@ -7,7 +7,15 @@
 
 /* 1. CONFIGURACIÓN */
 
-const NUMERO_WHATSAPP = ""; // Configura aquí tu número comercial.
+const NUMERO_WHATSAPP = "573137541978";
+// CONEXIÓN DE LA TIENDA CON SUPABASE
+const SUPABASE_URL = "https://xjqoforlmxmpykjynlsm.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ovZCy27ft6esmpYC2PSLSQ_AoPfH0zv";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 const CATEGORIAS = [
     { id: "hogar", nombre: "Hogar", icono: "🏠" },
