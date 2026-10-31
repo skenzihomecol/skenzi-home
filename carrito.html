@@ -1,14 +1,46 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#20221D">
-<link rel="stylesheet" href="css/estilos.css">
-<script src="js/tienda.js" defer></script><title>Carrito | Skenzi Home</title><meta name="description" content="Tienda en línea Skenzi Home."></head><body ><header class="encabezado"><div class="fila-superior">
-<a class="marca" href="index.html">SKENZI<span>HOME</span></a>
-<form class="busqueda" data-busqueda role="search"><input type="search" aria-label="Buscar productos" placeholder="Buscar productos..."><button type="submit">Buscar</button></form>
-<a class="carrito-enlace" href="carrito.html">🛒 Carrito (<span data-contador-carrito>0</span>)</a></div>
-<nav aria-label="Navegación principal"><div class="menu"><div class="menu-categorias">
-<button type="button" data-boton-categorias aria-expanded="false">CATEGORÍAS ▾</button><div class="lista-categorias">
-<a href="hogar.html">Hogar</a><a href="deporte.html">Deporte</a><a href="tecnologia.html">Tecnología</a><a href="industrial.html">Industrial</a><a href="juguetes.html">Juguetes</a><a href="belleza.html">Belleza</a></div></div>
-<a href="novedades.html">NOVEDADES</a><a href="contacto.html">CONTACTO</a></div></nav></header><main class="contenedor"><section class="seccion"><div class="seccion-cabecera"><div><h1>Tu carrito</h1><p>Revisa los productos y prepara tu pedido.</p></div></div><div id="lista-carrito"></div><div class="resumen-carrito" style="margin-top:1rem"><h2>Subtotal de productos: <span id="total-carrito">$0</span></h2><p>El costo del envío y la disponibilidad se confirman antes de aceptar el pedido.</p><button type="button" id="vaciar-carrito">Vaciar carrito</button></div></section>
-<section class="seccion"><h2>Datos para preparar el pedido</h2><form class="formulario" onsubmit="return false"><label>Nombre completo<input id="cliente-nombre" autocomplete="name" required></label><label>Teléfono<input id="cliente-telefono" type="tel" autocomplete="tel" required></label><label>Ciudad<input id="cliente-ciudad" autocomplete="address-level2" required></label><label>Dirección de entrega<input id="cliente-direccion" autocomplete="street-address" required></label><button class="boton" type="button" id="pedido-whatsapp">Preparar pedido por WhatsApp</button></form><p class="pie-aviso">El mensaje se prepara para que lo revises y lo envíes. El número comercial debe configurarse primero.</p></section></main><footer class="pie"><div class="pie-interior"><div><strong>SKENZI HOME</strong><br><small>Tu hogar, tu estilo.</small></div><div><a href="contacto.html">Contacto</a> · <a href="carrito.html">Carrito</a></div><small>La disponibilidad, el precio final y el envío se confirman antes de aceptar el pedido.</small></div></footer><div id="mensaje-tienda" class="contenedor" role="status" hidden style="padding:.8rem 0"></div></body></html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skenzi Home — Carrito de Compras</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body data-pagina="carrito">
+
+    <!-- Encabezado simple -->
+    <header class="header-tienda">
+        <div class="logo">
+            <h1><a href="index.html" style="color: white; text-decoration: none;">SKENZI HOME</a></h1>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <h2>Tu Carrito de Compras</h2>
+
+        <!-- Lista de elementos del carrito -->
+        <div id="lista-carrito" class="contenedor-lista-carrito">
+            <p>Cargando carrito...</p>
+        </div>
+
+        <!-- Resumen y botón de pedido -->
+        <div class="carrito-resumen" style="margin-top: 20px; text-align: right;">
+            <h3>Total a pagar: <span id="total-carrito">$0</span></h3>
+            <button type="button" id="pedido-whatsapp" class="btn-whatsapp" style="background-color: #25d366; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer;">
+                Enviar pedido por WhatsApp 📱
+            </button>
+        </div>
+
+        <p style="margin-top: 20px;">
+            <a href="index.html">← Seguir comprando</a>
+        </p>
+
+        <!-- Mensajes de alerta -->
+        <div id="mensaje-tienda" class="mensaje-alerta" hidden></div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="tienda.js"></script>
+</body>
+</html>
