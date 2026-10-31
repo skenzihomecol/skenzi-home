@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skenzi Home — Categoría</title>
+    <title>Skenzi Home — Sección</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
-<!-- CAMBIA data-categoria O data-pagina SEGÚN CORRESPONDA:
-     - Para hogar: <body data-categoria="hogar">
-     - Para deporte: <body data-categoria="deporte">
-     - Para belleza: <body data-categoria="belleza">
-     - Para herramientas: <body data-categoria="herramientas">
-     - Para destacados: <body data-pagina="destacados">
-     - Para novedades: <body data-pagina="novedades"> -->
+<!-- 
+  INSTRUCCIÓN PARA CADA PÁGINA:
+  - Hogar: <body data-categoria="hogar">
+  - Deporte: <body data-categoria="deporte">
+  - Belleza: <body data-categoria="belleza">
+  - Herramientas: <body data-categoria="herramientas">
+  - Destacados: <body data-pagina="destacados">
+  - Novedades: <body data-pagina="novedades">
+-->
 <body data-categoria="hogar">
 
     <!-- ENCABEZADO Y NAVEGACIÓN -->
@@ -28,7 +30,7 @@
                 <button type="submit">Buscar</button>
             </form>
 
-            <!-- Carrito -->
+            <!-- Carrito de compras -->
             <div class="contenedor-carrito-enlace">
                 <a class="carrito-enlace" href="carrito.html">
                     🛒 Carrito (<span data-contador-carrito>0</span>)
@@ -36,7 +38,7 @@
             </div>
         </div>
 
-        <!-- Menú de navegación principal con el botón desplegable vertical -->
+        <!-- Menú de navegación principal con despliegue vertical -->
         <nav aria-label="Navegación principal">
             <div class="menu">
                 <div class="contenedor-categorias">
@@ -53,6 +55,7 @@
                 </div>
 
                 <a href="novedades.html">Novedades</a>
+                <a href="destacados.html">Destacados</a>
                 <a href="contacto.html">Contacto</a>
             </div>
         </nav>
