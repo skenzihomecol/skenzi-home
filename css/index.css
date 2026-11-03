@@ -1,0 +1,437 @@
+
+/* SKENZI HOME — ESTILOS DE INICIO */
+
+:root {
+    --verde: #455532;
+    --verde-oscuro: #303d23;
+    --crema: #faf7f0;
+    --dorado: #c7a46a;
+    --negro: #202420;
+    --blanco: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: var(--negro);
+    background: var(--crema);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ENCABEZADO */
+
+.encabezado {
+    background: var(--blanco);
+    position: relative;
+    z-index: 20;
+    box-shadow: 0 3px 18px #00000012;
+}
+
+.barra-superior {
+    max-width: 1350px;
+    margin: auto;
+    padding: 22px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--verde);
+    white-space: nowrap;
+}
+
+.logo small {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 7px;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.buscador {
+    display: flex;
+    flex: 1;
+    max-width: 550px;
+}
+
+.buscador input {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px 0 0 8px;
+    outline-color: var(--verde);
+}
+
+.buscador button {
+    border: none;
+    background: var(--verde);
+    color: white;
+    padding: 0 22px;
+    border-radius: 0 8px 8px 0;
+}
+
+.enlace-carrito {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#contador-carrito {
+    background: var(--verde);
+    color: white;
+    padding: 4px 9px;
+    border-radius: 20px;
+}
+
+/* NAVEGACIÓN */
+
+.navegacion {
+    background: var(--verde);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 15px 20px;
+}
+
+.navegacion > a,
+.menu-categorias > button {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.navegacion > a:hover {
+    color: #e8d6a9;
+}
+
+.menu-categorias {
+    position: relative;
+}
+
+.menu-categorias button {
+    border: none;
+    background: transparent;
+}
+
+.desplegable {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 210px;
+    padding: 10px 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px #00000025;
+    z-index: 100;
+}
+
+.desplegable.abierto {
+    display: block;
+}
+
+.desplegable a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+.desplegable a:hover {
+    background: var(--crema);
+    color: var(--verde);
+}
+
+/* PORTADA */
+
+.portada {
+    min-height: 440px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(115deg, #e9e4d8, #faf7f0);
+    padding: 65px max(30px, calc((100% - 1200px)/2));
+}
+
+.portada-contenido {
+    max-width: 650px;
+}
+
+.etiqueta,
+.titulo-seccion > span {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--verde);
+    font-weight: bold;
+}
+
+.portada h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(38px, 5vw, 66px);
+    line-height: 1.12;
+    margin: 20px 0;
+}
+
+.portada h1 span {
+    color: var(--verde);
+}
+
+.portada p {
+    font-size: 17px;
+    line-height: 1.8;
+    max-width: 520px;
+    margin-bottom: 32px;
+}
+
+.boton-principal {
+    display: inline-block;
+    background: var(--verde);
+    color: white;
+    padding: 16px 28px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.boton-principal:hover {
+    background: var(--verde-oscuro);
+}
+
+/* SECCIONES */
+
+.seccion-categorias,
+.catalogo {
+    max-width: 1250px;
+    margin: auto;
+    padding: 75px 25px;
+}
+
+.titulo-seccion {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.titulo-seccion h2 {
+    font-family: Georgia, serif;
+    font-size: clamp(30px, 4vw, 42px);
+    margin: 12px 0;
+}
+
+.titulo-seccion p {
+    color: #777;
+}
+
+/* CATEGORÍAS */
+
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.categoria {
+    background: white;
+    padding: 35px 20px;
+    border: 1px solid #eee9df;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.categoria:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px #00000012;
+}
+
+.categoria span {
+    font-size: 42px;
+}
+
+.categoria h3 {
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+/* PRODUCTOS */
+
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.mensaje-carga {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #777;
+    padding: 35px;
+}
+
+.tarjeta-producto {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 15px #0000000d;
+}
+
+.tarjeta-producto img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+}
+
+.tarjeta-producto .contenido {
+    padding: 18px;
+}
+
+.tarjeta-producto button {
+    background: var(--verde);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    width: 100%;
+}
+
+/* BENEFICIOS */
+
+.beneficios {
+    background: #e9ede5;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding: 55px 8%;
+    text-align: center;
+}
+
+.beneficios span {
+    font-size: 34px;
+}
+
+.beneficios p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* PIE DE PÁGINA */
+
+.pie-pagina {
+    background: #202820;
+    color: white;
+    text-align: center;
+    padding: 55px 20px 25px;
+}
+
+.logo-footer {
+    font-family: Georgia, serif;
+    font-size: 27px;
+    letter-spacing: 2px;
+}
+
+.enlaces-footer {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.copyright {
+    font-size: 12px;
+    color: #bbb;
+    border-top: 1px solid #ffffff25;
+    padding-top: 25px;
+}
+
+/* CELULARES Y TABLETAS */
+
+@media (max-width: 900px) {
+    .productos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .categorias-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .barra-superior {
+        flex-wrap: wrap;
+    }
+
+    .buscador {
+        order: 3;
+        flex-basis: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .barra-superior {
+        padding: 18px;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+    .navegacion {
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .portada {
+        min-height: 350px;
+        padding: 55px 22px;
+    }
+
+    .categorias-grid,
+    .productos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .categoria {
+        padding: 25px 10px;
+    }
+
+    .beneficios {
+        grid-template-columns: 1fr;
+    }
+
+    .enlaces-footer {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 360px) {
+    .productos-grid {
+        grid-template-columns: 1fr;
+    }
+}
