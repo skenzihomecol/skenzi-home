@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi carrito | Skenzi Home</title>
+
+    <link rel="stylesheet" href="css/carrito.css">
+</head>
+
+<body>
+
+    <header class="encabezado-carrito">
+
+        <a href="index.html" class="logo">
+            SKENZI HOME
+        </a>
+
+        <a href="index.html" class="volver">
+            ← Seguir comprando
+        </a>
+
+    </header>
+
+    <main class="contenedor-carrito">
+
+        <section class="titulo-carrito">
+            <span>SKENZI HOME</span>
+            <h1>Mi carrito de compras</h1>
+            <p>Revisa tus productos antes de realizar tu pedido.</p>
+        </section>
+
+        <div class="contenido-carrito">
+
+            <section class="productos-carrito">
+
+                <h2>Productos seleccionados</h2>
+
+                <div id="lista-carrito">
+
+                    <p class="cargando">
+                        Cargando tu carrito...
+                    </p>
+
+                </div>
+
+            </section>
+
+            <aside class="resumen-carrito">
+
+                <h2>Resumen del pedido</h2>
+
+                <div class="fila-resumen">
+                    <span>Productos</span>
+                    <strong id="cantidad-productos">0</strong>
+                </div>
+
+                <div class="fila-resumen">
+                    <span>Subtotal</span>
+                    <strong id="subtotal-carrito">$0</strong>
+                </div>
+
+                <div class="fila-resumen">
+                    <span>Envío</span>
+                    <strong>Por confirmar</strong>
+                </div>
+
+                <div class="total-carrito">
+                    <span>Total productos</span>
+                    <strong id="total-carrito">$0</strong>
+                </div>
+
+                <button
+                    type="button"
+                    id="pedido-whatsapp"
+                    class="boton-pedido"
+                >
+                    FINALIZAR PEDIDO POR WHATSAPP
+                </button>
+
+                <button
+                    type="button"
+                    id="vaciar-carrito"
+                    class="boton-vaciar"
+                >
+                    Vaciar carrito
+                </button>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <footer class="pie-carrito">
+        © 2026 Skenzi Home. Todos los derechos reservados.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/carrito.js"></script>
+
+</body>
+</html>
