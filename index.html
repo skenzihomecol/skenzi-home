@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +8,6 @@
 
     <meta name="description" content="Descubre productos para tu hogar, cocina, tecnología y mucho más en Skenzi Home.">
 
-    <!-- CSS independiente -->
     <link rel="stylesheet" href="css/index.css">
 </head>
 
@@ -52,14 +50,12 @@
                 </button>
 
                 <div class="desplegable" id="lista-categorias">
-
                     <a href="hogar.html">Hogar</a>
                     <a href="cocina.html">Cocina</a>
                     <a href="juguetes.html">Juguetes</a>
                     <a href="herramientas.html">Herramientas</a>
                     <a href="deporte.html">Deporte</a>
                     <a href="belleza.html">Belleza</a>
-
                 </div>
             </div>
 
@@ -70,9 +66,9 @@
 
     </header>
 
-    <!-- PORTADA -->
     <main>
 
+        <!-- PORTADA -->
         <section class="portada">
 
             <div class="portada-contenido">
@@ -97,64 +93,19 @@
 
         </section>
 
-        <!-- CATEGORÍAS -->
-        <section class="seccion-categorias">
-
-            <div class="titulo-seccion">
-                <span>DESCUBRE NUESTRA TIENDA</span>
-                <h2>Compra por categorías</h2>
-                <p>Encuentra fácilmente lo que necesitas.</p>
-            </div>
-
-            <div class="categorias-grid">
-
-                <a href="hogar.html" class="categoria">
-                    <span>🏡</span>
-                    <h3>Hogar</h3>
-                </a>
-
-                <a href="cocina.html" class="categoria">
-                    <span>🍳</span>
-                    <h3>Cocina</h3>
-                </a>
-
-                <a href="juguetes.html" class="categoria">
-                    <span>🧸</span>
-                    <h3>Juguetes</h3>
-                </a>
-
-                <a href="herramientas.html" class="categoria">
-                    <span>🔧</span>
-                    <h3>Herramientas</h3>
-                </a>
-
-                <a href="deporte.html" class="categoria">
-                    <span>⚽</span>
-                    <h3>Deporte</h3>
-                </a>
-
-                <a href="belleza.html" class="categoria">
-                    <span>✨</span>
-                    <h3>Belleza</h3>
-                </a>
-
-            </div>
-
-        </section>
-
-        <!-- PRODUCTOS -->
+        <!-- GALERÍA GENERAL DE PRODUCTOS -->
         <section class="catalogo" id="catalogo">
 
             <div class="titulo-seccion">
-                <span>CONOCE NUESTRA COLECCIÓN</span>
+                <span>DESCUBRE NUESTRA TIENDA</span>
                 <h2>Todos nuestros productos</h2>
-                <p>Productos seleccionados para ti.</p>
+                <p>Explora nuestra colección y encuentra lo que necesitas.</p>
             </div>
 
             <div id="galeria-productos" class="productos-grid">
 
                 <p class="mensaje-carga">
-                    Nuestro catálogo estará disponible próximamente.
+                    Cargando nuestros productos...
                 </p>
 
             </div>
@@ -209,20 +160,11 @@
 
     </footer>
 
-    <!-- JAVASCRIPT INDEPENDIENTE -->
-  
-    <!-- BIBLIOTECA SUPABASE -->
+    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- CONEXIÓN DE LA BASE DE DATOS -->
     <script src="js/supabase.js"></script>
-
-    <!-- FUNCIONES DE LA PÁGINA PRINCIPAL -->
+    <script src="js/productos.js"></script>
     <script src="js/index.js"></script>
-
-</body>
-</html>
-
 
 </body>
 </html>
