@@ -1,0 +1,282 @@
+
+/* ==========================================
+   SKENZI HOME — DISEÑO DEL CARRITO
+   ========================================== */
+
+:root {
+    --verde: #455532;
+    --verde-oscuro: #303d23;
+    --crema: #faf7f0;
+    --dorado: #c7a46a;
+    --negro: #252a24;
+    --blanco: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--crema);
+    color: var(--negro);
+}
+
+/* ENCABEZADO */
+
+.encabezado-carrito {
+    background: white;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 15px #00000010;
+}
+
+.logo {
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--verde);
+    text-decoration: none;
+}
+
+.volver {
+    color: var(--verde);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* CONTENEDOR */
+
+.contenedor-carrito {
+    max-width: 1200px;
+    margin: auto;
+    padding: 55px 25px;
+}
+
+.titulo-carrito {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.titulo-carrito span {
+    color: var(--dorado);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.titulo-carrito h1 {
+    font-family: Georgia, serif;
+    font-size: 40px;
+    margin: 15px 0;
+}
+
+.titulo-carrito p {
+    color: #777;
+    line-height: 1.6;
+}
+
+/* DISTRIBUCIÓN */
+
+.contenido-carrito {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.productos-carrito,
+.resumen-carrito {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 4px 20px #00000008;
+}
+
+.productos-carrito h2,
+.resumen-carrito h2 {
+    font-family: Georgia, serif;
+    font-size: 23px;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* PRODUCTOS */
+
+.item-carrito {
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-carrito img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    background: var(--crema);
+    border-radius: 8px;
+}
+
+.detalle-carrito {
+    flex: 1;
+}
+
+.detalle-carrito h3 {
+    margin-top: 5px;
+    font-size: 17px;
+}
+
+.detalle-carrito p {
+    color: #777;
+}
+
+.cantidad-carrito {
+    width: 65px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.boton-quitar {
+    border: none;
+    background: transparent;
+    color: #b34a4a;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+/* RESUMEN */
+
+.resumen-carrito {
+    position: sticky;
+    top: 20px;
+}
+
+.fila-resumen {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+
+.fila-resumen strong {
+    color: var(--negro);
+}
+
+.total-carrito {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 25px 0;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.total-carrito strong {
+    color: var(--verde);
+    font-size: 21px;
+}
+
+/* BOTONES */
+
+.boton-pedido {
+    width: 100%;
+    padding: 16px 12px;
+    background: var(--verde);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.boton-pedido:hover {
+    background: var(--verde-oscuro);
+}
+
+.boton-pedido:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.boton-vaciar {
+    width: 100%;
+    padding: 13px;
+    margin-top: 12px;
+    background: white;
+    color: #a34a4a;
+    border: 1px solid #e5caca;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.cargando,
+.carrito-vacio {
+    text-align: center;
+    color: #777;
+    padding: 35px 10px;
+    line-height: 1.7;
+}
+
+/* PIE DE PÁGINA */
+
+.pie-carrito {
+    margin-top: 50px;
+    padding: 30px 15px;
+    background: #202820;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* TABLETAS */
+
+@media (max-width: 800px) {
+    .contenido-carrito {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen-carrito {
+        position: static;
+    }
+}
+
+/* CELULARES */
+
+@media (max-width: 500px) {
+    .encabezado-carrito {
+        padding: 18px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .contenedor-carrito {
+        padding: 35px 15px;
+    }
+
+    .titulo-carrito h1 {
+        font-size: 30px;
+    }
+
+    .productos-carrito,
+    .resumen-carrito {
+        padding: 20px 15px;
+    }
+
+    .item-carrito img {
+        width: 85px;
+        height: 85px;
+    }
+}
