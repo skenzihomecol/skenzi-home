@@ -112,3 +112,59 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Skenzi Home: página principal iniciada.");
 
 });
+
+/* ==========================================
+   AGREGAR PRODUCTOS AL CARRITO
+   ========================================== */
+
+function agregarAlCarrito(idProducto) {
+
+    const producto = window.SK_PRODUCTOS?.find(
+        p => String(p.id) === String(idProducto)
+    );
+
+    if (!producto) {
+        alert("No encontramos este producto.");
+        return;
+    }
+
+    if (producto.existencias <= 0 || producto.precio <= 0) {
+        alert("Este producto no está disponible para compra.");
+        return;
+    }
+
+    const carrito = JSON.parse(
+        localStorage.getItem("skenzi_carrito") || "[]"
+    );
+
+    const existente = carrito.find(
+        p => String(p.id) === String(idProducto)
+    );
+
+    if (existente) {
+
+        if (existente.cantidad >= producto.existencias) {
+            alert("No hay más unidades disponibles.");
+            return;
+        }
+
+        existente.cantidad++;
+
+    } else {
+
+        carrito.push({
+            id: producto.id,
+            cantidad: 1
+        });
+
+    }
+
+    localStorage.setItem(
+        "skenzi_carrito",
+        JSON.stringify(carrito)
+    );
+
+    actualizarContadorCarrito();
+
+    alert("¡Producto agregado a tu carrito!");
+}
