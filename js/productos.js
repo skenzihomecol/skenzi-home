@@ -1,6 +1,6 @@
 
 /* ==========================================
-   SKENZI HOME — CATÁLOGO DE PRODUCTOS
+   SKENZI HOME — CATÁLOGO GENERAL
    ========================================== */
 
 "use strict";
@@ -13,7 +13,7 @@ const formatoPrecio = new Intl.NumberFormat("es-CO", {
     maximumFractionDigits: 0
 });
 
-// CARGAR PRODUCTOS DESDE SUPABASE
+// CARGAR TODOS LOS PRODUCTOS ACTIVOS
 async function cargarProductos() {
 
     const galeria = document.getElementById("galeria-productos");
@@ -64,10 +64,7 @@ async function cargarProductos() {
 
         mostrarCatalogo(window.SK_PRODUCTOS);
 
-        console.log(
-            "Productos cargados:",
-            window.SK_PRODUCTOS.length
-        );
+        console.log("Productos cargados:", window.SK_PRODUCTOS.length);
 
     } catch (error) {
 
@@ -79,11 +76,10 @@ async function cargarProductos() {
                 Intenta nuevamente más tarde.
             </p>
         `;
-
     }
 }
 
-// MOSTRAR CATÁLOGO
+// MOSTRAR GALERÍA GENERAL
 function mostrarCatalogo(productos) {
 
     const galeria = document.getElementById("galeria-productos");
@@ -119,46 +115,60 @@ function mostrarCatalogo(productos) {
             `
             : `<div class="imagen-vacia">🛍️</div>`;
 
+        const enlaceProducto =
+            `producto.html?id=${encodeURIComponent(producto.id)}`;
+
         return `
             <article class="tarjeta-producto">
 
-                <div class="imagen-producto">
-                    ${imagen}
-                </div>
+                <a
+                    href="${enlaceProducto}"
+                    class="enlace-producto"
+                    aria-label="Ver información de ${escaparHTML(producto.nombre)}"
+                >
 
-                <div class="contenido">
+                    <div class="imagen-producto">
+                        ${imagen}
+                    </div>
 
-                    <h3>${escaparHTML(producto.nombre)}</h3>
+                    <div class="contenido">
 
-                    <p class="descripcion-producto">
-                        ${escaparHTML(producto.descripcion)}
-                    </p>
+                        <h3>${escaparHTML(producto.nombre)}</h3>
 
-                    <p class="precio-producto">
-                        ${precio}
-                    </p>
+                        <p class="descripcion-producto">
+                            ${escaparHTML(producto.descripcion)}
+                        </p>
 
-                    <p class="disponibilidad">
-                        ${disponibilidad}
-                    </p>
+                        <p class="precio-producto">
+                            ${precio}
+                        </p>
 
-                    <button
-                        type="button"
-                        onclick="agregarAlCarrito('${escaparHTML(producto.id)}')"
-                        ${producto.existencias <= 0 || producto.precio <= 0 ? "disabled" : ""}
-                    >
-                        ${producto.existencias > 0 && producto.precio > 0
-                            ? "Agregar al carrito"
-                            : "No disponible"}
-                    </button>
+                        <p class="disponibilidad">
+                            ${disponibilidad}
+                        </p>
 
-                </div>
+                        <span class="ver-detalles">
+                            Ver detalles →
+                        </span>
+
+                    </div>
+
+                </a>
+
+                <button
+                    type="button"
+                    onclick="agregarAlCarrito('${escaparHTML(producto.id)}')"
+                    ${producto.existencias <= 0 || producto.precio <= 0 ? "disabled" : ""}
+                >
+                    ${producto.existencias > 0 && producto.precio > 0
+                        ? "Agregar al carrito"
+                        : "No disponible"}
+                </button>
 
             </article>
         `;
 
     }).join("");
-
 }
 
 // PROTECCIÓN DE TEXTO
@@ -171,7 +181,6 @@ function escaparHTML(texto) {
         '"': "&quot;",
         "'": "&#39;"
     })[caracter]);
-
 }
 
 // INICIAR CATÁLOGO
