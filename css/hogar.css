@@ -1,0 +1,235 @@
+
+/* SKENZI HOME — CATEGORÍA HOGAR */
+
+:root {
+    --verde: #455532;
+    --crema: #faf7f0;
+    --dorado: #c7a46a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #292d27;
+    background: var(--crema);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ENCABEZADO */
+
+.encabezado {
+    background: white;
+    padding: 22px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 3px 15px #00000010;
+}
+
+.logo {
+    font-family: Georgia, serif;
+    color: var(--verde);
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.carrito {
+    font-weight: bold;
+    color: var(--verde);
+}
+
+/* MENÚ */
+
+.navegacion {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 17px;
+    background: var(--verde);
+    color: white;
+}
+
+.navegacion a {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.navegacion a:hover,
+.navegacion .activo {
+    color: #e5c98e;
+}
+
+/* PORTADA */
+
+.portada-hogar {
+    min-height: 340px;
+    padding: 70px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(120deg, #e9e4d8, #faf7f0);
+}
+
+.portada-hogar span {
+    color: var(--verde);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.portada-hogar h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(38px, 5vw, 58px);
+    margin: 18px 0;
+}
+
+.portada-hogar p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* CATÁLOGO */
+
+.catalogo {
+    max-width: 1250px;
+    margin: auto;
+    padding: 65px 25px;
+}
+
+.titulo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.titulo span {
+    color: var(--dorado);
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.titulo h2 {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    margin: 14px 0;
+}
+
+/* PRODUCTOS */
+
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.producto {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 15px #0000000d;
+}
+
+.producto img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+}
+
+.producto-contenido {
+    padding: 18px;
+}
+
+.producto h3 {
+    font-size: 17px;
+}
+
+.precio {
+    color: var(--verde);
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.producto button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: var(--verde);
+    color: white;
+    cursor: pointer;
+}
+
+.producto button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.mensaje-vacio {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #777;
+}
+
+/* PIE DE PÁGINA */
+
+footer {
+    background: #202820;
+    color: white;
+    text-align: center;
+    padding: 28px 15px;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+    .productos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .navegacion {
+        gap: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .encabezado {
+        padding: 18px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .productos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .producto img {
+        height: 150px;
+    }
+
+    .titulo h2 {
+        font-size: 29px;
+    }
+
+    .portada-hogar {
+        min-height: 280px;
+        padding: 45px 20px;
+    }
+}
