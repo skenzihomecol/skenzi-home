@@ -1,4 +1,3 @@
-
 /* ==========================================
    SKENZI HOME — CATÁLOGO GENERAL
    ========================================== */
@@ -13,11 +12,9 @@ const formatoPrecio = new Intl.NumberFormat("es-CO", {
     maximumFractionDigits: 0
 });
 
-// CARGAR TODOS LOS PRODUCTOS ACTIVOS
+// CARGAR PRODUCTOS PUBLICADOS
 async function cargarProductos() {
-
     const galeria = document.getElementById("galeria-productos");
-
     if (!galeria) return;
 
     galeria.innerHTML = `
@@ -25,7 +22,6 @@ async function cargarProductos() {
     `;
 
     try {
-
         if (!window.skenziDB) {
             throw new Error("No existe conexión con Supabase.");
         }
@@ -36,16 +32,19 @@ async function cargarProductos() {
                 id,
                 nombre,
                 descripcion,
-                precio_venta,
-                existencias,
+                categoria,
                 imagen_url,
+                precio,
+                stock,
+                stock_minimo,
                 activo,
-                categoria_id,
-                es_novedad,
-                es_destacado,
-                en_oferta
+                publicado,
+                tipo_inventario,
+                codigo_barras,
+                visitas
             `)
-            .eq("activo", true);
+            .eq("activo", true)
+            .eq("publicado", true);
 
         if (error) throw error;
 
@@ -53,21 +52,23 @@ async function cargarProductos() {
             id: producto.id,
             nombre: producto.nombre || "Producto sin nombre",
             descripcion: producto.descripcion || "",
-            precio: Number(producto.precio_venta) || 0,
-            existencias: Number(producto.existencias) || 0,
+            categoria: producto.categoria || "",
+            precio: Number(producto.precio) || 0,
+            existencias: Number(producto.stock) || 0,
             imagen: producto.imagen_url || "",
-            categoriaId: producto.categoria_id,
-            novedad: Boolean(producto.es_novedad),
-            destacado: Boolean(producto.es_destacado),
-            oferta: Boolean(producto.en_oferta)
+            tipoInventario: producto.tipo_inventario || "Fisico",
+            codigoBarras: producto.codigo_barras || "",
+            visitas: Number(producto.visitas) || 0
         }));
 
         mostrarCatalogo(window.SK_PRODUCTOS);
 
-        console.log("Productos cargados:", window.SK_PRODUCTOS.length);
+        console.log(
+            "Productos cargados:",
+            window.SK_PRODUCTOS.length
+        );
 
     } catch (error) {
-
         console.error("Error cargando productos:", error);
 
         galeria.innerHTML = `
@@ -79,11 +80,9 @@ async function cargarProductos() {
     }
 }
 
-// MOSTRAR GALERÍA GENERAL
+// MOSTRAR GALERÍA
 function mostrarCatalogo(productos) {
-
     const galeria = document.getElementById("galeria-productos");
-
     if (!galeria) return;
 
     if (!productos.length) {
@@ -96,14 +95,18 @@ function mostrarCatalogo(productos) {
     }
 
     galeria.innerHTML = productos.map(producto => {
-
         const precio = producto.precio > 0
             ? formatoPrecio.format(producto.precio)
             : "Consultar precio";
 
+        const bajoPedido =
+            producto.tipoInventario.toLowerCase() === "bajo pedido";
+
         const disponibilidad = producto.existencias > 0
             ? "Disponible"
-            : "Agotado";
+            : bajoPedido
+                ? "Disponible bajo pedido"
+                : "Agotado";
 
         const imagen = producto.imagen
             ? `
@@ -118,30 +121,27 @@ function mostrarCatalogo(productos) {
         const enlaceProducto =
             `producto.html?id=${encodeURIComponent(producto.id)}`;
 
+        const puedeAgregar =
+            producto.precio > 0 &&
+            (producto.existencias > 0 || bajoPedido);
+
         return `
             <article class="tarjeta-producto">
 
-                <a
-                    href="${enlaceProducto}"
-                    class="enlace-producto"
-                    aria-label="Ver información de ${escaparHTML(producto.nombre)}"
-                >
+                <a href="${enlaceProducto}" class="enlace-producto">
 
                     <div class="imagen-producto">
                         ${imagen}
                     </div>
 
                     <div class="contenido">
-
                         <h3>${escaparHTML(producto.nombre)}</h3>
 
                         <p class="descripcion-producto">
                             ${escaparHTML(producto.descripcion)}
                         </p>
 
-                        <p class="precio-producto">
-                            ${precio}
-                        </p>
+                        <p class="precio-producto">${precio}</p>
 
                         <p class="disponibilidad">
                             ${disponibilidad}
@@ -150,7 +150,6 @@ function mostrarCatalogo(productos) {
                         <span class="ver-detalles">
                             Ver detalles →
                         </span>
-
                     </div>
 
                 </a>
@@ -158,22 +157,18 @@ function mostrarCatalogo(productos) {
                 <button
                     type="button"
                     onclick="agregarAlCarrito('${escaparHTML(producto.id)}')"
-                    ${producto.existencias <= 0 || producto.precio <= 0 ? "disabled" : ""}
+                    ${!puedeAgregar ? "disabled" : ""}
                 >
-                    ${producto.existencias > 0 && producto.precio > 0
-                        ? "Agregar al carrito"
-                        : "No disponible"}
+                    ${puedeAgregar ? "Agregar al carrito" : "No disponible"}
                 </button>
 
             </article>
         `;
-
     }).join("");
 }
 
 // PROTECCIÓN DE TEXTO
 function escaparHTML(texto) {
-
     return String(texto ?? "").replace(/[&<>"']/g, caracter => ({
         "&": "&amp;",
         "<": "&lt;",
