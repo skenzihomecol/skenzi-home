@@ -38,13 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (error) throw error;
 
-            if (
-                data.user?.email?.toLowerCase() !==
-                "hurtado03444@gmail.com"
-            ) {
-                await window.skenziAdminDB.auth.signOut();
-                throw new Error("Esta cuenta no tiene acceso administrativo.");
-            }
+            const correosAutorizados = [
+    "hurtado03444@gmail.com",
+    "trendylovers9@gmail.com"
+];
+
+if (!correosAutorizados.includes(data.user?.email?.toLowerCase())) {
+    await window.skenziAdminDB.auth.signOut();
+    throw new Error("Esta cuenta no tiene acceso administrativo.");
+}
+              
 
             mensaje.style.color = "#394E3C";
             mensaje.textContent = "Acceso correcto. Bienvenida.";
