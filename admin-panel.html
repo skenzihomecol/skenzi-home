@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Panel de administración | Skenzi Home</title>
+
+    <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+
+<body>
+
+    <header class="admin-header">
+
+        <a href="index.html" class="admin-logo">
+            SKENZI
+            <small>HOME</small>
+        </a>
+
+        <div class="admin-header-derecha">
+            <span id="correo-admin">Administración</span>
+            <button id="cerrar-sesion" type="button">
+                Cerrar sesión
+            </button>
+        </div>
+
+    </header>
+
+    <main class="admin-contenedor">
+
+        <section class="bienvenida-admin">
+            <span>ESPACIO PRIVADO</span>
+            <h1>Panel de administración</h1>
+            <p>Gestiona los productos y el inventario de tu tienda.</p>
+        </section>
+
+        <!-- RESUMEN -->
+        <section class="resumen-admin">
+
+            <article class="resumen-card">
+                <span>Total de productos</span>
+                <strong id="total-productos">0</strong>
+            </article>
+
+            <article class="resumen-card">
+                <span>Productos publicados</span>
+                <strong id="productos-publicados">0</strong>
+            </article>
+
+            <article class="resumen-card">
+                <span>Productos agotados</span>
+                <strong id="productos-agotados">0</strong>
+            </article>
+
+        </section>
+
+        <!-- ACCIONES -->
+        <section class="gestion-productos">
+
+            <div class="titulo-gestion">
+                <div>
+                    <span>INVENTARIO</span>
+                    <h2>Mis productos</h2>
+                    <p>Administra el catálogo de Skenzi Home.</p>
+                </div>
+
+                <button id="nuevo-producto" type="button">
+                    + Agregar producto
+                </button>
+            </div>
+
+            <div class="herramientas-admin">
+
+                <input
+                    type="search"
+                    id="buscar-admin"
+                    placeholder="Buscar producto..."
+                >
+
+                <select id="filtro-categoria">
+                    <option value="">Todas las categorías</option>
+                    <option value="Hogar">Hogar</option>
+                    <option value="Cocina">Cocina</option>
+                    <option value="Juguetes">Juguetes</option>
+                    <option value="Herramientas">Herramientas</option>
+                    <option value="Deporte">Deporte</option>
+                    <option value="Belleza">Belleza</option>
+                    <option value="Tecnología">Tecnología</option>
+                    <option value="Organizadores">Organizadores</option>
+                    <option value="Textiles">Textiles</option>
+                </select>
+
+            </div>
+
+            <div id="lista-productos-admin">
+
+                <p class="mensaje-admin">
+                    Cargando productos...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="admin-footer">
+        SKENZI HOME · ADMINISTRACIÓN PRIVADA
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-admin.js"></script>
+    <script src="js/admin-panel.js"></script>
+
+</body>
+</html>
