@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Acceso privado | Skenzi Home</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f4f0e8;
+            font-family: Arial, sans-serif;
+            color: #30352b;
+        }
+
+        .login-contenedor {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            padding: 45px 35px;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.08);
+            text-align: center;
+        }
+
+        .logo {
+            font-family: Georgia, serif;
+            font-size: 34px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #465638;
+        }
+
+        .logo small {
+            display: block;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            letter-spacing: 7px;
+            margin-top: 5px;
+        }
+
+        .linea {
+            width: 45px;
+            height: 2px;
+            background: #a28b5b;
+            margin: 25px auto;
+        }
+
+        .login-contenedor h1 {
+            font-family: Georgia, serif;
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .descripcion {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .campo {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .campo label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #deded6;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .campo input:focus {
+            border-color: #526343;
+        }
+
+        #boton-login {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 7px;
+            background: #465638;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        #boton-login:hover {
+            background: #35452b;
+        }
+
+        #boton-login:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        #mensaje-login {
+            min-height: 22px;
+            margin-top: 18px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-top: 25px;
+            color: #526343;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .volver:hover {
+            text-decoration: underline;
+        }
+
+        .pie {
+            margin-top: 30px;
+            color: #999;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-contenedor">
+
+        <div class="logo">
+            SKENZI
+            <small>HOME</small>
+        </div>
+
+        <div class="linea"></div>
+
+        <h1>Bienvenida</h1>
+
+        <p class="descripcion">
+            Accede al espacio privado de administración
+            de Skenzi Home.
+        </p>
+
+        <form id="form-login">
+
+            <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <input
+                    type="email"
+                    id="correo"
+                    placeholder="Ingresa tu correo"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label for="contrasena">Contraseña</label>
+                <input
+                    type="password"
+                    id="contrasena"
+                    placeholder="Ingresa tu contraseña"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" id="boton-login">
+                INGRESAR AL PANEL
+            </button>
+
+            <p id="mensaje-login" aria-live="polite"></p>
+
+        </form>
+
+        <a href="index.html" class="volver">
+            ← Volver a la tienda
+        </a>
+
+        <div class="pie">
+            SKENZI HOME · ADMINISTRACIÓN PRIVADA
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-admin.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+</html>
