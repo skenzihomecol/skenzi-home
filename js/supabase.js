@@ -6,19 +6,18 @@
 "use strict";
 
 const SKENZI_SUPABASE_URL =
-    "https://xjqoforlmxmpykjynlsm.supabase.co";
+    "https://qxwrbyqgzzibulpkqilg.supabase.co";
 
 const SKENZI_SUPABASE_KEY =
-    "sb_publishable_ovZCy27ft6esmpYC2PSLSQ_AOpFH0Zv";
+    "sb_publishable_QAWrSWUCHVy5rb7elEwL7Q_xaJ5k5r3";
 
 if (!window.supabase) {
     console.error("No se pudo cargar Supabase.");
 } else {
-
     window.skenziDB = window.supabase.createClient(
         SKENZI_SUPABASE_URL,
         SKENZI_SUPABASE_KEY
     );
 
-    console.log("Conexión de Skenzi Home preparada.");
+    console.log("Conexión con Skenzi Home preparada.");
 }
