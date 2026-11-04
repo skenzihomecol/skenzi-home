@@ -333,7 +333,91 @@ async function iniciarPanel() {
 
         ventana.document.close();
     }
+// ======================================
+// AGREGAR PRODUCTOS A SUPABASE
+// ======================================
 
+const modalProducto = document.getElementById("modal-producto");
+const formularioProducto = document.getElementById("form-producto");
+const botonNuevoProducto = document.getElementById("nuevo-producto");
+const botonCerrarModal = document.getElementById("cerrar-modal-producto");
+const botonCancelarProducto = document.getElementById("cancelar-producto");
+const botonGuardarProducto = document.getElementById("guardar-producto");
+const mensajeProducto = document.getElementById("mensaje-producto");
+
+// Abrir formulario
+botonNuevoProducto?.addEventListener("click", () => {
+    formularioProducto.reset();
+    document.getElementById("producto-stock").value = 0;
+    document.getElementById("producto-stock-minimo").value = 2;
+    document.getElementById("producto-activo").checked = true;
+    document.getElementById("producto-publicado").checked = false;
+
+    mensajeProducto.textContent = "";
+    modalProducto.hidden = false;
+});
+
+// Cerrar formulario
+function cerrarFormularioProducto() {
+    modalProducto.hidden = true;
+}
+
+botonCerrarModal?.addEventListener("click", cerrarFormularioProducto);
+botonCancelarProducto?.addEventListener("click", cerrarFormularioProducto);
+
+// Guardar producto
+formularioProducto?.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+
+    mensajeProducto.style.color = "#A34E43";
+    mensajeProducto.textContent = "";
+
+    botonGuardarProducto.disabled = true;
+    botonGuardarProducto.textContent = "GUARDANDO...";
+
+    const nuevoProducto = {
+        nombre: document.getElementById("producto-nombre").value.trim(),
+        descripcion: document.getElementById("producto-descripcion").value.trim(),
+        categoria: document.getElementById("producto-categoria").value,
+        imagen_url: document.getElementById("producto-imagen").value.trim() || null,
+        costo: Number(document.getElementById("producto-costo").value),
+        precio: Number(document.getElementById("producto-precio").value),
+        stock: Number(document.getElementById("producto-stock").value),
+        stock_minimo: Number(document.getElementById("producto-stock-minimo").value),
+        codigo_barras: document.getElementById("producto-codigo").value.trim() || null,
+        tipo_inventario: document.getElementById("producto-tipo").value,
+        activo: document.getElementById("producto-activo").checked,
+        publicado: document.getElementById("producto-publicado").checked
+    };
+
+    try {
+        const { error } = await db
+            .from("productos")
+            .insert([nuevoProducto]);
+
+        if (error) throw error;
+
+        mensajeProducto.style.color = "#394E3C";
+        mensajeProducto.textContent = "¡Producto guardado correctamente!";
+
+        await cargarProductos();
+
+        formularioProducto.reset();
+
+        setTimeout(() => {
+            cerrarFormularioProducto();
+        }, 1200);
+
+    } catch (error) {
+        console.error("Error al guardar producto:", error);
+        mensajeProducto.textContent =
+            "No se pudo guardar: " + error.message;
+
+    } finally {
+        botonGuardarProducto.disabled = false;
+        botonGuardarProducto.textContent = "GUARDAR PRODUCTO";
+    }
+});
     // Eventos de búsqueda y categoría
     buscar?.addEventListener("input", mostrarProductos);
     filtro?.addEventListener("change", mostrarProductos);
