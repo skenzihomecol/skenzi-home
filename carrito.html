@@ -4,24 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Mi carrito | Skenzi Home</title>
-
     <link rel="stylesheet" href="css/carrito.css">
 </head>
 
 <body>
 
     <header class="encabezado-carrito">
-
-        <a href="index.html" class="logo">
-            SKENZI HOME
-        </a>
-
-        <a href="index.html" class="volver">
-            ← Seguir comprando
-        </a>
-
+        <a href="index.html" class="logo">SKENZI HOME</a>
+        <a href="index.html" class="volver">← Seguir comprando</a>
     </header>
 
     <main class="contenedor-carrito">
@@ -29,23 +20,64 @@
         <section class="titulo-carrito">
             <span>SKENZI HOME</span>
             <h1>Mi carrito de compras</h1>
-            <p>Revisa tus productos antes de realizar tu pedido.</p>
+            <p>Revisa tus productos y completa tus datos para realizar el pedido.</p>
         </section>
 
         <div class="contenido-carrito">
 
             <section class="productos-carrito">
-
                 <h2>Productos seleccionados</h2>
 
                 <div id="lista-carrito">
+                    <p class="cargando">Cargando tu carrito...</p>
+                </div>
+            </section>
 
-                    <p class="cargando">
-                        Cargando tu carrito...
+            <section class="datos-cliente">
+                <h2>Datos para la entrega</h2>
+                <p>Completa la información para que podamos confirmar tu pedido.</p>
+
+                <div class="formulario-cliente">
+
+                    <label for="nombre-cliente">Nombre completo *</label>
+                    <input type="text" id="nombre-cliente" required
+                           placeholder="Nombre y apellidos">
+
+                    <label for="celular-cliente">Celular / WhatsApp *</label>
+                    <input type="tel" id="celular-cliente" required
+                           placeholder="Ej. 310 500 1079">
+
+                    <label for="ciudad-cliente">Ciudad *</label>
+                    <input type="text" id="ciudad-cliente" required
+                           placeholder="Ej. Cali">
+
+                    <label for="barrio-cliente">Barrio</label>
+                    <input type="text" id="barrio-cliente"
+                           placeholder="Nombre del barrio">
+
+                    <label for="direccion-cliente">Dirección completa *</label>
+                    <input type="text" id="direccion-cliente" required
+                           placeholder="Calle, carrera, número y apartamento">
+
+                    <label for="indicaciones-cliente">Indicaciones adicionales</label>
+                    <textarea id="indicaciones-cliente"
+                              placeholder="Referencias para encontrar tu dirección"></textarea>
+
+                    <label for="metodo-pago">Método de pago *</label>
+                    <select id="metodo-pago" required>
+                        <option value="">Selecciona un método</option>
+                        <option value="Contraentrega">Contraentrega</option>
+                        <option value="Nequi">Nequi</option>
+                        <option value="Transferencia">Transferencia bancaria</option>
+                    </select>
+
+                    <p class="aviso-pedido">
+                        Tu pedido quedará pendiente de confirmación.
+                        Verificaremos la disponibilidad y el costo del envío
+                        antes de confirmar la compra.
                     </p>
 
                 </div>
-
             </section>
 
             <aside class="resumen-carrito">
@@ -72,26 +104,17 @@
                     <strong id="total-carrito">$0</strong>
                 </div>
 
-                <button
-                    type="button"
-                    id="pedido-whatsapp"
-                    class="boton-pedido"
-                >
-                    FINALIZAR PEDIDO POR WHATSAPP
+                <button type="button" id="pedido-whatsapp" class="boton-pedido">
+                    ENVIAR PEDIDO
                 </button>
 
-                <button
-                    type="button"
-                    id="vaciar-carrito"
-                    class="boton-vaciar"
-                >
+                <button type="button" id="vaciar-carrito" class="boton-vaciar">
                     Vaciar carrito
                 </button>
 
             </aside>
 
         </div>
-
     </main>
 
     <footer class="pie-carrito">
