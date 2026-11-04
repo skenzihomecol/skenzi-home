@@ -149,11 +149,42 @@
                     <textarea id="producto-descripcion" rows="4"></textarea>
                 </div>
 
-                <div class="campo-producto campo-completo">
-                    <label for="producto-imagen">URL de imagen</label>
-                    <input type="url" id="producto-imagen"
-                           placeholder="https://...">
-                </div>
+               <!-- GALERÍA DE IMÁGENES DEL PRODUCTO -->
+<div class="campo-producto campo-completo">
+
+    <label for="producto-imagen-principal">
+        Imagen principal *
+    </label>
+
+    <input
+        type="file"
+        id="producto-imagen-principal"
+        accept="image/jpeg,image/png,image/webp"
+        required
+    >
+
+    <div id="vista-imagen-principal" class="vista-imagenes"></div>
+
+</div>
+
+<div class="campo-producto campo-completo">
+
+    <label for="producto-imagenes-adicionales">
+        Fotografías adicionales (máximo 2)
+    </label>
+
+    <input
+        type="file"
+        id="producto-imagenes-adicionales"
+        accept="image/jpeg,image/png,image/webp"
+        multiple
+    >
+
+    <div id="vista-imagenes-adicionales" class="vista-imagenes"></div>
+
+    <small>Selecciona hasta dos fotografías adicionales.</small>
+
+</div>
 
                 <div class="campo-producto">
                     <label for="producto-costo">Costo de compra *</label>
