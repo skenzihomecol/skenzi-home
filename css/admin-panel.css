@@ -385,3 +385,203 @@ body {
         font-size: 9px;
     }
 }
+/* =====================================
+   FORMULARIO DE PRODUCTOS SKENZI HOME
+===================================== */
+
+.modal-producto[hidden] {
+    display: none !important;
+}
+
+.modal-producto {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(35, 42, 31, .65);
+    overflow-y: auto;
+}
+
+.formulario-producto {
+    width: 100%;
+    max-width: 850px;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 35px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.formulario-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+}
+
+.formulario-encabezado span {
+    color: #a28b5b;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.formulario-encabezado h2 {
+    margin: 10px 0;
+    color: #465638;
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.formulario-encabezado p {
+    color: #777;
+    font-size: 13px;
+}
+
+#cerrar-modal-producto {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e6e3da;
+    border-radius: 50%;
+    background: #f4f0e8;
+    color: #465638;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.campos-producto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo-producto {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo-completo {
+    grid-column: 1 / -1;
+}
+
+.campo-producto label {
+    color: #465638;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.campo-producto input,
+.campo-producto select,
+.campo-producto textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #deded6;
+    border-radius: 6px;
+    background: #fff;
+    color: #30352b;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.campo-producto input:focus,
+.campo-producto select:focus,
+.campo-producto textarea:focus {
+    outline: none;
+    border-color: #526343;
+}
+
+.campo-producto textarea {
+    resize: vertical;
+}
+
+.opciones-producto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 25px;
+    color: #465638;
+    font-size: 13px;
+}
+
+.opciones-producto label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.opciones-producto input {
+    accent-color: #465638;
+}
+
+#mensaje-producto {
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.acciones-formulario {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.acciones-formulario button {
+    padding: 13px 22px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#cancelar-producto {
+    border: 1px solid #deded6;
+    background: white;
+    color: #465638;
+}
+
+#guardar-producto {
+    border: none;
+    background: #465638;
+    color: white;
+}
+
+#guardar-producto:hover {
+    background: #35452b;
+}
+
+#guardar-producto:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+@media (max-width: 600px) {
+    .modal-producto {
+        padding: 10px;
+    }
+
+    .formulario-producto {
+        padding: 22px 16px;
+        max-height: 95vh;
+    }
+
+    .campos-producto {
+        grid-template-columns: 1fr;
+    }
+
+    .campo-completo {
+        grid-column: auto;
+    }
+
+    .acciones-formulario {
+        flex-direction: column;
+    }
+
+    .acciones-formulario button {
+        width: 100%;
+    }
+}
