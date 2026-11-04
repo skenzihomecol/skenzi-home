@@ -103,7 +103,126 @@
             </div>
 
         </section>
+<!-- FORMULARIO PARA AGREGAR PRODUCTOS -->
+<section id="modal-producto" class="modal-producto" hidden>
 
+    <div class="formulario-producto">
+
+        <div class="formulario-encabezado">
+            <div>
+                <span>INVENTARIO SKENZI HOME</span>
+                <h2>Nuevo producto</h2>
+                <p>Completa la información del producto.</p>
+            </div>
+
+            <button type="button" id="cerrar-modal-producto">×</button>
+        </div>
+
+        <form id="form-producto">
+
+            <div class="campos-producto">
+
+                <div class="campo-producto">
+                    <label for="producto-nombre">Nombre *</label>
+                    <input type="text" id="producto-nombre" required>
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-categoria">Categoría *</label>
+                    <select id="producto-categoria" required>
+                        <option value="">Seleccionar categoría</option>
+                        <option>Hogar</option>
+                        <option>Cocina</option>
+                        <option>Juguetes</option>
+                        <option>Herramientas</option>
+                        <option>Deporte</option>
+                        <option>Belleza</option>
+                        <option>Tecnología</option>
+                        <option>Organizadores</option>
+                        <option>Textiles</option>
+                        <option>Industrial</option>
+                    </select>
+                </div>
+
+                <div class="campo-producto campo-completo">
+                    <label for="producto-descripcion">Descripción</label>
+                    <textarea id="producto-descripcion" rows="4"></textarea>
+                </div>
+
+                <div class="campo-producto campo-completo">
+                    <label for="producto-imagen">URL de imagen</label>
+                    <input type="url" id="producto-imagen"
+                           placeholder="https://...">
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-costo">Costo de compra *</label>
+                    <input type="number" id="producto-costo"
+                           min="0" step="0.01" required>
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-precio">Precio de venta *</label>
+                    <input type="number" id="producto-precio"
+                           min="0" step="0.01" required>
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-stock">Cantidad disponible</label>
+                    <input type="number" id="producto-stock"
+                           min="0" value="0" required>
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-stock-minimo">Stock mínimo</label>
+                    <input type="number" id="producto-stock-minimo"
+                           min="0" value="2" required>
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-codigo">Código de barras</label>
+                    <input type="text" id="producto-codigo">
+                </div>
+
+                <div class="campo-producto">
+                    <label for="producto-tipo">Tipo de inventario</label>
+                    <select id="producto-tipo">
+                        <option value="Fisico">Producto físico</option>
+                        <option value="Bajo pedido">Bajo pedido</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="opciones-producto">
+                <label>
+                    <input type="checkbox" id="producto-activo" checked>
+                    Producto activo
+                </label>
+
+                <label>
+                    <input type="checkbox" id="producto-publicado">
+                    Publicar en la tienda
+                </label>
+            </div>
+
+            <p id="mensaje-producto" aria-live="polite"></p>
+
+            <div class="acciones-formulario">
+                <button type="button" id="cancelar-producto">
+                    Cancelar
+                </button>
+
+                <button type="submit" id="guardar-producto">
+                    GUARDAR PRODUCTO
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
     </main>
 
     <footer class="admin-footer">
