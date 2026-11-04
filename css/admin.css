@@ -1,0 +1,226 @@
+
+/* ==========================================
+   SKENZI HOME — PANEL DE ADMINISTRACIÓN
+   ESTILO ELEGANTE Y SUTIL
+   ========================================== */
+
+:root {
+    --crema: #F5F1E8;
+    --marfil: #FFFEFB;
+    --verde: #394E3C;
+    --verde-oscuro: #293B2D;
+    --dorado: #B49A70;
+    --texto: #343A34;
+    --gris: #85857C;
+    --borde: #E8E2D7;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--crema);
+    color: var(--texto);
+    font-family: "Montserrat", Arial, sans-serif;
+}
+
+/* FONDO */
+
+.login-contenedor {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 20px;
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(180,154,112,.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(57,78,60,.08),
+            transparent 35%
+        ),
+        var(--crema);
+}
+
+/* TARJETA DE ACCESO */
+
+.login-panel {
+    width: 100%;
+    max-width: 455px;
+    padding: 48px 45px;
+    background: var(--marfil);
+    border: 1px solid rgba(180,154,112,.22);
+    border-radius: 16px;
+    box-shadow: 0 18px 55px rgba(48,55,45,.07);
+    text-align: center;
+}
+
+/* LOGOTIPO */
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--verde);
+    font-family: Georgia, serif;
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-bottom: 45px;
+}
+
+.logo small {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 8px;
+    margin-top: 5px;
+}
+
+/* TÍTULOS */
+
+.etiqueta {
+    display: inline-block;
+    color: var(--dorado);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.login-panel h1 {
+    color: var(--verde-oscuro);
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 500;
+    margin-bottom: 13px;
+}
+
+.descripcion {
+    color: var(--gris);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
+
+/* FORMULARIO */
+
+#form-login {
+    text-align: left;
+}
+
+#form-login label {
+    display: block;
+    color: var(--texto);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+#form-login input {
+    width: 100%;
+    height: 49px;
+    padding: 0 15px;
+    margin-bottom: 23px;
+    background: #FFFEFB;
+    border: 1px solid var(--borde);
+    border-radius: 7px;
+    color: var(--texto);
+    font-size: 13px;
+    outline: none;
+    transition: border .25s, box-shadow .25s;
+}
+
+#form-login input:focus {
+    border-color: var(--dorado);
+    box-shadow: 0 0 0 3px rgba(180,154,112,.10);
+}
+
+/* BOTÓN */
+
+#boton-login {
+    width: 100%;
+    min-height: 51px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 7px;
+    background: var(--verde);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: background .25s, transform .25s;
+}
+
+#boton-login:hover {
+    background: var(--verde-oscuro);
+    transform: translateY(-1px);
+}
+
+#boton-login:disabled {
+    opacity: .65;
+    cursor: wait;
+}
+
+/* MENSAJES */
+
+#mensaje-login {
+    min-height: 20px;
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #A34E43;
+}
+
+/* VOLVER */
+
+.volver {
+    display: inline-block;
+    margin-top: 28px;
+    color: var(--gris);
+    font-size: 12px;
+    text-decoration: none;
+    transition: color .2s;
+}
+
+.volver:hover {
+    color: var(--verde);
+}
+
+/* PIE */
+
+.login-panel::after {
+    content: "SKENZI HOME · GESTIÓN PRIVADA";
+    display: block;
+    color: #AAA69C;
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-top: 42px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 500px) {
+
+    .login-panel {
+        padding: 38px 25px;
+    }
+
+    .logo {
+        font-size: 32px;
+        margin-bottom: 38px;
+    }
+
+    .login-panel h1 {
+        font-size: 30px;
+    }
+}
