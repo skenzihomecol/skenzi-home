@@ -585,3 +585,40 @@ body {
         width: 100%;
     }
 }
+
+/* ==========================================
+   SKENZI HOME — IMÁGENES DEL INVENTARIO
+   ========================================== */
+
+.imagen-producto-admin,
+.producto-admin img,
+.tarjeta-admin img {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    display: block;
+    border-radius: 10px;
+    background: #f5f2eb;
+    margin-bottom: 10px;
+}
+
+/* Tarjetas del inventario */
+.producto-admin,
+.tarjeta-admin {
+    overflow: hidden;
+}
+
+/* Evitar imágenes desbordadas */
+#lista-productos-admin img {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: contain;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 600px) {
+    #lista-productos-admin img {
+        width: 100px;
+        height: 100px;
+    }
+}
