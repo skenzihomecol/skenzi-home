@@ -632,7 +632,8 @@ let productoEnEdicion = null;
     // ======================================
 
     function abrirFormularioProducto() {
-
+productoEnEdicion = null;
+botonGuardar.textContent = "GUARDAR PRODUCTO";
         formulario.reset();
 
         document.getElementById("producto-stock").value = 0;
@@ -678,100 +679,97 @@ let productoEnEdicion = null;
         cerrarFormularioProducto
     );
 
-    // ======================================
-    // GUARDAR PRODUCTO EN SUPABASE
-    // ======================================
+formulario.addEventListener("submit", async evento => {
 
-    formulario.addEventListener("submit", async evento => {
+    evento.preventDefault();
 
-        evento.preventDefault();
+    const rutasSubidas = [];
 
-        const rutasSubidas = [];
+    mensaje.style.color = "#A34E43";
+    mensaje.textContent = "";
 
-        mensaje.style.color = "#A34E43";
-        mensaje.textContent = "";
+    botonGuardar.disabled = true;
+    botonGuardar.textContent = productoEnEdicion
+        ? "ACTUALIZANDO..."
+        : "GUARDANDO...";
 
-        botonGuardar.disabled = true;
-        botonGuardar.textContent = "GUARDANDO...";
+    try {
 
-        try {
+        const archivoPrincipal = imagenPrincipal.files?.[0];
 
-            const archivoPrincipal = imagenPrincipal.files?.[0];
+        const archivosAdicionales = Array.from(
+            imagenesAdicionales.files || []
+        );
 
-            const archivosAdicionales = Array.from(
-                imagenesAdicionales.files || []
-            );
+        // Si es nuevo, la imagen principal es obligatoria.
+        if (!productoEnEdicion && !archivoPrincipal) {
+            throw new Error("Selecciona la fotografía principal.");
+        }
 
-            if (!archivoPrincipal) {
-                throw new Error(
-                    "Selecciona la fotografía principal."
-                );
-            }
+        if (archivosAdicionales.length > 2) {
+            throw new Error("Solo puedes subir dos fotografías adicionales.");
+        }
 
-            if (archivosAdicionales.length > 2) {
-                throw new Error(
-                    "Solo puedes subir dos fotografías adicionales."
-                );
-            }
+        const categoriaId =
+            document.getElementById("producto-categoria").value;
 
-            if (archivosAdicionales.some(
-                archivo => archivo.name === archivoPrincipal.name
-            )) {
-                console.warn(
-                    "Hay fotografías con el mismo nombre de archivo."
-                );
-            }
+        if (!categoriaId) {
+            throw new Error("Selecciona una categoría.");
+        }
 
-            const categoriaId =
-                document.getElementById("producto-categoria").value;
+        const costo = Number(
+            document.getElementById("producto-costo").value
+        );
 
-            if (!categoriaId) {
-                throw new Error("Selecciona una categoría.");
-            }
+        const precio = Number(
+            document.getElementById("producto-precio").value
+        );
 
-            const costo = Number(
-                document.getElementById("producto-costo").value
-            );
+        const existencias = Number(
+            document.getElementById("producto-stock").value
+        );
 
-            const precio = Number(
-                document.getElementById("producto-precio").value
-            );
+        const stockMinimo = Number(
+            document.getElementById("producto-stock-minimo").value
+        );
 
-            const existencias = Number(
-                document.getElementById("producto-stock").value
-            );
+        if (
+            !Number.isFinite(costo) ||
+            !Number.isFinite(precio) ||
+            !Number.isInteger(existencias) ||
+            !Number.isInteger(stockMinimo) ||
+            costo < 0 ||
+            precio < 0 ||
+            existencias < 0 ||
+            stockMinimo < 0
+        ) {
+            throw new Error("Revisa los costos, precios y cantidades.");
+        }
 
-            const stockMinimo = Number(
-                document.getElementById("producto-stock-minimo").value
-            );
+        // CONSERVAR O CAMBIAR IMAGEN PRINCIPAL
+        let imagenUrl = productoEnEdicion?.imagen_url || null;
 
-            if (
-                !Number.isFinite(costo) ||
-                !Number.isFinite(precio) ||
-                !Number.isInteger(existencias) ||
-                !Number.isInteger(stockMinimo) ||
-                costo < 0 ||
-                precio < 0 ||
-                existencias < 0 ||
-                stockMinimo < 0
-            ) {
-                throw new Error(
-                    "Revisa los costos, precios y cantidades."
-                );
-            }
+        if (archivoPrincipal) {
 
-            // SUBIR FOTOGRAFÍA PRINCIPAL
-
-            mensaje.textContent =
-                "Subiendo fotografía principal...";
+            mensaje.textContent = "Subiendo fotografía principal...";
 
             const principal = await subirImagen(archivoPrincipal);
 
             rutasSubidas.push(principal.ruta);
 
-            // SUBIR FOTOGRAFÍAS ADICIONALES
+            imagenUrl = principal.url;
+        }
 
-            const urlsAdicionales = [];
+        // CONSERVAR O CAMBIAR FOTOGRAFÍAS ADICIONALES
+        let urlsAdicionales = Array.isArray(
+            productoEnEdicion?.imagenes_adicionales
+        )
+            ? [...productoEnEdicion.imagenes_adicionales]
+            : [];
+
+        if (archivosAdicionales.length > 0) {
+
+            urlsAdicionales = [];
 
             for (let i = 0; i < archivosAdicionales.length; i++) {
 
@@ -786,102 +784,122 @@ let productoEnEdicion = null;
 
                 urlsAdicionales.push(resultado.url);
             }
-
-            // DATOS CON LOS NOMBRES REALES DE SUPABASE
-
-            const activo =
-                document.getElementById("producto-activo").checked &&
-                document.getElementById("producto-publicado").checked;
-
-            const nuevoProducto = {
-
-                nombre: document.getElementById(
-                    "producto-nombre"
-                ).value.trim(),
-
-                descripcion: document.getElementById(
-                    "producto-descripcion"
-                ).value.trim(),
-
-                categoria_id: categoriaId,
-
-                costo_compra: costo,
-
-                precio_venta: precio,
-
-                existencias: existencias,
-
-                stock_minimo: stockMinimo,
-
-                codigo_barras: document.getElementById(
-                    "producto-codigo"
-                ).value.trim() || null,
-
-                imagen_url: principal.url,
-
-                imagenes_adicionales: urlsAdicionales,
-
-                activo: activo,
-
-                es_novedad: false,
-
-                es_destacado: false,
-
-                en_oferta: false
-            };
-
-            // GUARDAR EN TABLA PRODUCTOS
-
-            mensaje.textContent =
-                "Guardando producto en la base de datos...";
-
-            const { error } = await db
-                .from("productos")
-                .insert([nuevoProducto]);
-
-            if (error) throw error;
-
-            mensaje.style.color = "#394E3C";
-
-            mensaje.textContent =
-                "¡Producto guardado correctamente!";
-
-            // ACTUALIZAR INVENTARIO
-
-            await cargarProductos();
-
-            formulario.reset();
-
-            vistaPrincipal.innerHTML = "";
-            vistaAdicionales.innerHTML = "";
-
-            setTimeout(() => {
-                cerrarFormularioProducto();
-            }, 1200);
-
-        } catch (error) {
-
-            console.error(
-                "Error guardando producto:",
-                error
-            );
-
-            await limpiarImagenesSubidas(rutasSubidas);
-
-            mensaje.style.color = "#A34E43";
-
-            mensaje.textContent =
-                "No se pudo guardar: " + error.message;
-
-        } finally {
-
-            botonGuardar.disabled = false;
-
-            botonGuardar.textContent =
-                "GUARDAR PRODUCTO";
         }
-    });
 
+        const activo =
+            document.getElementById("producto-activo").checked &&
+            document.getElementById("producto-publicado").checked;
+
+        const datosProducto = {
+
+            nombre: document.getElementById(
+                "producto-nombre"
+            ).value.trim(),
+
+            descripcion: document.getElementById(
+                "producto-descripcion"
+            ).value.trim(),
+
+            categoria_id: categoriaId,
+
+            costo_compra: costo,
+
+            precio_venta: precio,
+
+            existencias: existencias,
+
+            stock_minimo: stockMinimo,
+
+            codigo_barras: document.getElementById(
+                "producto-codigo"
+            ).value.trim() || null,
+
+            imagen_url: imagenUrl,
+
+            imagenes_adicionales: urlsAdicionales,
+
+            activo: activo,
+
+            es_novedad: productoEnEdicion?.es_novedad ?? false,
+
+            es_destacado: productoEnEdicion?.es_destacado ?? false,
+
+            en_oferta: productoEnEdicion?.en_oferta ?? false
+        };
+
+        mensaje.textContent = productoEnEdicion
+            ? "Actualizando producto..."
+            : "Guardando producto...";
+
+        let resultado;
+
+        if (productoEnEdicion) {
+
+            // ACTUALIZAR EL PRODUCTO EXISTENTE
+            resultado = await db
+                .from("productos")
+                .update(datosProducto)
+                .eq("id", productoEnEdicion.id);
+
+        } else {
+
+            // CREAR UN PRODUCTO NUEVO
+            resultado = await db
+                .from("productos")
+                .insert([datosProducto]);
+        }
+
+        if (resultado.error) {
+            throw resultado.error;
+        }
+
+        mensaje.style.color = "#394E3C";
+
+        mensaje.textContent = productoEnEdicion
+            ? "¡Producto actualizado correctamente!"
+            : "¡Producto guardado correctamente!";
+
+        productoEnEdicion = null;
+
+        await cargarProductos();
+
+        formulario.reset();
+
+        imagenPrincipal.value = "";
+        imagenesAdicionales.value = "";
+
+        vistaPrincipal.innerHTML = "";
+        vistaAdicionales.innerHTML = "";
+
+        setTimeout(() => {
+            cerrarFormularioProducto();
+        }, 1200);
+
+    } catch (error) {
+
+        console.error("Error guardando producto:", error);
+
+        await limpiarImagenesSubidas(rutasSubidas);
+
+        mensaje.style.color = "#A34E43";
+
+        mensaje.textContent =
+            "No se pudo guardar: " + error.message;
+
+    } finally {
+
+        botonGuardar.disabled = false;
+
+        botonGuardar.textContent = "GUARDAR PRODUCTO";
+    }
+
+});
+
+    // ======================================
+    // GUARDAR PRODUCTO EN SUPABASE
+    // ======================================
+
+   
     // ======================================
     // BÚSQUEDA Y FILTROS
     // ======================================
