@@ -56,8 +56,7 @@ async function cargarCarrito() {
 
         const { data, error } = await window.skenziDB
             .from("productos")
-            .select("id,nombre,precio,stock,imagen_url,activo,publicado,tipo_inventario")
-            .in("id", ids);
+          .select("id,nombre,precio_venta,existencias,imagen_url,activo")
 
         if (error) throw error;
 
@@ -111,7 +110,7 @@ function mostrarCarrito() {
             `;
         }
 
-        const precio = Number(producto.precio) || 0;
+     const precio = Number(producto.precio_venta) || 0;
         const cantidad = Number(item.cantidad) || 1;
         const subtotal = precio * cantidad;
         const imagen = producto.imagen_url
@@ -121,7 +120,7 @@ function mostrarCarrito() {
         total += subtotal;
         cantidadTotal += cantidad;
 
-        const bajoPedido = producto.tipo_inventario === "Bajo pedido";
+      
 
         return `
             <article class="item-carrito">
@@ -132,10 +131,7 @@ function mostrarCarrito() {
                     <p>Precio: ${FORMATO_COP.format(precio)}</p>
 
                     <p>
-                        ${bajoPedido
-                            ? "Disponible bajo pedido"
-                            : `Existencias: ${Number(producto.stock) || 0}`}
-                    </p>
+                       Existencias: ${Number(producto.existencias) || 0}
 
                     <label>
                         Cantidad:
@@ -194,7 +190,7 @@ function cambiarCantidad(id, cantidad) {
         return;
     }
 
-    if (!bajoPedido && nuevaCantidad > Number(producto.stock)) {
+   if (nuevaCantidad > Number(producto.existencias)) {
         alert("La cantidad supera las existencias disponibles.");
         mostrarCarrito();
         return;
@@ -261,20 +257,19 @@ async function enviarPedido() {
             p => String(p.id) === String(item.id)
         );
 
-        if (!producto || !producto.activo || !producto.publicado) {
+      if (!producto || !producto.activo) {
             alert("Uno de los productos ya no está disponible.");
             return;
         }
 
         const cantidad = Math.floor(Number(item.cantidad));
-        const bajoPedido = producto.tipo_inventario === "Bajo pedido";
-
+     
         if (!Number.isInteger(cantidad) || cantidad < 1) {
             alert("Revisa las cantidades de los productos.");
             return;
         }
 
-        if (!bajoPedido && cantidad > Number(producto.stock)) {
+     if (cantidad > Number(producto.existencias)) {
             alert(`No hay suficientes existencias de ${producto.nombre}.`);
             return;
         }
