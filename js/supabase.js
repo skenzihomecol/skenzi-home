@@ -1,23 +1,26 @@
 
 /* ==========================================
    SKENZI HOME — CONEXIÓN SUPABASE
+   PROYECTO UNIFICADO
    ========================================== */
 
 "use strict";
 
 const SKENZI_SUPABASE_URL =
-    "https://qxwrbyqgzzibulpkqilg.supabase.co";
+    "https://xjqoforlmxmpykjynlsm.supabase.co";
 
 const SKENZI_SUPABASE_KEY =
-    "sb_publishable_QAWrSWUCHVy5rb7elEwL7Q_xaJ5k5r3";
+    "sb_publishable_ovZCy27ft6esmpYC2PSLSQ_AOpFH0Zv";
 
 if (!window.supabase) {
     console.error("No se pudo cargar Supabase.");
 } else {
-    window.skenziDB = window.supabase.createClient(
-        SKENZI_SUPABASE_URL,
-        SKENZI_SUPABASE_KEY
-    );
+    window.skenziDB =
+        window.skenziAdminDB ||
+        window.supabase.createClient(
+            SKENZI_SUPABASE_URL,
+            SKENZI_SUPABASE_KEY
+        );
 
-    console.log("Conexión con Skenzi Home preparada.");
+    console.log("Conexión de la tienda preparada.");
 }
