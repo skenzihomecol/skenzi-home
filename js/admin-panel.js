@@ -45,7 +45,7 @@ async function iniciarPanel() {
 
     let productos = [];
     let categorias = [];
-
+let productoEnEdicion = null;
     const BUCKET = "productos";
     const MAX_IMAGENES_ADICIONALES = 2;
     const MAX_TAMANO_IMAGEN = 5 * 1024 * 1024;
@@ -356,19 +356,96 @@ async function iniciarPanel() {
 
         }).join("");
 
+        
+        // BOTÓN IMPRIMIR
         lista.querySelectorAll(".boton-imprimir-etiqueta")
             .forEach(boton => {
-
                 boton.addEventListener("click", () => {
-
                     const producto = productos.find(
                         p => p.id === boton.dataset.id
                     );
-
                     if (producto) imprimirEtiqueta(producto);
                 });
             });
-    }
+
+        // BOTÓN EDITAR
+        lista.querySelectorAll(".boton-editar-producto")
+            .forEach(boton => {
+                boton.addEventListener("click", () => {
+                    const p = productos.find(
+                        item => item.id === boton.dataset.id
+                    );
+
+                    if (!p) return;
+
+                    productoEnEdicion = p;
+                    formulario.reset();
+
+                    document.getElementById("producto-nombre").value = p.nombre || "";
+                    document.getElementById("producto-descripcion").value = p.descripcion || "";
+                    document.getElementById("producto-categoria").value = p.categoria_id || "";
+                    document.getElementById("producto-costo").value = p.costo_compra;
+                    document.getElementById("producto-precio").value = p.precio_venta;
+                    document.getElementById("producto-stock").value = p.existencias;
+                    document.getElementById("producto-stock-minimo").value = p.stock_minimo;
+                    document.getElementById("producto-codigo").value = p.codigo_barras || "";
+
+                    document.getElementById("producto-activo").checked = !!p.activo;
+                    document.getElementById("producto-publicado").checked = !!p.activo;
+
+                    imagenPrincipal.value = "";
+                    imagenesAdicionales.value = "";
+
+                    vistaPrincipal.innerHTML = p.imagen_url
+                        ? `<img src="${escapar(p.imagen_url)}" style="max-width:150px;max-height:150px;object-fit:contain">`
+                        : "";
+
+                    const adicionales = Array.isArray(p.imagenes_adicionales)
+                        ? p.imagenes_adicionales : [];
+
+                    vistaAdicionales.innerHTML = adicionales.map(url =>
+                        `<img src="${escapar(url)}" style="max-width:120px;max-height:120px;object-fit:contain">`
+                    ).join("");
+
+                    mensaje.textContent = "";
+                    botonGuardar.textContent = "ACTUALIZAR PRODUCTO";
+                    modal.hidden = false;
+                });
+            });
+}
+        // BOTÓN ELIMINAR
+        lista.querySelectorAll(".boton-eliminar-producto")
+            .forEach(boton => {
+                boton.addEventListener("click", async () => {
+                    const p = productos.find(
+                        item => item.id === boton.dataset.id
+                    );
+
+                    if (!p) return;
+
+                    if (!confirm(`¿Deseas eliminar "${p.nombre}"?`)) return;
+
+                    try {
+                        boton.disabled = true;
+
+                        const { error } = await db
+                            .from("productos")
+                            .delete()
+                            .eq("id", p.id);
+
+                        if (error) throw error;
+
+                        alert("Producto eliminado correctamente.");
+                        await cargarProductos();
+
+                    } catch (error) {
+                        console.error("Error eliminando:", error);
+                        alert("No se pudo eliminar: " + error.message);
+                        boton.disabled = false;
+                    }
+                });
+            });
+
 
     // ======================================
     // FORMATO DE PRECIO
