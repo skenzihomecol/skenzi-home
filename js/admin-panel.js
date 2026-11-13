@@ -412,7 +412,7 @@ let productoEnEdicion = null;
                     modal.hidden = false;
                 });
             });
-}
+
         // BOTÓN ELIMINAR
         lista.querySelectorAll(".boton-eliminar-producto")
             .forEach(boton => {
@@ -445,7 +445,7 @@ let productoEnEdicion = null;
                     }
                 });
             });
-
+} 
 
     // ======================================
     // FORMATO DE PRECIO
