@@ -332,6 +332,25 @@ async function iniciarPanel() {
                         Imprimir etiqueta
                     </button>
 
+
+<div class="acciones-producto-admin">
+
+    <button
+        type="button"
+        class="boton-editar-producto"
+        data-id="${escapar(p.id)}">
+        Editar producto
+    </button>
+
+    <button
+        type="button"
+        class="boton-eliminar-producto"
+        data-id="${escapar(p.id)}">
+        Eliminar
+    </button>
+
+</div>
+
                 </article>
             `;
 
