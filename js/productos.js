@@ -1,10 +1,13 @@
+
 /* ==========================================
    SKENZI HOME — CATÁLOGO GENERAL
+   SUPABASE — ESTRUCTURA REAL
    ========================================== */
 
 "use strict";
 
 window.SK_PRODUCTOS = [];
+window.SK_CATEGORIAS = [];
 
 const formatoPrecio = new Intl.NumberFormat("es-CO", {
     style: "currency",
@@ -12,101 +15,187 @@ const formatoPrecio = new Intl.NumberFormat("es-CO", {
     maximumFractionDigits: 0
 });
 
-// CARGAR PRODUCTOS PUBLICADOS
+// CONEXIÓN A SUPABASE
+function obtenerConexionSkenzi() {
+    return window.skenziDB || window.skenziAdminDB || null;
+}
+
+// CARGAR CATEGORÍAS
+async function cargarCategorias() {
+    const db = obtenerConexionSkenzi();
+
+    if (!db) {
+        throw new Error("No existe conexión con Supabase.");
+    }
+
+    const { data, error } = await db
+        .from("categorias")
+        .select("id, nombre")
+        .eq("activa", true)
+        .order("nombre");
+
+    if (error) throw error;
+
+    window.SK_CATEGORIAS = data || [];
+
+    return window.SK_CATEGORIAS;
+}
+
+// CARGAR PRODUCTOS ACTIVOS
 async function cargarProductos() {
     const galeria = document.getElementById("galeria-productos");
+
     if (!galeria) return;
 
     galeria.innerHTML = `
-        <p class="mensaje-carga">Cargando nuestros productos...</p>
+        <p class="mensaje-carga">
+            Cargando nuestros productos...
+        </p>
     `;
 
     try {
-        if (!window.skenziDB) {
+        const db = obtenerConexionSkenzi();
+
+        if (!db) {
             throw new Error("No existe conexión con Supabase.");
         }
 
-        const { data, error } = await window.skenziDB
+        // CARGAR CATEGORÍAS
+        await cargarCategorias();
+
+        // CONSULTAR PRODUCTOS CON COLUMNAS REALES
+        const { data, error } = await db
             .from("productos")
             .select(`
                 id,
+                codigo_barras,
+                sku,
                 nombre,
                 descripcion,
-                categoria,
-                imagen_url,
-                precio,
-                stock,
+                categoria_id,
+                costo_compra,
+                precio_venta,
+                existencias,
                 stock_minimo,
-                activo,
-                publicado,
-                tipo_inventario,
-                codigo_barras,
-                visitas
+                proveedor,
+                imagen_url,
+                imagenes_adicionales,
+                es_novedad,
+                es_destacado,
+                en_oferta,
+                activo
             `)
             .eq("activo", true)
-            .eq("publicado", true);
+            .order("creado_en", { ascending: false });
 
         if (error) throw error;
 
-        window.SK_PRODUCTOS = (data || []).map(producto => ({
-            id: producto.id,
-            nombre: producto.nombre || "Producto sin nombre",
-            descripcion: producto.descripcion || "",
-            categoria: producto.categoria || "",
-            precio: Number(producto.precio) || 0,
-            existencias: Number(producto.stock) || 0,
-            imagen: producto.imagen_url || "",
-            tipoInventario: producto.tipo_inventario || "Fisico",
-            codigoBarras: producto.codigo_barras || "",
-            visitas: Number(producto.visitas) || 0
-        }));
+        // CONVERTIR DATOS DE SUPABASE
+        window.SK_PRODUCTOS = (data || []).map(producto => {
+
+            const categoria = window.SK_CATEGORIAS.find(
+                item => item.id === producto.categoria_id
+            );
+
+            return {
+                id: producto.id,
+
+                nombre: producto.nombre || "Producto sin nombre",
+
+                descripcion: producto.descripcion || "",
+
+                categoria: categoria
+                    ? categoria.nombre
+                    : "Sin categoría",
+
+                categoriaId: producto.categoria_id || "",
+
+                costo: Number(producto.costo_compra) || 0,
+
+                precio: Number(producto.precio_venta) || 0,
+
+                existencias: Number(producto.existencias) || 0,
+
+                stockMinimo: Number(producto.stock_minimo) || 0,
+
+                imagen: producto.imagen_url || "",
+
+                imagenesAdicionales:
+                    Array.isArray(producto.imagenes_adicionales)
+                        ? producto.imagenes_adicionales
+                        : [],
+
+                codigoBarras: producto.codigo_barras || "",
+
+                sku: producto.sku || "",
+
+                proveedor: producto.proveedor || "",
+
+                esNovedad: producto.es_novedad === true,
+
+                esDestacado: producto.es_destacado === true,
+
+                enOferta: producto.en_oferta === true,
+
+                activo: producto.activo === true
+            };
+        });
 
         mostrarCatalogo(window.SK_PRODUCTOS);
 
         console.log(
-            "Productos cargados:",
+            "SKENZI HOME — Productos cargados:",
             window.SK_PRODUCTOS.length
         );
 
+        console.log(
+            "SKENZI HOME — Categorías cargadas:",
+            window.SK_CATEGORIAS.length
+        );
+
     } catch (error) {
-        console.error("Error cargando productos:", error);
+
+        console.error(
+            "Error cargando catálogo SKENZI HOME:",
+            error
+        );
 
         galeria.innerHTML = `
             <p class="mensaje-carga">
-                No fue posible cargar el catálogo.
+                No fue posible cargar los productos.
                 Intenta nuevamente más tarde.
             </p>
         `;
     }
 }
 
-// MOSTRAR GALERÍA
+// MOSTRAR GALERÍA DE PRODUCTOS
 function mostrarCatalogo(productos) {
+
     const galeria = document.getElementById("galeria-productos");
+
     if (!galeria) return;
 
-    if (!productos.length) {
+    if (!productos || productos.length === 0) {
+
         galeria.innerHTML = `
             <p class="mensaje-carga">
                 Próximamente tendremos productos disponibles.
             </p>
         `;
+
         return;
     }
 
     galeria.innerHTML = productos.map(producto => {
+
         const precio = producto.precio > 0
             ? formatoPrecio.format(producto.precio)
             : "Consultar precio";
 
-        const bajoPedido =
-            producto.tipoInventario.toLowerCase() === "bajo pedido";
-
         const disponibilidad = producto.existencias > 0
             ? "Disponible"
-            : bajoPedido
-                ? "Disponible bajo pedido"
-                : "Agotado";
+            : "Agotado";
 
         const imagen = producto.imagen
             ? `
@@ -116,32 +205,44 @@ function mostrarCatalogo(productos) {
                     loading="lazy"
                 >
             `
-            : `<div class="imagen-vacia">🛍️</div>`;
+            : `
+                <div class="imagen-vacia">
+                    🛍️
+                </div>
+            `;
 
         const enlaceProducto =
             `producto.html?id=${encodeURIComponent(producto.id)}`;
 
         const puedeAgregar =
             producto.precio > 0 &&
-            (producto.existencias > 0 || bajoPedido);
+            producto.existencias > 0;
 
         return `
             <article class="tarjeta-producto">
 
-                <a href="${enlaceProducto}" class="enlace-producto">
+                <a
+                    href="${enlaceProducto}"
+                    class="enlace-producto"
+                >
 
                     <div class="imagen-producto">
                         ${imagen}
                     </div>
 
                     <div class="contenido">
-                        <h3>${escaparHTML(producto.nombre)}</h3>
+
+                        <h3>
+                            ${escaparHTML(producto.nombre)}
+                        </h3>
 
                         <p class="descripcion-producto">
                             ${escaparHTML(producto.descripcion)}
                         </p>
 
-                        <p class="precio-producto">${precio}</p>
+                        <p class="precio-producto">
+                            ${precio}
+                        </p>
 
                         <p class="disponibilidad">
                             ${disponibilidad}
@@ -150,6 +251,7 @@ function mostrarCatalogo(productos) {
                         <span class="ver-detalles">
                             Ver detalles →
                         </span>
+
                     </div>
 
                 </a>
@@ -159,16 +261,20 @@ function mostrarCatalogo(productos) {
                     onclick="agregarAlCarrito('${escaparHTML(producto.id)}')"
                     ${!puedeAgregar ? "disabled" : ""}
                 >
-                    ${puedeAgregar ? "Agregar al carrito" : "No disponible"}
+                    ${puedeAgregar
+                        ? "Agregar al carrito"
+                        : "No disponible"}
                 </button>
 
             </article>
         `;
+
     }).join("");
 }
 
-// PROTECCIÓN DE TEXTO
+// PROTECCIÓN DE TEXTO HTML
 function escaparHTML(texto) {
+
     return String(texto ?? "").replace(/[&<>"']/g, caracter => ({
         "&": "&amp;",
         "<": "&lt;",
@@ -178,5 +284,26 @@ function escaparHTML(texto) {
     })[caracter]);
 }
 
+// FILTRAR POR CATEGORÍA
+function filtrarProductosPorCategoria(categoriaId) {
+
+    const productos = categoriaId
+        ? window.SK_PRODUCTOS.filter(
+            producto => producto.categoriaId === categoriaId
+        )
+        : window.SK_PRODUCTOS;
+
+    mostrarCatalogo(productos);
+}
+
+// HACER FUNCIONES ACCESIBLES DESDE OTROS ARCHIVOS
+window.cargarProductos = cargarProductos;
+window.mostrarCatalogo = mostrarCatalogo;
+window.filtrarProductosPorCategoria = filtrarProductosPorCategoria;
+window.escaparHTML = escaparHTML;
+
 // INICIAR CATÁLOGO
-document.addEventListener("DOMContentLoaded", cargarProductos);
+document.addEventListener(
+    "DOMContentLoaded",
+    cargarProductos
+);
