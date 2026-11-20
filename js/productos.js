@@ -169,6 +169,7 @@ async function cargarProductos() {
     }
 }
 
+
 // MOSTRAR GALERÍA DE PRODUCTOS
 function mostrarCatalogo(productos) {
 
@@ -193,8 +194,6 @@ function mostrarCatalogo(productos) {
             ? formatoPrecio.format(producto.precio)
             : "Consultar precio";
 
-       const disponibilidad = "";
-
         const imagen = producto.imagen
             ? `
                 <img
@@ -212,9 +211,16 @@ function mostrarCatalogo(productos) {
         const enlaceProducto =
             `producto.html?id=${encodeURIComponent(producto.id)}`;
 
+        const tieneExistencias = producto.existencias > 0;
+
         const puedeAgregar =
-            producto.precio > 0 &&
-            producto.existencias > 0;
+            tieneExistencias && producto.precio > 0;
+
+        const textoBoton = !tieneExistencias
+            ? "Agotado"
+            : producto.precio > 0
+                ? "Agregar al carrito"
+                : "Consultar precio";
 
         return `
             <article class="tarjeta-producto">
@@ -234,15 +240,9 @@ function mostrarCatalogo(productos) {
                             ${escaparHTML(producto.nombre)}
                         </h3>
 
-                        <p class="descripcion-producto">
-                            ${escaparHTML(producto.descripcion)}
-                        </p>
-
                         <p class="precio-producto">
                             ${precio}
                         </p>
-
-                      
 
                         <span class="ver-detalles">
                             Ver detalles →
@@ -257,7 +257,7 @@ function mostrarCatalogo(productos) {
                     onclick="agregarAlCarrito('${escaparHTML(producto.id)}')"
                     ${!puedeAgregar ? "disabled" : ""}
                 >
-                   Agregar al carrito
+                    ${textoBoton}
                 </button>
 
             </article>
