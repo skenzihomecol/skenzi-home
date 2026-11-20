@@ -1,6 +1,7 @@
 
 /* ==========================================
    SKENZI HOME — INFORMACIÓN INDIVIDUAL
+   GALERÍA DE FOTOGRAFÍAS
    ========================================== */
 
 "use strict";
@@ -14,7 +15,10 @@ const formatoPrecioProducto = new Intl.NumberFormat("es-CO", {
 });
 
 let productoActual = null;
+let fotosProducto = [];
+let indiceImagenActual = 0;
 
+// ESCAPAR TEXTO
 function escaparProducto(texto) {
     return String(texto ?? "").replace(/[&<>"']/g, caracter => ({
         "&": "&amp;",
@@ -25,10 +29,49 @@ function escaparProducto(texto) {
     })[caracter]);
 }
 
+// PREPARAR LAS FOTOGRAFÍAS
+function obtenerFotosProducto(producto) {
+
+    const fotos = [];
+
+    if (producto.imagen_url) {
+        fotos.push(producto.imagen_url);
+    }
+
+    let adicionales = producto.imagenes_adicionales || [];
+
+    if (typeof adicionales === "string") {
+        try {
+            adicionales = JSON.parse(adicionales);
+        } catch {
+            adicionales = [adicionales];
+        }
+    }
+
+    if (!Array.isArray(adicionales)) {
+        adicionales = [];
+    }
+
+    adicionales.forEach(imagen => {
+
+        let url = "";
+
+        if (typeof imagen === "string") {
+            url = imagen;
+        } else if (imagen && typeof imagen === "object") {
+            url = imagen.url || imagen.image_url || imagen.src || "";
+        }
+
+        if (url && !fotos.includes(url)) {
+            fotos.push(url);
+        }
+    });
+
+    return fotos;
+}
+
 // OBTENER EL IDENTIFICADOR DE LA URL
 async function cargarDetalleProducto() {
-
-    const contenedor = document.getElementById("detalle-producto");
 
     const parametros = new URLSearchParams(window.location.search);
     const idProducto = parametros.get("id");
@@ -53,6 +96,7 @@ async function cargarDetalleProducto() {
                 precio_venta,
                 existencias,
                 imagen_url,
+                imagenes_adicionales,
                 activo,
                 categoria_id,
                 categorias(nombre)
@@ -70,6 +114,9 @@ async function cargarDetalleProducto() {
 
         productoActual = data;
 
+        fotosProducto = obtenerFotosProducto(data);
+        indiceImagenActual = 0;
+
         mostrarDetalleProducto(data);
 
     } catch (error) {
@@ -82,37 +129,161 @@ async function cargarDetalleProducto() {
     }
 }
 
-// MOSTRAR INFORMACIÓN
+// CREAR GALERÍA
+function crearGaleriaProducto(nombre) {
+
+    if (fotosProducto.length === 0) {
+        return `
+            <div class="galeria-producto">
+                <div class="imagen-principal">
+                    <div class="imagen-vacia">🛍️</div>
+                </div>
+            </div>
+        `;
+    }
+
+    const imagenes = fotosProducto;
+
+    return `
+        <div class="galeria-producto">
+
+            <div class="imagen-principal">
+
+                <img
+                    id="imagen-producto-actual"
+                    src="${escaparProducto(imagenes[0])}"
+                    alt="${escaparProducto(nombre)}"
+                >
+
+                ${imagenes.length > 1 ? `
+                    <button
+                        type="button"
+                        class="flecha-imagen flecha-anterior"
+                        id="imagen-anterior"
+                        aria-label="Fotografía anterior"
+                    >&#10094;</button>
+
+                    <button
+                        type="button"
+                        class="flecha-imagen flecha-siguiente"
+                        id="imagen-siguiente"
+                        aria-label="Fotografía siguiente"
+                    >&#10095;</button>
+                ` : ""}
+
+            </div>
+
+            ${imagenes.length > 1 ? `
+
+                <div class="miniaturas-producto">
+
+                    ${imagenes.map((url, indice) => `
+                        <button
+                            type="button"
+                            class="miniatura-producto ${indice === 0 ? "activa" : ""}"
+                            data-indice="${indice}"
+                            aria-label="Ver fotografía ${indice + 1}"
+                        >
+                            <img
+                                src="${escaparProducto(url)}"
+                                alt="${escaparProducto(nombre)} - foto ${indice + 1}"
+                            >
+                        </button>
+                    `).join("")}
+
+                </div>
+
+                <p class="contador-imagenes" id="contador-imagenes">
+                    1 / ${imagenes.length}
+                </p>
+
+            ` : ""}
+
+        </div>
+    `;
+}
+
+// CAMBIAR FOTOGRAFÍA
+function cambiarImagenProducto(indice) {
+
+    if (!fotosProducto.length) return;
+
+    const total = fotosProducto.length;
+
+    indiceImagenActual = (indice + total) % total;
+
+    const imagen = document.getElementById("imagen-producto-actual");
+
+    if (imagen) {
+        imagen.src = fotosProducto[indiceImagenActual];
+        imagen.alt = `${productoActual.nombre} - fotografía ${indiceImagenActual + 1}`;
+    }
+
+    document.querySelectorAll(".miniatura-producto").forEach((miniatura, indiceMiniatura) => {
+
+        miniatura.classList.toggle(
+            "activa",
+            indiceMiniatura === indiceImagenActual
+        );
+    });
+
+    const contador = document.getElementById("contador-imagenes");
+
+    if (contador) {
+        contador.textContent = `${indiceImagenActual + 1} / ${total}`;
+    }
+}
+
+// ACTIVAR CONTROLES DE LA GALERÍA
+function activarGaleriaProducto() {
+
+    const anterior = document.getElementById("imagen-anterior");
+    const siguiente = document.getElementById("imagen-siguiente");
+
+    if (anterior) {
+        anterior.addEventListener("click", () => {
+            cambiarImagenProducto(indiceImagenActual - 1);
+        });
+    }
+
+    if (siguiente) {
+        siguiente.addEventListener("click", () => {
+            cambiarImagenProducto(indiceImagenActual + 1);
+        });
+    }
+
+    document.querySelectorAll(".miniatura-producto").forEach(miniatura => {
+
+        miniatura.addEventListener("click", () => {
+
+            const indice = Number(miniatura.dataset.indice);
+
+            cambiarImagenProducto(indice);
+        });
+    });
+}
+
+// MOSTRAR INFORMACIÓN DEL PRODUCTO
 function mostrarDetalleProducto(producto) {
 
     const contenedor = document.getElementById("detalle-producto");
 
     const nombre = producto.nombre || "Producto sin nombre";
-    const descripcion = producto.descripcion || "Consulta más información con nuestro equipo.";
+
+    const descripcion = producto.descripcion ||
+        "Consulta más información con nuestro equipo.";
+
     const precio = Number(producto.precio_venta) || 0;
+
     const existencias = Number(producto.existencias) || 0;
+
     const categoria = Array.isArray(producto.categorias)
         ? producto.categorias[0]?.nombre
         : producto.categorias?.nombre;
 
-    const imagen = producto.imagen_url
-        ? `
-            <img
-                src="${escaparProducto(producto.imagen_url)}"
-                alt="${escaparProducto(nombre)}"
-            >
-        `
-        : `<div class="imagen-vacia">🛍️</div>`;
-
-    const disponibilidad = existencias > 0
-        ? `<span class="estado-disponible">Disponible</span>`
-        : `<span class="estado-agotado">Agotado</span>`;
-
     contenedor.innerHTML = `
 
-        <div class="imagen-principal">
-            ${imagen}
-        </div>
+        ${crearGaleriaProducto(nombre)}
 
         <div class="informacion-producto">
 
@@ -132,12 +303,11 @@ function mostrarDetalleProducto(producto) {
                     : "Consultar precio"}
             </p>
 
-            <p class="estado-producto">
-                ${disponibilidad}
-            </p>
-
             <div class="cantidad-producto">
-                <label for="cantidad-producto">Cantidad:</label>
+
+                <label for="cantidad-producto">
+                    Cantidad:
+                </label>
 
                 <input
                     type="number"
@@ -147,6 +317,7 @@ function mostrarDetalleProducto(producto) {
                     value="1"
                     ${existencias <= 0 ? "disabled" : ""}
                 >
+
             </div>
 
             <div class="acciones-producto">
@@ -173,6 +344,8 @@ function mostrarDetalleProducto(producto) {
         </div>
     `;
 
+    activarGaleriaProducto();
+
     document.getElementById("agregar-detalle")
         .addEventListener("click", agregarDesdeDetalle);
 
@@ -186,8 +359,11 @@ function agregarDesdeDetalle() {
     if (!productoActual) return;
 
     const cantidadInput = document.getElementById("cantidad-producto");
+
     const cantidad = Number(cantidadInput.value);
+
     const existencias = Number(productoActual.existencias);
+
     const precio = Number(productoActual.precio_venta);
 
     if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > existencias) {
@@ -205,8 +381,11 @@ function agregarDesdeDetalle() {
     let carrito = [];
 
     try {
+
         carrito = JSON.parse(localStorage.getItem(clave)) || [];
+
         if (!Array.isArray(carrito)) carrito = [];
+
     } catch {
         carrito = [];
     }
@@ -215,7 +394,8 @@ function agregarDesdeDetalle() {
         item => String(item.id) === String(productoActual.id)
     );
 
-    const cantidadFinal = cantidad + (existente ? Number(existente.cantidad) : 0);
+    const cantidadFinal = cantidad +
+        (existente ? Number(existente.cantidad) : 0);
 
     if (cantidadFinal > existencias) {
         alert("No hay suficientes unidades disponibles.");
@@ -223,8 +403,11 @@ function agregarDesdeDetalle() {
     }
 
     if (existente) {
+
         existente.cantidad = cantidadFinal;
+
     } else {
+
         carrito.push({
             id: productoActual.id,
             cantidad: cantidad
@@ -260,11 +443,18 @@ function mostrarErrorProducto(mensaje) {
     const contenedor = document.getElementById("detalle-producto");
 
     if (contenedor) {
+
         contenedor.innerHTML = `
             <div class="mensaje-carga">
+
                 <h2>Producto no disponible</h2>
+
                 <p>${escaparProducto(mensaje)}</p>
-                <a href="index.html">Volver a la tienda</a>
+
+                <a href="index.html">
+                    Volver a la tienda
+                </a>
+
             </div>
         `;
     }
