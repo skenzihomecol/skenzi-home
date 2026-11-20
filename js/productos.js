@@ -194,7 +194,7 @@ function mostrarCatalogo(productos) {
             : "Consultar precio";
 
         const disponibilidad = producto.existencias > 0
-            ? "Disponible"
+            
             : "Agotado";
 
         const imagen = producto.imagen
@@ -244,9 +244,7 @@ function mostrarCatalogo(productos) {
                             ${precio}
                         </p>
 
-                        <p class="disponibilidad">
-                            ${disponibilidad}
-                        </p>
+                      
 
                         <span class="ver-detalles">
                             Ver detalles →
@@ -261,9 +259,7 @@ function mostrarCatalogo(productos) {
                     onclick="agregarAlCarrito('${escaparHTML(producto.id)}')"
                     ${!puedeAgregar ? "disabled" : ""}
                 >
-                    ${puedeAgregar
-                        ? "Agregar al carrito"
-                        : "No disponible"}
+                   Agregar al carrito
                 </button>
 
             </article>
