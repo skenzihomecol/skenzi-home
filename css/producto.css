@@ -1,6 +1,7 @@
 
 /* ==========================================
    SKENZI HOME — FICHA DE PRODUCTO
+   GALERÍA DE FOTOGRAFÍAS
    ========================================== */
 
 :root {
@@ -86,7 +87,7 @@ body {
     text-decoration: none;
 }
 
-/* FICHA */
+/* FICHA DEL PRODUCTO */
 
 .detalle-producto {
     max-width: 1200px;
@@ -105,26 +106,129 @@ body {
     color: var(--gris);
 }
 
+/* GALERÍA */
+
+.galeria-producto {
+    width: 100%;
+    min-width: 0;
+}
+
+/* IMAGEN PRINCIPAL */
+
 .imagen-principal {
+    position: relative;
+    width: 100%;
+    height: 430px;
+    min-height: 430px;
     background: var(--blanco);
     border-radius: 18px;
-    min-height: 430px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,.04);
 }
 
 .imagen-principal img {
     width: 100%;
-    height: 430px;
+    height: 100%;
     object-fit: contain;
     padding: 20px;
+    transition: opacity .25s ease;
 }
 
 .imagen-principal .imagen-vacia {
     font-size: 90px;
 }
+
+/* FLECHAS */
+
+.flecha-imagen {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,.95);
+    color: var(--verde-oscuro);
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,.15);
+    transition: .25s ease;
+}
+
+.flecha-imagen:hover {
+    background: var(--verde);
+    color: var(--blanco);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.flecha-anterior {
+    left: 15px;
+}
+
+.flecha-siguiente {
+    right: 15px;
+}
+
+/* MINIATURAS */
+
+.miniaturas-producto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.miniatura-producto {
+    width: 85px;
+    height: 85px;
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: var(--blanco);
+    overflow: hidden;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.miniatura-producto img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 7px;
+}
+
+.miniatura-producto:hover {
+    border-color: var(--dorado);
+    transform: translateY(-3px);
+}
+
+.miniatura-producto.activa {
+    border-color: var(--verde);
+    box-shadow: 0 3px 10px rgba(54,91,70,.15);
+}
+
+/* CONTADOR DE FOTOGRAFÍAS */
+
+.contador-imagenes {
+    text-align: center;
+    color: var(--gris);
+    font-size: 12px;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+/* INFORMACIÓN */
 
 .informacion-producto {
     padding: 15px 0;
@@ -158,21 +262,10 @@ body {
     color: var(--verde);
     font-size: 30px;
     font-weight: 800;
-    margin-bottom: 15px;
-}
-
-.estado-producto {
-    font-size: 14px;
     margin-bottom: 25px;
 }
 
-.estado-disponible {
-    color: var(--verde);
-}
-
-.estado-agotado {
-    color: #b34b43;
-}
+/* CANTIDAD */
 
 .cantidad-producto {
     display: flex;
@@ -193,6 +286,8 @@ body {
     border-radius: 8px;
     font-size: 15px;
 }
+
+/* BOTONES */
 
 .acciones-producto {
     display: flex;
@@ -309,11 +404,23 @@ body {
     }
 
     .imagen-principal {
-        min-height: 300px;
+        height: 340px;
+        min-height: 340px;
     }
 
     .imagen-principal img {
-        height: 300px;
+        height: 100%;
+    }
+
+    .flecha-imagen {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+
+    .miniatura-producto {
+        width: 72px;
+        height: 72px;
     }
 
     .beneficios-producto {
@@ -328,5 +435,22 @@ body {
     .acciones-producto button,
     .boton-whatsapp {
         width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .imagen-principal {
+        height: 290px;
+        min-height: 290px;
+    }
+
+    .miniaturas-producto {
+        gap: 8px;
+    }
+
+    .miniatura-producto {
+        width: 65px;
+        height: 65px;
     }
 }
