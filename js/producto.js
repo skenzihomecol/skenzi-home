@@ -130,6 +130,8 @@ async function cargarDetalleProducto() {
 }
 
 // CREAR GALERÍA
+
+
 function crearGaleriaProducto(nombre) {
 
     if (fotosProducto.length === 0) {
@@ -144,6 +146,53 @@ function crearGaleriaProducto(nombre) {
 
     const imagenes = fotosProducto;
 
+    let controles = "";
+    let miniaturas = "";
+    let contador = "";
+
+    if (imagenes.length > 1) {
+
+        controles = `
+            <button
+                type="button"
+                class="flecha-imagen flecha-anterior"
+                id="imagen-anterior"
+                aria-label="Fotografía anterior"
+            >&#10094;</button>
+
+            <button
+                type="button"
+                class="flecha-imagen flecha-siguiente"
+                id="imagen-siguiente"
+                aria-label="Fotografía siguiente"
+            >&#10095;</button>
+        `;
+
+        miniaturas = `
+            <div class="miniaturas-producto">
+                ${imagenes.map((url, indice) => `
+                    <button
+                        type="button"
+                        class="miniatura-producto ${indice === 0 ? "activa" : ""}"
+                        data-indice="${indice}"
+                        aria-label="Ver fotografía ${indice + 1}"
+                    >
+                        <img
+                            src="${escaparProducto(url)}"
+                            alt="${escaparProducto(nombre)} - foto ${indice + 1}"
+                        >
+                    </button>
+                `).join("")}
+            </div>
+        `;
+
+        contador = `
+            <p class="contador-imagenes" id="contador-imagenes">
+                1 / ${imagenes.length}
+            </p>
+        `;
+    }
+
     return `
         <div class="galeria-producto">
 
@@ -155,49 +204,12 @@ function crearGaleriaProducto(nombre) {
                     alt="${escaparProducto(nombre)}"
                 >
 
-                ${imagenes.length > 1 ? `
-                    <button
-                        type="button"
-                        class="flecha-imagen flecha-anterior"
-                        id="imagen-anterior"
-                        aria-label="Fotografía anterior"
-                    >&#10094;</button>
-
-                    <button
-                        type="button"
-                        class="flecha-imagen flecha-siguiente"
-                        id="imagen-siguiente"
-                        aria-label="Fotografía siguiente"
-                    >&#10095;</button>
-                ` : ""}
+                ${controles}
 
             </div>
 
-            ${imagenes.length > 1 ? `
-
-                <div class="miniaturas-producto">
-
-                    ${imagenes.map((url, indice) => `
-                        <button
-                            type="button"
-                            class="miniatura-producto ${indice === 0 ? "activa" : ""}"
-                            data-indice="${indice}"
-                            aria-label="Ver fotografía ${indice + 1}"
-                        >
-                            <img
-                                src="${escaparProducto(url)}"
-                                alt="${escaparProducto(nombre)} - foto ${indice + 1}"
-                            >
-                        </button>
-                    `).join("")}
-
-                </div>
-
-                <p class="contador-imagenes" id="contador-imagenes">
-                    1 / ${imagenes.length}
-                </p>
-
-            ` : ""}
+            ${miniaturas}
+            ${contador}
 
         </div>
     `;
