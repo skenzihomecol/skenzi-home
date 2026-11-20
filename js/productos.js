@@ -193,9 +193,7 @@ function mostrarCatalogo(productos) {
             ? formatoPrecio.format(producto.precio)
             : "Consultar precio";
 
-        const disponibilidad = producto.existencias > 0
-            
-            : "Agotado";
+       const disponibilidad = "";
 
         const imagen = producto.imagen
             ? `
