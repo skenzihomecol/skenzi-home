@@ -142,7 +142,7 @@ async function cargarProductos() {
         });
 
         mostrarCatalogo(window.SK_PRODUCTOS);
-
+cargarFotografiasBanners();
         console.log(
             "SKENZI HOME — Productos cargados:",
             window.SK_PRODUCTOS.length
