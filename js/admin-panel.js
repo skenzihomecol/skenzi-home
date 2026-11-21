@@ -384,6 +384,7 @@ let productoEnEdicion = null;
                     document.getElementById("producto-nombre").value = p.nombre || "";
                     document.getElementById("producto-descripcion").value = p.descripcion || "";
                     document.getElementById("producto-categoria").value = p.categoria_id || "";
+                   document.getElementById("producto-proveedor").value = p.proveedor || "";
                     document.getElementById("producto-costo").value = p.costo_compra;
                     document.getElementById("producto-precio").value = p.precio_venta;
                     document.getElementById("producto-stock").value = p.existencias;
