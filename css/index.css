@@ -695,20 +695,37 @@ button {
 }
 
 
-/* FONDO FOTOGRÁFICO DE LA PORTADA SKENZI HOME */
+
+/* ==========================================
+   PORTADA FOTOGRÁFICA SKENZI HOME
+========================================== */
 
 .portada {
-    background-image:
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+
+    background:
         linear-gradient(
             90deg,
-            rgba(248, 244, 234, 0.92) 0%,
-            rgba(248, 244, 234, 0.78) 38%,
-            rgba(248, 244, 234, 0.08) 75%
+            rgba(248, 244, 234, 0.94) 0%,
+            rgba(248, 244, 234, 0.82) 38%,
+            rgba(248, 244, 234, 0.20) 75%,
+            rgba(248, 244, 234, 0.05) 100%
         ),
-       url("../portada-skenzi.png");
+        url("../portada-skenzi.png");
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 520px;
+
+    padding: 65px max(30px, calc((100% - 1200px)/2));
+}
+
+/* TEXTO DE LA PORTADA */
+
+.portada-contenido {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
 }
