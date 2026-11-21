@@ -168,3 +168,115 @@ function agregarAlCarrito(idProducto) {
 
     alert("¡Producto agregado a tu carrito!");
 }
+
+/* ==========================================
+   CARRUSEL PUBLICITARIO SKENZI HOME
+   ========================================== */
+
+(function iniciarCarruselSkenzi() {
+
+    const carrusel = document.getElementById("carrusel-skenzi");
+    const pista = document.getElementById("carrusel-pista");
+    const anterior = document.getElementById("banner-anterior");
+    const siguiente = document.getElementById("banner-siguiente");
+    const indicadores = document.getElementById("banner-indicadores");
+
+    if (!carrusel || !pista || !anterior || !siguiente || !indicadores) {
+        return;
+    }
+
+    const banners = Array.from(
+        pista.querySelectorAll(".banner-publicitario")
+    );
+
+    if (!banners.length) return;
+
+    let indiceActual = 0;
+    let intervalo = null;
+
+    // CREAR INDICADORES
+    indicadores.innerHTML = banners.map((banner, indice) => `
+        <button
+            type="button"
+            class="${indice === 0 ? "activo" : ""}"
+            aria-label="Ir al anuncio ${indice + 1}"
+            aria-current="${indice === 0 ? "true" : "false"}"
+            data-indice="${indice}">
+        </button>
+    `).join("");
+
+    const puntos = Array.from(
+        indicadores.querySelectorAll("button")
+    );
+
+    // MOSTRAR BANNER
+    function mostrarBanner(indice) {
+
+        indiceActual = (indice + banners.length) % banners.length;
+
+        pista.style.transform =
+            `translateX(-${indiceActual * 100}%)`;
+
+        puntos.forEach((punto, i) => {
+            punto.classList.toggle("activo", i === indiceActual);
+            punto.setAttribute(
+                "aria-current",
+                i === indiceActual ? "true" : "false"
+            );
+        });
+    }
+
+    // AVANZAR
+    function avanzar() {
+        mostrarBanner(indiceActual + 1);
+    }
+
+    // RETROCEDER
+    function retroceder() {
+        mostrarBanner(indiceActual - 1);
+    }
+
+    // BOTONES LATERALES
+    siguiente.addEventListener("click", () => {
+        avanzar();
+        reiniciarIntervalo();
+    });
+
+    anterior.addEventListener("click", () => {
+        retroceder();
+        reiniciarIntervalo();
+    });
+
+    // INDICADORES
+    puntos.forEach(punto => {
+        punto.addEventListener("click", () => {
+            mostrarBanner(Number(punto.dataset.indice));
+            reiniciarIntervalo();
+        });
+    });
+
+    // CAMBIO AUTOMÁTICO CADA 5 SEGUNDOS
+    function iniciarIntervalo() {
+        intervalo = setInterval(avanzar, 5000);
+    }
+
+    function detenerIntervalo() {
+        clearInterval(intervalo);
+    }
+
+    function reiniciarIntervalo() {
+        detenerIntervalo();
+        iniciarIntervalo();
+    }
+
+    // PAUSAR AL PASAR EL CURSOR
+    carrusel.addEventListener("mouseenter", detenerIntervalo);
+    carrusel.addEventListener("mouseleave", iniciarIntervalo);
+
+    // INICIAR
+    mostrarBanner(0);
+    iniciarIntervalo();
+
+    console.log("Carrusel publicitario Skenzi Home iniciado.");
+
+})();
