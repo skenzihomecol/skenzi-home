@@ -301,3 +301,49 @@ document.addEventListener(
     "DOMContentLoaded",
     cargarProductos
 );
+
+/* ==========================================
+   FOTOGRAFÍAS PARA BANNERS PUBLICITARIOS
+   ========================================== */
+
+function cargarFotografiasBanners() {
+
+    const productos = (window.SK_PRODUCTOS || [])
+        .filter(p => p.imagen && p.imagen.trim() !== "");
+
+    const contenedores = [
+        "banner-productos-1",
+        "banner-productos-2",
+        "banner-productos-3"
+    ];
+
+    contenedores.forEach((id, indice) => {
+
+        const contenedor = document.getElementById(id);
+
+        if (!contenedor) return;
+
+        const inicio = indice * 3;
+
+        let seleccion = productos.slice(inicio, inicio + 3);
+
+        // Si hay pocos productos, reutilizar fotografías disponibles.
+        if (seleccion.length === 0) {
+            seleccion = productos.slice(0, 3);
+        }
+
+        contenedor.innerHTML = seleccion.map(producto => `
+            <img
+                src="${escaparHTML(producto.imagen)}"
+                alt="${escaparHTML(producto.nombre)}"
+                loading="lazy"
+                title="${escaparHTML(producto.nombre)}"
+            >
+        `).join("");
+
+    });
+
+}
+
+// HACER DISPONIBLE LA FUNCIÓN
+window.cargarFotografiasBanners = cargarFotografiasBanners;
