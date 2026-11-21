@@ -713,7 +713,12 @@ formulario.addEventListener("submit", async evento => {
 
         const categoriaId =
             document.getElementById("producto-categoria").value;
+const proveedor =
+    document.getElementById("producto-proveedor").value;
 
+if (!proveedor) {
+    throw new Error("Selecciona un proveedor.");
+}
         if (!categoriaId) {
             throw new Error("Selecciona una categoría.");
         }
