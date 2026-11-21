@@ -807,7 +807,7 @@ if (!proveedor) {
             ).value.trim(),
 
             categoria_id: categoriaId,
-
+proveedor: proveedor,
             costo_compra: costo,
 
             precio_venta: precio,
