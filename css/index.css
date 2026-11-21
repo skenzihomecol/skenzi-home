@@ -705,7 +705,7 @@ button {
             rgba(248, 244, 234, 0.78) 38%,
             rgba(248, 244, 234, 0.08) 75%
         ),
-        url("../img/portada-skenzi.png");
+       url("../portada-skenzi.png");
 
     background-size: cover;
     background-position: center;
