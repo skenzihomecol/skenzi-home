@@ -435,3 +435,203 @@ button {
         grid-template-columns: 1fr;
     }
 }
+
+/* =====================================
+   CARRUSEL PUBLICITARIO SKENZI HOME
+===================================== */
+
+.carrusel-publicitario {
+    width: 100%;
+    max-width: 1450px;
+    margin: 45px auto;
+    padding: 0 25px;
+}
+
+.carrusel-contenedor {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #f2eee3;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.carrusel-pista {
+    display: flex;
+    transition: transform 0.8s ease-in-out;
+}
+
+.banner-publicitario {
+    min-width: 100%;
+    min-height: 300px;
+    box-sizing: border-box;
+    padding: 35px 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    background: linear-gradient(110deg, #eee8d9, #faf7ef);
+}
+
+.banner-publicitario:nth-child(2) {
+    background: linear-gradient(110deg, #e5e9dc, #f8f5eb);
+}
+
+.banner-publicitario:nth-child(3) {
+    background: linear-gradient(110deg, #e9e2d5, #f8f3e9);
+}
+
+.banner-texto {
+    flex: 1;
+    max-width: 48%;
+}
+
+.banner-texto span {
+    color: #596b42;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.banner-texto h2 {
+    color: #26351f;
+    font-family: Georgia, serif;
+    font-size: clamp(25px, 3.2vw, 43px);
+    line-height: 1.15;
+    margin: 15px 0;
+}
+
+.banner-texto p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.banner-productos {
+    flex: 1;
+    min-width: 0;
+    min-height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.banner-productos img {
+    width: 30%;
+    height: 190px;
+    object-fit: contain;
+    border-radius: 12px;
+    animation: aparecerProducto 0.7s ease;
+}
+
+@keyframes aparecerProducto {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.carrusel-flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    color: #35452b;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.carrusel-flecha:hover {
+    background: #405332;
+    color: white;
+}
+
+.carrusel-flecha.anterior {
+    left: 12px;
+}
+
+.carrusel-flecha.siguiente {
+    right: 12px;
+}
+
+.carrusel-indicadores {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 9px;
+    z-index: 3;
+}
+
+.carrusel-indicadores button {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #b8b8a8;
+    cursor: pointer;
+}
+
+.carrusel-indicadores button.activo {
+    width: 25px;
+    border-radius: 10px;
+    background: #405332;
+}
+
+/* ADAPTACIÓN A CELULARES */
+
+@media (max-width: 700px) {
+    .carrusel-publicitario {
+        padding: 0 12px;
+        margin: 25px auto;
+    }
+
+    .banner-publicitario {
+        min-height: 360px;
+        padding: 28px 35px 38px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .banner-texto {
+        max-width: 100%;
+    }
+
+    .banner-texto h2 {
+        font-size: 27px;
+    }
+
+    .banner-texto p {
+        font-size: 14px;
+    }
+
+    .banner-productos {
+        width: 100%;
+        min-height: 130px;
+    }
+
+    .banner-productos img {
+        height: 115px;
+    }
+
+    .carrusel-flecha {
+        width: 32px;
+        height: 32px;
+        font-size: 23px;
+    }
+}
