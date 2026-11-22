@@ -79,6 +79,8 @@ async function cargarHogar() {
             ].includes(categoria);
         });
 
+              mostrarProductoDestacadoHogar();
+        mostrarProductoPopularHogar();
         mostrarHogar();
 
     } catch (error) {
@@ -114,6 +116,87 @@ function obtenerImagenesHogar(producto) {
     ].filter(imagen =>
         typeof imagen === "string" && imagen.trim()
     );
+}
+
+ // PRODUCTO DESTACADO DE LA SEMANA
+function mostrarProductoDestacadoHogar() {
+    const contenedor = document.getElementById(
+        "producto-destacado-hogar"
+    );
+
+    if (!contenedor) return;
+
+    const producto = productosHogar.find(
+        p => p.es_destacado === true
+    );
+
+    if (!producto) {
+        contenedor.innerHTML = `
+            <p class="mensaje-vacio">
+                Próximamente tendremos un producto destacado.
+            </p>
+        `;
+        return;
+    }
+
+    const precio = Number(producto.precio_venta) || 0;
+    const imagen = producto.imagen_url;
+    const disponible = Number(producto.existencias) > 0 && precio > 0;
+
+    contenedor.innerHTML = `
+        <article class="producto-destacado tarjeta-producto-semana">
+
+            ${imagen
+                ? `<button type="button"
+                     class="producto-ver-detalle"
+                     data-ver-hogar="${escaparHogar(producto.id)}">
+                     <img src="${escaparHogar(imagen)}"
+                          alt="${escaparHogar(producto.nombre)}">
+                   </button>`
+                : `<div class="imagen-sin-producto">🛍️</div>`
+            }
+
+            <div class="contenido-destacado">
+                <span class="etiqueta-destacado">
+                    ⭐ DESTACADO DE LA SEMANA
+                </span>
+
+                <h3>${escaparHogar(producto.nombre)}</h3>
+
+                <p>${escaparHogar(producto.descripcion || "")}</p>
+
+                <p class="precio">
+                    ${precio > 0 ? PRECIO_HOGAR.format(precio) : "Consultar precio"}
+                </p>
+
+                <button type="button"
+                    data-agregar-hogar="${escaparHogar(producto.id)}"
+                    ${disponible ? "" : "disabled"}>
+                    ${disponible ? "Añadir al carrito" : "No disponible"}
+                </button>
+            </div>
+        </article>
+    `;
+}
+
+// PRODUCTO POPULAR DEL MES
+function mostrarProductoPopularHogar() {
+    const contenedor = document.getElementById(
+        "producto-popular-hogar"
+    );
+
+    if (!contenedor) return;
+
+    contenedor.innerHTML = `
+        <div class="popular-pendiente">
+            <span>♥</span>
+            <h3>El favorito de nuestros clientes</h3>
+            <p>
+                Próximamente mostraremos el producto
+                más popular del mes.
+            </p>
+        </div>
+    `;
 }
 
 // MOSTRAR GALERÍA COMPLETA
