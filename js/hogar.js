@@ -56,8 +56,9 @@ async function cargarHogar() {
                 existencias,
                 imagen_url,
                 imagenes_adicionales,
-                categoria_id,
+                               categoria_id,
                 activo,
+                es_destacado,
                 categorias(nombre)
             `)
             .eq("activo", true)
