@@ -748,3 +748,104 @@ body.modal-abierto-hogar {
         height: 220px;
     }
 }
+
+/* ==========================================
+   DOS TARJETAS ESPECIALES EN HOGAR
+   ========================================== */
+
+.tarjetas-especiales-hogar {
+    max-width: 1050px;
+    margin: 35px auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+.tarjeta-especial-hogar {
+    min-width: 0;
+    padding: 20px;
+    border: 2px solid #d2b46d;
+    border-radius: 18px;
+    background: #fffdf8;
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+}
+
+.etiqueta-especial {
+    display: block;
+    margin-bottom: 18px;
+    color: #526b49;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.tarjeta-especial-hogar .producto-destacado {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.tarjeta-especial-hogar .producto-destacado::before {
+    display: none;
+}
+
+.tarjeta-especial-hogar #producto-destacado-hogar {
+    max-width: none;
+}
+
+.tarjeta-especial-hogar #producto-destacado-hogar img,
+.tarjeta-especial-hogar .producto-destacado img {
+    width: 100%;
+    height: 230px;
+    object-fit: contain;
+    background: white;
+    border-radius: 10px;
+}
+
+.tarjeta-especial-hogar .contenido-destacado {
+    padding: 8px 4px;
+}
+
+.tarjeta-especial-hogar .contenido-destacado h3 {
+    font-size: 23px;
+}
+
+.popular-pendiente {
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.popular-pendiente span {
+    color: #b18b3e;
+    font-size: 45px;
+}
+
+.popular-pendiente h3 {
+    color: #263e2d;
+    font-family: Georgia, serif;
+    font-size: 24px;
+}
+
+.popular-pendiente p {
+    color: #77736b;
+    line-height: 1.7;
+}
+
+@media (max-width: 650px) {
+    .tarjetas-especiales-hogar {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+}
