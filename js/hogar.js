@@ -1,6 +1,7 @@
 
 /* ==========================================
    SKENZI HOME — CATÁLOGO HOGAR
+   SUPABASE + SUBCATEGORÍAS + DESTACADO
    ========================================== */
 
 "use strict";
@@ -14,6 +15,7 @@ const PRECIO_HOGAR = new Intl.NumberFormat("es-CO", {
 });
 
 let productosHogar = [];
+let categoriaHogarActual = "";
 
 // ESCAPAR TEXTO
 function escaparHogar(texto) {
@@ -26,6 +28,15 @@ function escaparHogar(texto) {
     })[c]);
 }
 
+// NORMALIZAR NOMBRES
+function normalizarHogar(texto) {
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+}
+
 // CARGAR PRODUCTOS
 async function cargarHogar() {
 
@@ -35,7 +46,19 @@ async function cargarHogar() {
 
     try {
 
-        const { data, error } = await window.skenziDB
+        const db = window.skenziDB;
+
+        if (!db) {
+            throw new Error("No existe conexión con Supabase.");
+        }
+
+        galeria.innerHTML = `
+            <p class="mensaje-vacio">
+                Cargando productos...
+            </p>
+        `;
+
+        const { data, error } = await db
             .from("productos")
             .select(`
                 id,
@@ -46,26 +69,24 @@ async function cargarHogar() {
                 imagen_url,
                 activo,
                 categoria_id,
+                es_destacado,
                 categorias (
                     nombre
                 )
             `)
-            .eq("activo", true);
+            .eq("activo", true)
+            .order("creado_en", { ascending: false });
 
         if (error) throw error;
 
-        productosHogar = (data || []).filter(producto => {
+        productosHogar = (data || []).map(producto => ({
+            ...producto,
+            categoriaNombre: producto.categorias?.nombre || ""
+        })).filter(producto =>
+            normalizarHogar(producto.categoriaNombre) === "hogar"
+        );
 
-            const categoria = producto.categorias?.nombre || "";
-
-            return categoria
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .trim()
-                .toLowerCase() === "hogar";
-
-        });
-
+        mostrarDestacadoHogar();
         mostrarHogar();
 
     } catch (error) {
@@ -79,8 +100,90 @@ async function cargarHogar() {
             </p>
         `;
 
+        const destacado = document.getElementById(
+            "producto-destacado-hogar"
+        );
+
+        if (destacado) {
+            destacado.innerHTML = "";
+        }
+    }
+}
+
+// MOSTRAR PRODUCTO DESTACADO
+function mostrarDestacadoHogar() {
+
+    const contenedor = document.getElementById(
+        "producto-destacado-hogar"
+    );
+
+    if (!contenedor) return;
+
+    const producto = productosHogar.find(
+        p => p.es_destacado === true
+    );
+
+    if (!producto) {
+
+        contenedor.innerHTML = `
+            <p class="mensaje-vacio">
+                Próximamente tendremos un producto especial para ti.
+            </p>
+        `;
+
+        return;
     }
 
+    const precio = Number(producto.precio_venta) || 0;
+    const existencias = Number(producto.existencias) || 0;
+
+    const imagen = producto.imagen_url
+        ? `
+            <img
+                src="${escaparHogar(producto.imagen_url)}"
+                alt="${escaparHogar(producto.nombre)}"
+                loading="lazy"
+            >
+        `
+        : `<div class="mensaje-vacio">🛍️</div>`;
+
+    contenedor.innerHTML = `
+        <article class="producto-destacado">
+
+            ${imagen}
+
+            <div class="contenido-destacado">
+
+                <span class="etiqueta-destacado">
+                    PRODUCTO ESPECIAL
+                </span>
+
+                <h3>${escaparHogar(producto.nombre)}</h3>
+
+                <p>
+                    ${escaparHogar(producto.descripcion)}
+                </p>
+
+                <p class="precio">
+                    ${precio > 0
+                        ? PRECIO_HOGAR.format(precio)
+                        : "Consultar precio"}
+                </p>
+
+                <button
+                    type="button"
+                    data-agregar-hogar="${escaparHogar(producto.id)}"
+                    ${existencias <= 0 || precio <= 0 ? "disabled" : ""}
+                >
+                    ${existencias > 0 && precio > 0
+                        ? "Agregar al carrito"
+                        : "No disponible"}
+                </button>
+
+            </div>
+
+        </article>
+    `;
 }
 
 // MOSTRAR PRODUCTOS
@@ -90,26 +193,43 @@ function mostrarHogar() {
 
     if (!galeria) return;
 
-    if (!productosHogar.length) {
+    let productos = productosHogar.filter(
+        p => p.es_destacado !== true
+    );
+
+    if (categoriaHogarActual) {
+
+        productos = productos.filter(producto =>
+            normalizarHogar(producto.categoriaNombre) ===
+            normalizarHogar(categoriaHogarActual)
+        );
+
+    }
+
+    if (!productos.length) {
 
         galeria.innerHTML = `
             <p class="mensaje-vacio">
-                Próximamente tendremos productos para el hogar.
+                Próximamente tendremos productos en esta sección.
             </p>
         `;
 
         return;
     }
 
-    galeria.innerHTML = productosHogar.map(producto => {
+    galeria.innerHTML = productos.map(producto => {
 
         const precio = Number(producto.precio_venta) || 0;
         const existencias = Number(producto.existencias) || 0;
 
         const imagen = producto.imagen_url
-            ? `<img src="${escaparHogar(producto.imagen_url)}"
-                 alt="${escaparHogar(producto.nombre)}"
-                 loading="lazy">`
+            ? `
+                <img
+                    src="${escaparHogar(producto.imagen_url)}"
+                    alt="${escaparHogar(producto.nombre)}"
+                    loading="lazy"
+                >
+            `
             : `<div class="mensaje-vacio">🛍️</div>`;
 
         return `
@@ -145,7 +265,28 @@ function mostrarHogar() {
         `;
 
     }).join("");
+}
 
+// FILTRAR POR SUBCATEGORÍA
+function filtrarHogar(categoria) {
+
+    categoriaHogarActual = categoria;
+
+    const titulo = document.getElementById(
+        "titulo-catalogo-hogar"
+    );
+
+    if (titulo) {
+        titulo.textContent = categoria
+            ? "Productos de " + categoria
+            : "Productos para el hogar";
+    }
+
+    mostrarHogar();
+
+    document.querySelector(".catalogo")?.scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
 // AGREGAR AL CARRITO
@@ -183,22 +324,51 @@ function agregarHogar(id) {
 
     }
 
-    localStorage.setItem("skenzi_carrito", JSON.stringify(carrito));
+    localStorage.setItem(
+        "skenzi_carrito",
+        JSON.stringify(carrito)
+    );
 
     alert("¡Producto agregado al carrito!");
-
 }
 
 // EVENTOS
 document.addEventListener("click", evento => {
 
-    const boton = evento.target.closest("[data-agregar-hogar]");
+    const botonAgregar = evento.target.closest(
+        "[data-agregar-hogar]"
+    );
 
-    if (boton) {
-        agregarHogar(boton.dataset.agregarHogar);
+    if (botonAgregar) {
+        agregarHogar(botonAgregar.dataset.agregarHogar);
+        return;
     }
 
+    const botonFiltro = evento.target.closest(
+        "[data-filtro-hogar]"
+    );
+
+    if (botonFiltro) {
+        filtrarHogar(botonFiltro.dataset.filtroHogar);
+        return;
+    }
+
+    const verTodos = evento.target.closest(
+        "#ver-todos-hogar"
+    );
+
+    if (verTodos) {
+        filtrarHogar("");
+    }
 });
 
+// HACER FUNCIONES ACCESIBLES
+window.cargarHogar = cargarHogar;
+window.filtrarHogar = filtrarHogar;
+window.mostrarHogar = mostrarHogar;
+
 // INICIAR
-document.addEventListener("DOMContentLoaded", cargarHogar);
+document.addEventListener(
+    "DOMContentLoaded",
+    cargarHogar
+);
