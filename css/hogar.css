@@ -420,3 +420,130 @@ footer {
         height: 260px;
     }
 }
+
+/* ==========================================
+   PRODUCTO DESTACADO — NOVEDAD PREMIUM
+   ========================================== */
+
+.destacado-mes {
+    position: relative;
+    padding: 75px 25px;
+    background:
+        radial-gradient(circle at top right,
+        rgba(190, 158, 86, .25),
+        transparent 35%),
+        linear-gradient(135deg, #173c2b, #315b3e 55%, #183a2b);
+    border-top: 4px solid #c5a45b;
+    border-bottom: 4px solid #c5a45b;
+}
+
+.destacado-mes .titulo span {
+    color: #e4c77f;
+    letter-spacing: 5px;
+}
+
+.destacado-mes .titulo h2 {
+    color: #fffaf0;
+    font-size: clamp(30px, 4vw, 43px);
+}
+
+.destacado-mes .titulo p {
+    color: #e8e1d2;
+}
+
+#producto-destacado-hogar {
+    max-width: 1000px;
+}
+
+#producto-destacado-hogar .producto-destacado {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #d2b46d;
+    border-radius: 20px;
+    background: #fffdf8;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .28);
+}
+
+#producto-destacado-hogar .producto-destacado::before {
+    content: "✦ NOVEDAD";
+    position: absolute;
+    top: 22px;
+    left: 0;
+    z-index: 2;
+    padding: 11px 25px;
+    border-radius: 0 25px 25px 0;
+    background: linear-gradient(90deg, #b18b3e, #e8cf8c);
+    color: #263b28;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+}
+
+#producto-destacado-hogar img {
+    transition: transform .4s ease;
+}
+
+#producto-destacado-hogar .producto-destacado:hover img {
+    transform: scale(1.035);
+}
+
+.contenido-destacado {
+    padding: 30px;
+}
+
+.contenido-destacado .etiqueta-destacado {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: #e9efe5;
+    color: #456344;
+    font-weight: 800;
+}
+
+.contenido-destacado h3 {
+    color: #263e2d;
+    line-height: 1.2;
+}
+
+.contenido-destacado p {
+    line-height: 1.8;
+}
+
+.contenido-destacado .precio {
+    color: #315c3c;
+    font-size: 29px;
+}
+
+.contenido-destacado button {
+    padding: 14px 25px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #315b3e, #173c2b);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.contenido-destacado button:hover {
+    background: linear-gradient(135deg, #bd9a50, #e2c77e);
+    color: #263b28;
+    transform: translateY(-2px);
+}
+
+.contenido-destacado button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 550px) {
+    .destacado-mes {
+        padding: 50px 15px;
+    }
+
+    .contenido-destacado {
+        padding: 20px;
+    }
+}
