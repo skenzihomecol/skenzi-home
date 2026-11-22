@@ -20,7 +20,7 @@
 <nav class="navegacion">
     <a href="index.html">Inicio</a>
     <a href="hogar.html" class="activo">Hogar</a>
-    <a href="cocina.html">Cocina</a>
+    <a href="hogar.html#catalogo-hogar">Cocina</a>
     <a href="juguetes.html">Juguetes</a>
     <a href="herramientas.html">Herramientas</a>
     <a href="deporte.html">Deporte</a>
@@ -37,47 +37,82 @@
         <p>Detalles prácticos que transforman tus espacios.</p>
     </section>
 
-  
+    <!-- PRODUCTOS DESTACADOS Y POPULARES -->
+    <section class="destacado-mes">
 
-   
-<!-- PRODUCTOS DESTACADOS Y POPULARES -->
-<section class="destacado-mes">
+        <div class="titulo">
+            <span>SELECCIÓN ESPECIAL</span>
+            <h2>Lo que destaca en Skenzi Home</h2>
+            <p>Descubre nuestros productos especiales.</p>
+        </div>
 
-    <div class="titulo">
-        <span>SELECCIÓN ESPECIAL</span>
-        <h2>Lo que destaca en Skenzi Home</h2>
-        <p>Descubre nuestros productos especiales.</p>
-    </div>
+        <div class="tarjetas-especiales-hogar">
 
-    <div class="tarjetas-especiales-hogar">
+            <article class="tarjeta-especial-hogar">
+                <span class="etiqueta-especial">
+                    DESTACADO DE LA SEMANA
+                </span>
 
-        <!-- PRODUCTO DESTACADO DE LA SEMANA -->
-        <article class="tarjeta-especial-hogar">
-            <span class="etiqueta-especial">DESTACADO DE LA SEMANA</span>
-            <div id="producto-destacado-hogar">
-                <p>Cargando producto destacado...</p>
-            </div>
-        </article>
+                <div id="producto-destacado-hogar">
+                    <p>Cargando producto destacado...</p>
+                </div>
+            </article>
 
-        <!-- PRODUCTO MÁS POPULAR DEL MES -->
-        <article class="tarjeta-especial-hogar">
-            <span class="etiqueta-especial">MÁS POPULAR DEL MES</span>
-            <div id="producto-popular-hogar">
-                <p>Próximamente conocerás el favorito de nuestros clientes.</p>
-            </div>
-        </article>
+            <article class="tarjeta-especial-hogar">
+                <span class="etiqueta-especial">
+                    MÁS POPULAR DEL MES
+                </span>
 
-    </div>
+                <div id="producto-popular-hogar">
+                    <p>Próximamente conocerás el favorito de nuestros clientes.</p>
+                </div>
+            </article>
 
-</section>
+        </div>
 
+    </section>
 
     <!-- CATÁLOGO -->
-    <section class="catalogo">
+    <section class="catalogo" id="catalogo-hogar">
 
         <div class="titulo">
             <span>NUESTRA COLECCIÓN</span>
             <h2 id="titulo-catalogo-hogar">Productos para el hogar</h2>
+        </div>
+
+        <!-- FILTROS DE CATEGORÍAS -->
+        <div class="filtros-hogar" id="filtros-hogar">
+
+            <button type="button"
+                class="filtro-hogar activo"
+                data-categoria="todos">
+                Todos
+            </button>
+
+            <button type="button"
+                class="filtro-hogar"
+                data-categoria="hogar">
+                Hogar y Muebles
+            </button>
+
+            <button type="button"
+                class="filtro-hogar"
+                data-categoria="organizadores">
+                Organizadores
+            </button>
+
+            <button type="button"
+                class="filtro-hogar"
+                data-categoria="cocina">
+                Cocina
+            </button>
+
+            <button type="button"
+                class="filtro-hogar"
+                data-categoria="textiles">
+                Cortinas
+            </button>
+
         </div>
 
         <button type="button"
