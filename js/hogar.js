@@ -13,7 +13,7 @@ const PRECIO_HOGAR = new Intl.NumberFormat("es-CO", {
 });
 
 let productosHogar = [];
-
+let categoriaSeleccionadaHogar = "todos";
 function escaparHogar(texto) {
     return String(texto ?? "").replace(/[&<>"']/g, c => ({
         "&": "&amp;",
@@ -66,18 +66,19 @@ async function cargarHogar() {
 
         if (error) throw error;
 
-        productosHogar = (data || []).filter(producto => {
-            const categoria = normalizarHogar(
-                producto.categorias?.nombre
-            );
+       productosHogar = (data || []).filter(producto => {
+    const categoria = normalizarHogar(
+        producto.categorias?.nombre
+    );
 
-            return [
-                "hogar",
-                "muebles",
-                "hogar y muebles",
-                "hogar y mueble"
-            ].includes(categoria);
-        });
+    return (
+        ["hogar", "muebles", "hogar y muebles", "hogar y mueble"].includes(categoria) ||
+        categoria.includes("organizador") ||
+        categoria.includes("cocina") ||
+        categoria.includes("textil") ||
+        categoria.includes("cortina")
+    );
+});
 
               mostrarProductoDestacadoHogar();
         mostrarProductoPopularHogar();
@@ -199,12 +200,61 @@ function mostrarProductoPopularHogar() {
     `;
 }
 
-// MOSTRAR GALERÍA COMPLETA
+
+// MOSTRAR GALERÍA SEGÚN LA CATEGORÍA
 function mostrarHogar() {
     const galeria = document.getElementById("galeria-hogar");
+    const titulo = document.getElementById("titulo-catalogo-hogar");
+
     if (!galeria) return;
 
-    if (!productosHogar.length) {
+    const productosFiltrados = productosHogar.filter(producto => {
+        const categoria = normalizarHogar(
+            producto.categorias?.nombre
+        );
+
+        if (categoriaSeleccionadaHogar === "todos") return true;
+
+        if (categoriaSeleccionadaHogar === "hogar") {
+            return [
+                "hogar",
+                "muebles",
+                "hogar y muebles",
+                "hogar y mueble"
+            ].includes(categoria);
+        }
+
+        if (categoriaSeleccionadaHogar === "organizadores") {
+            return categoria.includes("organizador");
+        }
+
+        if (categoriaSeleccionadaHogar === "cocina") {
+            return categoria.includes("cocina");
+        }
+
+        if (categoriaSeleccionadaHogar === "textiles") {
+            return categoria.includes("textil") ||
+                   categoria.includes("cortina");
+        }
+
+        return false;
+    });
+
+    if (titulo) {
+        const titulos = {
+            todos: "Productos para el hogar",
+            hogar: "Hogar y Muebles",
+            organizadores: "Organizadores",
+            cocina: "Productos de Cocina",
+            textiles: "Cortinas"
+        };
+
+        titulo.textContent =
+            titulos[categoriaSeleccionadaHogar] ||
+            "Productos para el hogar";
+    }
+
+    if (!productosFiltrados.length) {
         galeria.innerHTML = `
             <p class="mensaje-vacio">
                 Todavía no hay productos disponibles
@@ -214,7 +264,7 @@ function mostrarHogar() {
         return;
     }
 
-    galeria.innerHTML = productosHogar.map(producto => {
+    galeria.innerHTML = productosFiltrados.map(producto => {
         const precio = Number(producto.precio_venta) || 0;
         const existencias = Number(producto.existencias) || 0;
         const imagen = producto.imagen_url;
@@ -404,6 +454,36 @@ function agregarHogar(id) {
 
 // EVENTOS
 document.addEventListener("click", evento => {
+       // FILTRAR POR CATEGORÍA
+    const filtro = evento.target.closest("[data-categoria]");
+
+    if (filtro) {
+        categoriaSeleccionadaHogar = filtro.dataset.categoria;
+
+        document.querySelectorAll(".filtro-hogar").forEach(boton => {
+            boton.classList.toggle("activo", boton === filtro);
+        });
+
+        mostrarHogar();
+        return;
+    }
+
+    // VER TODOS LOS PRODUCTOS
+    const verTodos = evento.target.closest("#ver-todos-hogar");
+
+    if (verTodos) {
+        categoriaSeleccionadaHogar = "todos";
+
+        document.querySelectorAll(".filtro-hogar").forEach(boton => {
+            boton.classList.toggle(
+                "activo",
+                boton.dataset.categoria === "todos"
+            );
+        });
+
+        mostrarHogar();
+        return;
+    }
     const agregar = evento.target.closest("[data-agregar-hogar]");
 
     if (agregar) {
