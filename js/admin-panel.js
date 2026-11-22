@@ -26,7 +26,9 @@ async function iniciarPanel() {
     const botonGuardar = document.getElementById("guardar-producto");
 
     const mensaje = document.getElementById("mensaje-producto");
-
+const productoDestacado = document.getElementById(
+    "producto-destacado"
+);
     const imagenPrincipal = document.getElementById(
         "producto-imagen-principal"
     );
@@ -393,7 +395,9 @@ let productoEnEdicion = null;
 
                     document.getElementById("producto-activo").checked = !!p.activo;
                     document.getElementById("producto-publicado").checked = !!p.activo;
-
+if (productoDestacado) {
+    productoDestacado.checked = !!p.es_destacado;
+}
                     imagenPrincipal.value = "";
                     imagenesAdicionales.value = "";
 
@@ -644,7 +648,9 @@ botonGuardar.textContent = "GUARDAR PRODUCTO";
         document.getElementById("producto-activo").checked = true;
 
         document.getElementById("producto-publicado").checked = false;
-
+if (productoDestacado) {
+    productoDestacado.checked = false;
+}
         imagenPrincipal.value = "";
         imagenesAdicionales.value = "";
 
