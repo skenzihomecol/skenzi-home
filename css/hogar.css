@@ -547,3 +547,204 @@ footer {
         padding: 20px;
     }
 }
+
+/* ==========================================
+   GALERÍA DE PRODUCTOS HOGAR
+   ========================================== */
+
+.producto-hogar {
+    overflow: hidden;
+    border: 1px solid #e8e2d8;
+    border-radius: 14px;
+    background: #fff;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.producto-hogar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,.09);
+}
+
+.producto-ver-detalle {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.producto-ver-detalle img {
+    display: block;
+    width: 100%;
+    height: 245px;
+    padding: 12px;
+    object-fit: contain;
+    background: #fff;
+}
+
+.producto-ver-detalle h3 {
+    min-height: 45px;
+    margin: 12px 18px;
+    color: #37352f;
+    font-size: 16px;
+}
+
+.producto-hogar .producto-contenido {
+    padding: 0 18px 18px;
+}
+
+.producto-hogar .precio {
+    color: #315b3e;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.producto-hogar .producto-contenido button,
+.detalle-info-hogar button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #315b3e;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.producto-hogar button:disabled,
+.detalle-info-hogar button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+.imagen-sin-producto {
+    display: grid;
+    min-height: 220px;
+    place-items: center;
+    background: #f5f2ec;
+    font-size: 40px;
+}
+
+/* ==========================================
+   VENTANA EMERGENTE DEL PRODUCTO
+   ========================================== */
+
+.modal-hogar {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(20, 29, 23, .75);
+    overflow-y: auto;
+}
+
+.modal-hogar[hidden] {
+    display: none;
+}
+
+.modal-hogar-contenido {
+    position: relative;
+    width: 100%;
+    max-width: 850px;
+    max-height: 90vh;
+    padding: 35px;
+    overflow-y: auto;
+    border: 1px solid #d5c18b;
+    border-radius: 18px;
+    background: #fffdf8;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+
+.cerrar-modal-hogar {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 2;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #e8eee6;
+    color: #315b3e;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.detalle-producto-hogar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+}
+
+.detalle-imagenes-hogar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detalle-imagenes-hogar img {
+    width: 100%;
+    max-height: 340px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: white;
+}
+
+.detalle-etiqueta {
+    color: #9b875b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.detalle-info-hogar h2 {
+    color: #263e2d;
+    font-family: Georgia, serif;
+    font-size: 30px;
+}
+
+.detalle-descripcion {
+    color: #77736b;
+    line-height: 1.8;
+}
+
+.detalle-info-hogar .precio {
+    color: #315b3e;
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.detalle-existencias {
+    color: #58714f;
+    font-weight: 700;
+}
+
+body.modal-abierto-hogar {
+    overflow: hidden;
+}
+
+/* CELULARES */
+
+@media (max-width: 650px) {
+    .detalle-producto-hogar {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-hogar-contenido {
+        padding: 45px 18px 22px;
+    }
+
+    .detalle-info-hogar h2 {
+        font-size: 24px;
+    }
+
+    .producto-ver-detalle img {
+        height: 220px;
+    }
+}
