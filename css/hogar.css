@@ -849,3 +849,82 @@ body.modal-abierto-hogar {
         padding: 0 15px;
     }
 }
+
+/* ==========================================
+   FILTROS DE CATEGORÍAS — HOGAR
+   ========================================== */
+
+.filtros-hogar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 10px auto 35px;
+}
+
+.filtro-hogar {
+    padding: 11px 22px;
+    border: 1px solid #c9d2c3;
+    border-radius: 30px;
+    background: #fff;
+    color: #52654d;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .25s ease;
+}
+
+.filtro-hogar:hover,
+.filtro-hogar.activo {
+    border-color: #315b3e;
+    background: #315b3e;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(49, 91, 62, .18);
+}
+
+/* TARJETAS ESPECIALES */
+
+.tarjeta-especial-hogar {
+    display: flex;
+    flex-direction: column;
+    min-height: 430px;
+}
+
+.tarjeta-especial-hogar > div {
+    flex: 1;
+}
+
+#producto-popular-hogar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 340px;
+    padding: 20px;
+    color: #52654d;
+    text-align: center;
+}
+
+#producto-popular-hogar p {
+    color: #77736b;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+/* ADAPTACIÓN A CELULARES */
+
+@media (max-width: 650px) {
+    .filtros-hogar {
+        gap: 9px;
+    }
+
+    .filtro-hogar {
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+
+    .tarjeta-especial-hogar {
+        min-height: auto;
+    }
+}
