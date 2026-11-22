@@ -834,7 +834,7 @@ proveedor: proveedor,
 
             es_novedad: productoEnEdicion?.es_novedad ?? false,
 
-            es_destacado: productoEnEdicion?.es_destacado ?? false,
+           es_destacado: productoDestacado?.checked ?? false,
 
             en_oferta: productoEnEdicion?.en_oferta ?? false
         };
@@ -864,7 +864,30 @@ proveedor: proveedor,
         if (resultado.error) {
             throw resultado.error;
         }
+// Si se seleccionó como destacado, quitar
+// esa condición de los demás productos.
+if (datosProducto.es_destacado) {
 
+    let consulta = db
+        .from("productos")
+        .update({ es_destacado: false })
+        .eq("es_destacado", true);
+
+    if (productoEnEdicion) {
+        consulta = consulta.neq("id", productoEnEdicion.id);
+    }
+
+    const { error: errorDestacados } = await consulta;
+
+    if (errorDestacados) {
+        console.error(
+            "No se pudieron actualizar los otros destacados:",
+            errorDestacados
+        );
+
+        throw errorDestacados;
+    }
+}
         mensaje.style.color = "#394E3C";
 
         mensaje.textContent = productoEnEdicion
