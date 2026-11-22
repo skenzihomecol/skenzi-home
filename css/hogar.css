@@ -1,11 +1,8 @@
 
-/* SKENZI HOME — CATEGORÍA HOGAR */
-
-:root {
-    --verde: #455532;
-    --crema: #faf7f0;
-    --dorado: #c7a46a;
-}
+/* ==========================================
+   SKENZI HOME — PÁGINA HOGAR
+   Diseño elegante, cálido y moderno
+   ========================================== */
 
 * {
     box-sizing: border-box;
@@ -13,9 +10,9 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    color: #292d27;
-    background: var(--crema);
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: #37352f;
+    background: #faf8f4;
 }
 
 a {
@@ -23,213 +20,403 @@ a {
     color: inherit;
 }
 
+button {
+    font: inherit;
+}
+
 /* ENCABEZADO */
 
 .encabezado {
-    background: white;
-    padding: 22px 6%;
+    min-height: 85px;
+    padding: 18px 6%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    box-shadow: 0 3px 15px #00000010;
+    align-items: center;
+    background: #fff;
 }
 
 .logo {
-    font-family: Georgia, serif;
-    color: var(--verde);
-    font-size: 27px;
-    font-weight: bold;
+    font-size: 23px;
+    font-weight: 800;
     letter-spacing: 2px;
 }
 
 .carrito {
-    font-weight: bold;
-    color: var(--verde);
+    padding: 11px 19px;
+    border: 1px solid #d9d0c3;
+    border-radius: 30px;
+    font-size: 14px;
 }
 
-/* MENÚ */
+/* NAVEGACIÓN */
 
 .navegacion {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     gap: 30px;
-    padding: 17px;
-    background: var(--verde);
-    color: white;
+    padding: 17px 15px;
+    background: #e8eee6;
 }
 
 .navegacion a {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .navegacion a:hover,
-.navegacion .activo {
-    color: #e5c98e;
+.navegacion a.activo {
+    color: #71836b;
 }
 
 /* PORTADA */
 
 .portada-hogar {
-    min-height: 340px;
-    padding: 70px 25px;
+    min-height: 390px;
+    padding: 80px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    background: linear-gradient(120deg, #e9e4d8, #faf7f0);
+    background:
+        linear-gradient(
+            rgba(40, 38, 31, .35),
+            rgba(40, 38, 31, .35)
+        ),
+        url("../portada-skenzi.png") center/cover no-repeat;
+    color: white;
 }
 
 .portada-hogar span {
-    color: var(--verde);
     font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 4px;
+    letter-spacing: 5px;
 }
 
 .portada-hogar h1 {
+    margin: 15px 0;
     font-family: Georgia, serif;
-    font-size: clamp(38px, 5vw, 58px);
-    margin: 18px 0;
+    font-size: clamp(35px, 6vw, 58px);
+    font-weight: 500;
 }
 
 .portada-hogar p {
-    color: #666;
-    font-size: 16px;
+    font-size: 15px;
+}
+
+/* TÍTULOS */
+
+.titulo {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.titulo span {
+    color: #87947d;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.titulo h2 {
+    margin: 10px 0;
+    font-family: Georgia, serif;
+    font-size: clamp(25px, 4vw, 35px);
+    font-weight: 500;
+}
+
+.titulo p {
+    color: #77736b;
+    font-size: 14px;
+}
+
+/* SUBCATEGORÍAS */
+
+.subcategorias-hogar {
+    max-width: 1150px;
+    margin: auto;
+    padding: 75px 25px;
+}
+
+.subcategorias-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.tarjeta-subcategoria {
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e8e2d8;
+    border-radius: 12px;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.tarjeta-subcategoria:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .09);
+}
+
+.foto-subcategoria {
+    height: 230px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.foto-cocina {
+    background-image: url("../imagenes/hogar-cocina.jpg");
+}
+
+.foto-textiles {
+    background-image: url("../imagenes/hogar-textiles.jpg");
+}
+
+.foto-organizadores {
+    background-image: url("../imagenes/hogar-organizadores.jpg");
+}
+
+.texto-subcategoria {
+    padding: 20px 23px 23px;
+}
+
+.texto-subcategoria h3 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.texto-subcategoria p {
+    margin: 0 0 15px;
+    color: #77736b;
+    font-size: 13px;
+}
+
+.texto-subcategoria span {
+    color: #71836b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* PRODUCTO DESTACADO */
+
+.destacado-mes {
+    padding: 65px 25px;
+    background: #f0eee7;
+}
+
+#producto-destacado-hogar {
+    max-width: 900px;
+    min-height: 100px;
+    margin: auto;
+}
+
+#producto-destacado-hogar .producto-destacado {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 35px;
+    padding: 25px;
+    border-radius: 14px;
+    background: white;
+}
+
+#producto-destacado-hogar img {
+    width: 100%;
+    max-height: 360px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.contenido-destacado {
+    padding: 15px;
+}
+
+.contenido-destacado .etiqueta-destacado {
+    color: #9b875b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.contenido-destacado h3 {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.contenido-destacado p {
+    color: #77736b;
     line-height: 1.7;
+    font-size: 14px;
+}
+
+.contenido-destacado .precio {
+    color: #52654d;
+    font-size: 23px;
+    font-weight: 700;
 }
 
 /* CATÁLOGO */
 
 .catalogo {
-    max-width: 1250px;
+    max-width: 1200px;
     margin: auto;
-    padding: 65px 25px;
+    padding: 75px 25px;
 }
 
-.titulo {
-    text-align: center;
-    margin-bottom: 40px;
+.boton-ver-todos {
+    display: block;
+    margin: -10px auto 30px;
+    padding: 11px 22px;
+    border: 1px solid #899781;
+    border-radius: 25px;
+    background: transparent;
+    color: #62745c;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-.titulo span {
-    color: var(--dorado);
-    font-size: 12px;
-    letter-spacing: 3px;
-    font-weight: bold;
+.boton-ver-todos:hover {
+    background: #e8eee6;
 }
-
-.titulo h2 {
-    font-family: Georgia, serif;
-    font-size: 36px;
-    margin: 14px 0;
-}
-
-/* PRODUCTOS */
 
 .productos-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
 }
 
 .producto {
-    background: white;
-    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 3px 15px #0000000d;
+    border: 1px solid #e9e4dc;
+    border-radius: 12px;
+    background: white;
 }
 
-.producto img {
+.producto > img {
     width: 100%;
-    height: 220px;
+    height: 240px;
     object-fit: contain;
+    background: #fff;
 }
 
 .producto-contenido {
     padding: 18px;
 }
 
-.producto h3 {
-    font-size: 17px;
+.producto-contenido h3 {
+    font-size: 16px;
 }
 
-.precio {
-    color: var(--verde);
-    font-weight: bold;
+.producto-contenido p {
+    color: #77736b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.producto-contenido .precio {
+    color: #52654d;
     font-size: 19px;
+    font-weight: 700;
 }
 
-.producto button {
+.producto-contenido button {
     width: 100%;
     padding: 12px;
     border: none;
     border-radius: 6px;
-    background: var(--verde);
+    background: #75866e;
     color: white;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.producto button:disabled {
-    opacity: .5;
+.producto-contenido button:disabled {
+    background: #aaa;
     cursor: not-allowed;
 }
 
 .mensaje-vacio {
     grid-column: 1 / -1;
+    padding: 30px;
+    color: #77736b;
     text-align: center;
-    padding: 40px;
-    color: #777;
 }
 
 /* PIE DE PÁGINA */
 
 footer {
-    background: #202820;
-    color: white;
+    padding: 25px;
+    background: #e8eee6;
+    color: #55594f;
     text-align: center;
-    padding: 28px 15px;
-    font-size: 13px;
+    font-size: 12px;
 }
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media (max-width: 850px) {
+@media (max-width: 800px) {
     .productos-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .navegacion {
-        gap: 18px;
+    .foto-subcategoria {
+        height: 190px;
     }
 }
 
-@media (max-width: 480px) {
+/* CELULARES */
+
+@media (max-width: 550px) {
     .encabezado {
-        padding: 18px;
+        padding: 15px 4%;
     }
 
     .logo {
-        font-size: 21px;
+        font-size: 18px;
     }
 
-    .productos-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .producto img {
-        height: 150px;
-    }
-
-    .titulo h2 {
-        font-size: 29px;
+    .navegacion {
+        gap: 15px;
     }
 
     .portada-hogar {
-        min-height: 280px;
-        padding: 45px 20px;
+        min-height: 300px;
+    }
+
+    .subcategorias-hogar,
+    .catalogo {
+        padding: 45px 15px;
+    }
+
+    .subcategorias-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .foto-subcategoria {
+        height: 210px;
+    }
+
+    #producto-destacado-hogar .producto-destacado {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .productos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .producto > img {
+        height: 260px;
     }
 }
