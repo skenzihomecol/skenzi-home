@@ -127,3 +127,161 @@
     #galeria-hogar > .tarjetas-especiales-hogar {
         margin: 20px auto;
     }
+/* ==========================================
+   GALERÍA DE PRODUCTOS - HOGAR
+   ========================================== */
+
+#galeria-hogar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 25px;
+    align-items: start;
+    width: 100%;
+}
+
+/* TARJETA DE PRODUCTO */
+
+#galeria-hogar .producto-hogar {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+#galeria-hogar .producto-hogar:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* IMAGEN DEL PRODUCTO */
+
+#galeria-hogar .producto-ver-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+}
+
+#galeria-hogar .producto-ver-detalle img {
+    display: block;
+    width: 100%;
+    height: 230px;
+    object-fit: contain;
+    padding: 12px;
+    background: #fff;
+}
+
+#galeria-hogar .producto-ver-detalle h3 {
+    padding: 12px 14px 5px;
+    margin: 0;
+    color: #343b2d;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* PRECIO Y BOTÓN */
+
+#galeria-hogar .producto-contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 14px 16px;
+}
+
+#galeria-hogar .producto-contenido .precio {
+    margin: 0;
+    color: #435632;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+#galeria-hogar .producto-contenido button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #435632;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#galeria-hogar .producto-contenido button:hover {
+    background: #344526;
+}
+
+#galeria-hogar .producto-contenido button:disabled {
+    background: #d8d8d8;
+    color: #777;
+    cursor: not-allowed;
+}
+
+/* IMAGEN NO DISPONIBLE */
+
+#galeria-hogar .imagen-sin-producto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 230px;
+    background: #f5f5f1;
+    font-size: 45px;
+}
+
+/* TARJETAS ESPECIALES */
+
+#galeria-hogar > .tarjetas-especiales-hogar {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+    width: 100%;
+    margin: 30px auto;
+}
+
+#galeria-hogar .tarjeta-especial-hogar {
+    min-width: 0;
+    padding: 22px;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    background: #fafaf6;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+    #galeria-hogar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    #galeria-hogar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+    }
+
+    #galeria-hogar .producto-ver-detalle img {
+        height: 165px;
+    }
+
+    #galeria-hogar > .tarjetas-especiales-hogar {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 380px) {
+    #galeria-hogar {
+        grid-template-columns: 1fr;
+    }
+}
