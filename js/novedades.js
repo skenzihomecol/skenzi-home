@@ -33,7 +33,7 @@ async function cargarNovedades() {
         activo,
         creado_en
       `)
-      .eq("activo", true)
+     
       .eq("es_novedad", true)
       .order("creado_en", { ascending: false });
 
