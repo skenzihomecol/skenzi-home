@@ -1,0 +1,383 @@
+
+:root {
+  --verde: #435632;
+  --verde-oscuro: #304126;
+  --crema: #faf8f4;
+  --beige: #eee9df;
+  --texto: #33352d;
+  --blanco: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--crema);
+  color: var(--texto);
+}
+
+/* ENCABEZADO */
+
+.encabezado {
+  background: var(--blanco);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.contenedor-header {
+  max-width: 1250px;
+  margin: auto;
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.logo {
+  color: var(--verde);
+  font-size: 25px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.logo span {
+  font-weight: 400;
+}
+
+.buscador {
+  display: flex;
+  width: 45%;
+  max-width: 500px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  overflow: hidden;
+  background: var(--crema);
+}
+
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  padding: 12px 18px;
+  background: transparent;
+}
+
+.buscador button {
+  border: none;
+  background: var(--verde);
+  color: white;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.carrito {
+  color: var(--verde);
+  text-decoration: none;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#contador-carrito {
+  background: var(--verde);
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+/* MENÚ */
+
+.menu {
+  background: var(--verde);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 5px 15px;
+}
+
+.menu > a,
+.menu-desplegable > a {
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px;
+  display: block;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.menu > a:hover,
+.menu-desplegable > a:hover,
+.menu a.activo {
+  background: var(--verde-oscuro);
+}
+
+.menu-desplegable {
+  position: relative;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  z-index: 20;
+}
+
+.submenu a {
+  display: block;
+  padding: 12px 15px;
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.submenu a:hover {
+  background: var(--beige);
+  color: var(--verde);
+}
+
+.menu-desplegable:hover .submenu {
+  display: block;
+}
+
+/* PRESENTACIÓN */
+
+.pagina-novedades {
+  min-height: 65vh;
+}
+
+.presentacion-novedades {
+  text-align: center;
+  padding: 75px 20px 85px;
+  background: linear-gradient(135deg, #eee9df, #faf8f4, #e8e4d9);
+}
+
+.etiqueta {
+  display: inline-block;
+  color: var(--verde);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 18px;
+}
+
+.presentacion-novedades h1 {
+  color: var(--verde);
+  font-family: Georgia, serif;
+  font-size: clamp(34px, 5vw, 55px);
+  font-weight: normal;
+  margin-bottom: 18px;
+}
+
+.presentacion-novedades p {
+  max-width: 650px;
+  margin: auto;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #626258;
+}
+
+/* PRODUCTOS */
+
+.seccion-productos {
+  max-width: 1250px;
+  margin: auto;
+  padding: 55px 25px 75px;
+}
+
+.titulo-seccion {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.titulo-seccion h2 {
+  color: var(--verde);
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.titulo-seccion p {
+  color: #77766d;
+  font-size: 14px;
+}
+
+.galeria-novedades {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 25px;
+}
+
+.mensaje-carga,
+.mensaje-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 45px 15px;
+  color: #77766d;
+  line-height: 1.7;
+}
+
+/* TARJETAS DE PRODUCTOS */
+
+.tarjeta-novedad {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.tarjeta-novedad:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 9px 25px rgba(0,0,0,0.12);
+}
+
+.imagen-novedad {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  background: #f5f3ee;
+  padding: 12px;
+}
+
+.contenido-novedad {
+  padding: 20px;
+}
+
+.estado-novedad {
+  display: inline-block;
+  background: #edf1e8;
+  color: var(--verde);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.contenido-novedad h3 {
+  color: var(--texto);
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.descripcion-novedad {
+  color: #77766d;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.precio-estimado {
+  color: var(--verde);
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.fecha-llegada {
+  color: #77766d;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.btn-aviso {
+  width: 100%;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 15px;
+  background: var(--verde);
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-aviso:hover {
+  background: var(--verde-oscuro);
+}
+
+/* PIE DE PÁGINA */
+
+.pie-pagina {
+  background: var(--verde-oscuro);
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
+  font-size: 13px;
+}
+
+/* CELULARES */
+
+@media (max-width: 750px) {
+  .contenedor-header {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .buscador {
+    width: 100%;
+    max-width: none;
+    order: 3;
+  }
+
+  .menu {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .menu > a,
+  .menu-desplegable > a {
+    white-space: nowrap;
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+
+  .presentacion-novedades {
+    padding: 55px 20px;
+  }
+
+  .seccion-productos {
+    padding: 40px 15px 55px;
+  }
+
+  .galeria-novedades {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .imagen-novedad {
+    height: 165px;
+  }
+
+  .contenido-novedad {
+    padding: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .galeria-novedades {
+    grid-template-columns: 1fr;
+  }
+
+  .imagen-novedad {
+    height: 220px;
+  }
+}
