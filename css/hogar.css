@@ -1,105 +1,11 @@
 
-/* ==========================================
-   SKENZI HOME - NUEVO ENCABEZADO
-   IGUAL AL DE LA PÁGINA INICIO
-   ========================================== */
-
-.encabezado-principal {
-    width: 100%;
-    background: #ffffff;
-}
-
-/* BARRA SUPERIOR */
-
-.barra-superior {
-    min-height: 99px;
-    padding: 14px 5%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background: #ffffff;
-}
-
-/* BUSCADOR */
-
-.buscador {
-    display: flex;
-    width: min(660px, 65%);
-    height: 57px;
-}
-
-.buscador input {
-    flex: 1;
-    min-width: 0;
-    padding: 0 22px;
-    border: 1px solid #ddd;
-    border-radius: 10px 0 0 10px;
-    font-size: 17px;
-    outline: none;
-}
-
-.buscador input:focus {
-    border-color: #435632;
-}
-
-.buscador button {
-    padding: 0 28px;
-    border: none;
-    border-radius: 0 10px 10px 0;
-    background: #435632;
-    color: white;
-    font-size: 17px;
-    cursor: pointer;
-}
-
-.buscador button:hover {
-    background: #34452a;
-}
-
-/* CARRITO */
-
-.barra-superior .carrito {
-    position: absolute;
-    right: 12%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    color: #252525;
-    font-size: 17px;
-    font-weight: 700;
-}
-
-.carrito span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 31px;
-    height: 31px;
-    border-radius: 50%;
-    background: #435632;
-    color: white;
-}
-
-/* MENÚ PRINCIPAL */
-
-.encabezado-principal .navegacion {
-    min-height: 61px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 52px;
     padding: 17px 15px;
     background: #435632;
 }
 
 .encabezado-principal .navegacion > a,
 .encabezado-principal .navegacion .enlace-categorias {
-    color: #ffffff;
+    color: #fff;
     text-decoration: none;
     font-size: 16px;
     font-weight: 600;
@@ -132,8 +38,8 @@
     min-width: 190px;
     overflow: hidden;
     border-radius: 0 0 8px 8px;
-    background: white;
-    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
 }
 
 .submenu-categorias a {
@@ -149,17 +55,16 @@
     color: #435632 !important;
 }
 
-.menu-categorias:hover .submenu-categorias {
+.menu-categorias:hover .submenu-categorias,
+.menu-categorias:focus-within .submenu-categorias {
     display: block;
 }
 
-/* ==========================================
-   CATÁLOGO SIN PORTADA
-   ========================================== */
+/* CATÁLOGO SIN PORTADA */
 
 .catalogo-hogar {
     max-width: 1250px;
-    margin: auto;
+    margin: 0 auto;
     padding: 55px 25px 75px;
 }
 
@@ -175,9 +80,7 @@
     font-weight: 500;
 }
 
-/* ==========================================
-   TARJETAS ESPECIALES ENTRE LOS PRODUCTOS
-   ========================================== */
+/* TARJETAS ESPECIALES INTERCALADAS EN LA GALERÍA */
 
 #galeria-hogar > .tarjetas-especiales-hogar {
     grid-column: 1 / -1;
@@ -190,12 +93,9 @@
     min-width: 0;
 }
 
-/* ==========================================
-   ADAPTACIÓN A CELULARES
-   ========================================== */
+/* AJUSTES RESPONSIVOS DEL NUEVO ENCABEZADO */
 
 @media (max-width: 700px) {
-
     .barra-superior {
         flex-wrap: wrap;
         gap: 15px;
@@ -227,4 +127,3 @@
     #galeria-hogar > .tarjetas-especiales-hogar {
         margin: 20px auto;
     }
-}
