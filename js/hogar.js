@@ -599,8 +599,37 @@ document.addEventListener("keydown", evento => {
 window.cargarHogar = cargarHogar;
 window.mostrarHogar = mostrarHogar;
 
+// LEER CATEGORÍA DESDE EL MENÚ DESPLEGABLE
+
+function leerCategoriaHogar() {
+
+    const parametros = new URLSearchParams(
+        window.location.search
+    );
+
+    const categoria = parametros.get("categoria");
+
+    const categoriasPermitidas = [
+        "todos",
+        "organizadores",
+        "cocina",
+        "textiles"
+    ];
+
+    if (categoriasPermitidas.includes(categoria)) {
+        categoriaSeleccionadaHogar = categoria;
+    }
+}
+
+
 // INICIAR
+
 document.addEventListener("DOMContentLoaded", () => {
+
+    leerCategoriaHogar();
+
     crearVentanaHogar();
+
     cargarHogar();
+
 });
