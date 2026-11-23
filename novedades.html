@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novedades | Skenzi Home</title>
+  <link rel="stylesheet" href="css/novedades.css">
+</head>
+
+<body>
+
+  <header class="encabezado">
+    <div class="contenedor-header">
+
+      <a href="index.html" class="logo">
+        SKENZI <span>HOME</span>
+      </a>
+
+      <form class="buscador" id="form-busqueda">
+        <input type="search" id="buscar-producto"
+          placeholder="¿Qué estás buscando?">
+        <button type="submit">Buscar</button>
+      </form>
+
+      <a href="carrito.html" class="carrito">
+        🛒 Mi carrito
+        <span id="contador-carrito">0</span>
+      </a>
+
+    </div>
+
+    <nav class="menu">
+      <a href="index.html">Inicio</a>
+
+      <div class="menu-desplegable">
+        <a href="hogar.html">Hogar ▾</a>
+        <div class="submenu">
+          <a href="hogar.html">Todos los productos</a>
+          <a href="hogar.html?categoria=organizadores">Organizadores</a>
+          <a href="hogar.html?categoria=cocina">Cocina</a>
+          <a href="hogar.html?categoria=textiles">Textiles</a>
+        </div>
+      </div>
+
+      <a href="juguetes.html">Juguetes</a>
+      <a href="herramientas.html">Herramientas</a>
+      <a href="deporte.html">Deporte</a>
+      <a href="belleza.html">Belleza</a>
+      <a href="novedades.html" class="activo">Novedades</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="pagina-novedades">
+
+    <section class="presentacion-novedades">
+      <span class="etiqueta">PRÓXIMAMENTE EN SKENZI HOME</span>
+      <h1>¡Muy pronto contigo!</h1>
+      <p>
+        Descubre los productos que vienen en camino.
+        Déjanos tus datos y te avisaremos cuando estén disponibles.
+      </p>
+    </section>
+
+    <section class="seccion-productos">
+      <div class="titulo-seccion">
+        <h2>Productos por llegar</h2>
+        <p>Anticípate y entérate antes que nadie.</p>
+      </div>
+
+      <div id="galeria-novedades" class="galeria-novedades">
+        <p class="mensaje-carga">Cargando novedades...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pie-pagina">
+    <p>© 2026 Skenzi Home. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/novedades.js"></script>
+
+</body>
+</html>
