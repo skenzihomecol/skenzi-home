@@ -12,98 +12,109 @@
 
 <body>
 
-<header class="encabezado">
-    <a href="index.html" class="logo">SKENZI HOME</a>
-    <a href="carrito.html" class="carrito">🛒 Mi carrito</a>
+<!-- ENCABEZADO PRINCIPAL -->
+<header class="encabezado-principal">
+
+    <div class="barra-superior">
+
+        <form class="buscador" id="buscador-hogar">
+
+            <input
+                type="search"
+                id="buscar-producto-hogar"
+                placeholder="¿Qué estás buscando?"
+            >
+
+            <button type="submit">Buscar</button>
+
+        </form>
+
+        <a href="carrito.html" class="carrito">
+            🛒 Mi carrito
+            <span id="contador-carrito">1</span>
+        </a>
+
+    </div>
+
+    <!-- MENÚ PRINCIPAL -->
+    <nav class="navegacion">
+
+        <a href="index.html">Inicio</a>
+
+        <div class="menu-categorias">
+
+            <a href="#" class="enlace-categorias">
+                Categorías <span>▼</span>
+            </a>
+
+            <div class="submenu-categorias">
+
+                <a href="hogar.html">Hogar</a>
+                <a href="cocina.html">Cocina</a>
+                <a href="juguetes.html">Juguetes</a>
+                <a href="herramientas.html">Herramientas</a>
+                <a href="deporte.html">Deporte</a>
+                <a href="belleza.html">Belleza</a>
+
+            </div>
+
+        </div>
+
+        <a href="novedades.html">Novedades</a>
+
+        <a href="contacto.html">Contacto</a>
+
+    </nav>
+
 </header>
 
-<nav class="navegacion">
-    <a href="index.html">Inicio</a>
-    <a href="hogar.html" class="activo">Hogar</a>
-    <a href="hogar.html#catalogo-hogar">Cocina</a>
-    <a href="juguetes.html">Juguetes</a>
-    <a href="herramientas.html">Herramientas</a>
-    <a href="deporte.html">Deporte</a>
-    <a href="belleza.html">Belleza</a>
-    <a href="contacto.html">Contacto</a>
-</nav>
 
 <main>
 
-    <!-- PORTADA -->
-    <section class="portada-hogar">
-        <span>SKENZI HOME</span>
-        <h1>Todo para tu hogar</h1>
-        <p>Detalles prácticos que transforman tus espacios.</p>
-    </section>
-
-    <!-- PRODUCTOS DESTACADOS Y POPULARES -->
-    <section class="destacado-mes">
+    <!-- CATÁLOGO PRINCIPAL -->
+    <section class="catalogo catalogo-hogar" id="catalogo-hogar">
 
         <div class="titulo">
-            <span>SELECCIÓN ESPECIAL</span>
-            <h2>Lo que destaca en Skenzi Home</h2>
-            <p>Descubre nuestros productos especiales.</p>
-        </div>
 
-        <div class="tarjetas-especiales-hogar">
-
-            <article class="tarjeta-especial-hogar">
-                <span class="etiqueta-especial">
-                    DESTACADO DE LA SEMANA
-                </span>
-
-                <div id="producto-destacado-hogar">
-                    <p>Cargando producto destacado...</p>
-                </div>
-            </article>
-
-            <article class="tarjeta-especial-hogar">
-                <span class="etiqueta-especial">
-                    MÁS POPULAR DEL MES
-                </span>
-
-                <div id="producto-popular-hogar">
-                    <p>Próximamente conocerás el favorito de nuestros clientes.</p>
-                </div>
-            </article>
-
-        </div>
-
-    </section>
-
-    <!-- CATÁLOGO -->
-    <section class="catalogo" id="catalogo-hogar">
-
-        <div class="titulo">
             <span>NUESTRA COLECCIÓN</span>
-            <h2 id="titulo-catalogo-hogar">Productos para el hogar</h2>
+
+            <h1 id="titulo-catalogo-hogar">
+                Productos para el hogar
+            </h1>
+
+            <p>
+                Encuentra detalles prácticos que transforman tus espacios.
+            </p>
+
         </div>
 
-        <!-- FILTROS DE CATEGORÍAS -->
+
+        <!-- FILTROS -->
         <div class="filtros-hogar" id="filtros-hogar">
 
-            <button type="button"
+            <button
+                type="button"
                 class="filtro-hogar activo"
                 data-categoria="todos">
                 Todos
             </button>
 
-          
-
-            <button type="button"
+            <button
+                type="button"
                 class="filtro-hogar"
                 data-categoria="organizadores">
                 Organizadores
             </button>
 
-            <button type="button"
+            <button
+                type="button"
                 class="filtro-hogar"
                 data-categoria="cocina">
                 Cocina
             </button>
 
-            <button type="button"
+            <button
+                type="button"
                 class="filtro-hogar"
                 data-categoria="textiles">
                 Cortinas
@@ -111,26 +122,43 @@
 
         </div>
 
-        <button type="button"
+
+        <!-- GALERÍA DE PRODUCTOS -->
+        <div id="galeria-hogar" class="productos-grid">
+
+            <p>Cargando productos...</p>
+
+        </div>
+
+
+        <!-- VER TODOS -->
+        <button
+            type="button"
             id="ver-todos-hogar"
             class="boton-ver-todos">
-            Ver todos los productos
-        </button>
 
-        <div id="galeria-hogar" class="productos-grid">
-            <p>Cargando productos...</p>
-        </div>
+            Ver todos los productos
+
+        </button>
 
     </section>
 
 </main>
 
+
+<!-- PIE DE PÁGINA -->
 <footer>
+
     © 2026 Skenzi Home. Todos los derechos reservados.
+
 </footer>
 
+
+<!-- CONEXIÓN Y FUNCIONAMIENTO -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="js/supabase.js"></script>
+
 <script src="js/hogar.js"></script>
 
 </body>
