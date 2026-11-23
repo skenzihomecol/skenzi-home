@@ -843,7 +843,7 @@ proveedor: proveedor,
 
             activo: activo,
 
-            es_novedad: productoEnEdicion?.es_novedad ?? false,
+           es_novedad: productoNovedad?.checked ?? false,
 
            es_destacado: productoDestacado?.checked ?? false,
 
