@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Belleza | Skenzi Home</title>
+
+    <link rel="stylesheet" href="css/belleza.css">
+</head>
+
+<body>
+
+<header class="encabezado-principal">
+
+    <div class="barra-superior">
+
+        <a href="index.html" class="marca">SKENZI HOME</a>
+
+        <form class="buscador" id="buscador-belleza">
+            <input
+                type="search"
+                id="buscar-producto-belleza"
+                placeholder="¿Qué estás buscando?"
+            >
+            <button type="submit">Buscar</button>
+        </form>
+
+        <a href="carrito.html" class="carrito">
+            🛒 Mi carrito
+            <span id="contador-carrito">0</span>
+        </a>
+
+    </div>
+
+    <nav class="navegacion">
+
+        <a href="index.html">Inicio</a>
+
+        <div class="menu-categorias">
+
+            <a href="#" class="enlace-categorias">
+                Categorías <span>▼</span>
+            </a>
+
+            <div class="submenu-categorias">
+                <a href="hogar.html">Hogar</a>
+                <a href="hogar.html?categoria=organizadores">Organizadores</a>
+                <a href="hogar.html?categoria=cocina">Cocina</a>
+                <a href="hogar.html?categoria=textiles">Cortinas y textiles</a>
+                <a href="juguetes.html">Juguetes</a>
+                <a href="herramientas.html">Herramientas</a>
+                <a href="deporte.html">Deporte</a>
+                <a href="belleza.html">Belleza</a>
+            </div>
+
+        </div>
+
+        <a href="novedades.html">Novedades</a>
+        <a href="contacto.html">Contacto</a>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="catalogo-belleza">
+
+        <div class="titulo-belleza">
+
+            <span>DETALLES QUE TE INSPIRAN</span>
+
+            <h1>Tu espacio de belleza</h1>
+
+            <p>
+                Descubre productos prácticos para cuidar de ti
+                y disfrutar de tus momentos de bienestar.
+            </p>
+
+        </div>
+
+        <div class="galeria-belleza" id="galeria-belleza">
+            <p>Cargando productos de belleza...</p>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 Skenzi Home. Todos los derechos reservados.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/belleza.js"></script>
+
+</body>
+</html>
