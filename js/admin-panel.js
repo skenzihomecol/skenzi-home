@@ -29,6 +29,9 @@ async function iniciarPanel() {
 const productoDestacado = document.getElementById(
     "producto-destacado"
 );
+   const productoNovedad = document.getElementById(
+    "producto-novedad"
+);
     const imagenPrincipal = document.getElementById(
         "producto-imagen-principal"
     );
@@ -397,6 +400,10 @@ let productoEnEdicion = null;
                     document.getElementById("producto-publicado").checked = !!p.activo;
 if (productoDestacado) {
     productoDestacado.checked = !!p.es_destacado;
+
+}
+                   if (productoNovedad) {
+    productoNovedad.checked = !!p.es_novedad;
 }
                     imagenPrincipal.value = "";
                     imagenesAdicionales.value = "";
@@ -650,6 +657,10 @@ botonGuardar.textContent = "GUARDAR PRODUCTO";
         document.getElementById("producto-publicado").checked = false;
 if (productoDestacado) {
     productoDestacado.checked = false;
+   
+}
+       if (productoNovedad) {
+    productoNovedad.checked = false;
 }
         imagenPrincipal.value = "";
         imagenesAdicionales.value = "";
