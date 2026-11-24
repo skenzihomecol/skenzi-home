@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tecnología | Skenzi Home</title>
+
+    <link rel="stylesheet" href="css/tecnologia.css">
+</head>
+
+<body>
+
+<header class="encabezado-principal">
+
+    <div class="barra-superior">
+
+        <a href="index.html" class="marca">SKENZI HOME</a>
+
+        <form class="buscador" id="buscador-tecnologia">
+            <input
+                type="search"
+                id="buscar-producto-tecnologia"
+                placeholder="¿Qué estás buscando?"
+            >
+            <button type="submit">Buscar</button>
+        </form>
+
+        <a href="carrito.html" class="carrito">
+            🛒 Mi carrito
+            <span id="contador-carrito">0</span>
+        </a>
+
+    </div>
+
+    <nav class="navegacion">
+
+        <a href="index.html">Inicio</a>
+
+        <div class="menu-categorias">
+
+            <a href="#" class="enlace-categorias">
+                Categorías <span>▼</span>
+            </a>
+
+            <div class="submenu-categorias">
+                <a href="hogar.html">Hogar</a>
+                <a href="hogar.html?categoria=organizadores">Organizadores</a>
+                <a href="hogar.html?categoria=cocina">Cocina</a>
+                <a href="hogar.html?categoria=textiles">Cortinas y textiles</a>
+                <a href="juguetes.html">Juguetes</a>
+                <a href="herramientas.html">Herramientas</a>
+                <a href="tecnologia.html">Tecnología</a>
+                <a href="deporte.html">Deporte</a>
+                <a href="belleza.html">Belleza</a>
+            </div>
+
+        </div>
+
+        <a href="novedades.html">Novedades</a>
+        <a href="contacto.html">Contacto</a>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="catalogo-tecnologia">
+
+        <div class="titulo-tecnologia">
+
+            <span>INNOVACIÓN PARA TU DÍA A DÍA</span>
+
+            <h1>Tecnología para tu vida</h1>
+
+            <p>
+                Descubre productos tecnológicos prácticos e innovadores
+                para tu hogar, trabajo y entretenimiento.
+            </p>
+
+        </div>
+
+        <div
+            class="galeria-tecnologia"
+            id="galeria-tecnologia"
+        >
+            <p>Cargando productos tecnológicos...</p>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 Skenzi Home. Todos los derechos reservados.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/tecnologia.js"></script>
+
+</body>
+</html>
