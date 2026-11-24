@@ -1,0 +1,264 @@
+
+/* =================================
+   SKENZI HOME - TECNOLOGÍA
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #faf8f4;
+    color: #33352d;
+}
+
+/* ENCABEZADO */
+
+.encabezado-principal {
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.barra-superior {
+    max-width: 1250px;
+    margin: auto;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.marca {
+    color: #435632;
+    font-size: 25px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.buscador {
+    display: flex;
+    width: 45%;
+    max-width: 500px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    overflow: hidden;
+    background: #faf8f4;
+}
+
+.buscador input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 18px;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.buscador button {
+    border: none;
+    padding: 0 20px;
+    background: #435632;
+    color: white;
+    cursor: pointer;
+}
+
+.carrito {
+    color: #435632;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+#contador-carrito {
+    background: #435632;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* NAVEGACIÓN */
+
+.navegacion {
+    background: #435632;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+    padding: 18px 20px;
+}
+
+.navegacion > a,
+.enlace-categorias {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.navegacion a:hover {
+    color: #e1d2a7;
+}
+
+.menu-categorias {
+    position: relative;
+}
+
+.enlace-categorias span {
+    font-size: 11px;
+    margin-left: 5px;
+}
+
+.submenu-categorias {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 210px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 5px;
+    z-index: 100;
+    padding: 8px 0;
+}
+
+.submenu-categorias a {
+    display: block;
+    padding: 12px 16px;
+    color: #435632;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.submenu-categorias a:hover {
+    background: #f2f0e9;
+}
+
+.menu-categorias:hover .submenu-categorias,
+.menu-categorias:focus-within .submenu-categorias {
+    display: block;
+}
+
+/* PRESENTACIÓN */
+
+.catalogo-tecnologia {
+    max-width: 1250px;
+    margin: auto;
+    padding: 55px 25px 75px;
+}
+
+.titulo-tecnologia {
+    text-align: center;
+    padding: 25px 15px 45px;
+}
+
+.titulo-tecnologia span {
+    display: block;
+    color: #435632;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+}
+
+.titulo-tecnologia h1 {
+    color: #435632;
+    font-family: Georgia, serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: normal;
+    margin-bottom: 15px;
+}
+
+.titulo-tecnologia p {
+    max-width: 650px;
+    margin: auto;
+    color: #77766d;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* GALERÍA */
+
+.galeria-tecnologia {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.galeria-tecnologia > p {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 15px;
+    color: #77766d;
+}
+
+/* TARJETAS: compatible con clases comunes */
+
+.galeria-tecnologia .producto-card,
+.galeria-tecnologia .tarjeta-producto {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+}
+
+.galeria-tecnologia img {
+    max-width: 100%;
+}
+
+/* PIE DE PÁGINA */
+
+footer {
+    background: #304126;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    font-size: 13px;
+}
+
+/* CELULARES */
+
+@media (max-width: 750px) {
+    .barra-superior {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .buscador {
+        width: 100%;
+        max-width: none;
+        order: 3;
+    }
+
+    .navegacion {
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 16px 12px;
+    }
+
+    .navegacion > a,
+    .enlace-categorias {
+        font-size: 13px;
+    }
+
+    .catalogo-tecnologia {
+        padding: 35px 15px 55px;
+    }
+
+    .galeria-tecnologia {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .galeria-tecnologia {
+        grid-template-columns: 1fr;
+    }
+}
