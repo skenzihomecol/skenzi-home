@@ -6,7 +6,7 @@
 "use strict";
 
 const CLAVE_CARRITO = "skenzi_carrito";
-const NUMERO_WHATSAPP = "573105001079";
+const NUMERO_WHATSAPP = "573137541978";
 
 const FORMATO_COP = new Intl.NumberFormat("es-CO", {
     style: "currency",
