@@ -1,4 +1,3 @@
-
 /* ==========================================
    SKENZI HOME — INFORMACIÓN INDIVIDUAL
    GALERÍA DE FOTOGRAFÍAS
@@ -6,7 +5,7 @@
 
 "use strict";
 
-const WHATSAPP_PRODUCTO = "573105001079";
+const WHATSAPP_PRODUCTO = "573137541978";
 
 const formatoPrecioProducto = new Intl.NumberFormat("es-CO", {
     style: "currency",
@@ -130,8 +129,6 @@ async function cargarDetalleProducto() {
 }
 
 // CREAR GALERÍA
-
-
 function crearGaleriaProducto(nombre) {
 
     if (fotosProducto.length === 0) {
@@ -438,15 +435,19 @@ function consultarWhatsApp(evento) {
 
     if (!productoActual) return;
 
-    const mensaje = `Hola, estoy interesado en este producto de Skenzi Home:
+    const cantidadInput = document.getElementById("cantidad-producto");
+    const cantidad = cantidadInput ? Math.max(1, Number(cantidadInput.value) || 1) : 1;
 
-${productoActual.nombre}
+    const mensaje = `Hola Skenzi Home, estoy interesado en este producto:
 
-¿Me pueden brindar más información?`;
+• Producto: ${productoActual.nombre}
+• Cantidad: ${cantidad}
+
+¿Me pueden brindar más información para realizar el pedido?`;
 
     const url = `https://wa.me/${WHATSAPP_PRODUCTO}?text=${encodeURIComponent(mensaje)}`;
 
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
 }
 
 // MOSTRAR ERRORES
