@@ -1,10 +1,11 @@
-
 /* ==========================================
    SKENZI HOME — CATÁLOGO GENERAL
    SUPABASE — ESTRUCTURA REAL
    ========================================== */
 
 "use strict";
+
+const WHATSAPP_CATALOGO = "573137541978";
 
 window.SK_PRODUCTOS = [];
 window.SK_CATEGORIAS = [];
@@ -142,7 +143,8 @@ async function cargarProductos() {
         });
 
         mostrarCatalogo(window.SK_PRODUCTOS);
-cargarFotografiasBanners();
+        cargarFotografiasBanners();
+
         console.log(
             "SKENZI HOME — Productos cargados:",
             window.SK_PRODUCTOS.length
@@ -168,7 +170,6 @@ cargarFotografiasBanners();
         `;
     }
 }
-
 
 // MOSTRAR GALERÍA DE PRODUCTOS
 function mostrarCatalogo(productos) {
