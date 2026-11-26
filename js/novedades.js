@@ -1,9 +1,10 @@
-
 "use strict";
 
 // ==========================================
 // SKENZI HOME — NOVEDADES Y REGISTRO DE AVISOS
 // ==========================================
+
+const WHATSAPP_SKENZI_AVISOS = "573137541978";
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarNovedades();
@@ -264,7 +265,7 @@ function cerrarModalAviso() {
 }
 
 // ==========================================
-// REGISTRAR SOLICITUD EN SUPABASE
+// REGISTRAR SOLICITUD EN SUPABASE Y ABRIR WHATSAPP
 // ==========================================
 
 async function registrarAviso(evento) {
@@ -329,17 +330,25 @@ async function registrarAviso(evento) {
 
     if (error) throw error;
 
+    const textoWhatsApp =
+      `Hola Skenzi Home, soy ${nombre}. Me interesa que me avisen cuando llegue: ${productoNombre}.`;
+
+    const urlWhatsApp =
+      `https://wa.me/${WHATSAPP_SKENZI_AVISOS}?text=${encodeURIComponent(textoWhatsApp)}`;
+
     mensaje.textContent =
-      "¡Registro exitoso! Te avisaremos cuando esté disponible.";
+      "¡Registro exitoso! Te estamos llevando a WhatsApp...";
 
     mensaje.classList.add("exito-aviso");
 
     formulario.reset();
 
+    window.open(urlWhatsApp, "_blank", "noopener,noreferrer");
+
     setTimeout(() => {
       cerrarModalAviso();
       mensaje.classList.remove("exito-aviso");
-    }, 2500);
+    }, 1500);
 
   } catch (error) {
     console.error("Error registrando aviso:", error);
