@@ -1,4 +1,3 @@
-
 /* SKENZI HOME — ESTILOS DE INICIO */
 
 :root {
@@ -8,6 +7,8 @@
     --dorado: #c7a46a;
     --negro: #202420;
     --blanco: #ffffff;
+    --acento-carrito: #c86d3b;
+    --acento-carrito-hover: #b05a2b;
 }
 
 * {
@@ -38,19 +39,20 @@ button {
     cursor: pointer;
 }
 
-/* ENCABEZADO */
+/* ENCABEZADO FIJO AL HACER SCROLL */
 
 .encabezado {
     background: var(--blanco);
-    position: relative;
-    z-index: 20;
-    box-shadow: 0 3px 18px #00000012;
+    position: sticky;
+    top: 0;
+    z-index: 950;
+    box-shadow: 0 3px 18px rgba(0, 0, 0, 0.08);
 }
 
 .barra-superior {
     max-width: 1350px;
     margin: auto;
-    padding: 22px 30px;
+    padding: 18px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -85,7 +87,7 @@ button {
 .buscador input {
     width: 100%;
     min-width: 0;
-    padding: 14px 18px;
+    padding: 13px 18px;
     border: 1px solid #ddd;
     border-radius: 8px 0 0 8px;
     outline-color: var(--verde);
@@ -119,7 +121,7 @@ button {
     justify-content: center;
     align-items: center;
     gap: 40px;
-    padding: 15px 20px;
+    padding: 13px 20px;
 }
 
 .navegacion > a,
@@ -145,14 +147,14 @@ button {
 .desplegable {
     display: none;
     position: absolute;
-    top: 100%;
+    top: calc(100% + 6px);
     left: 0;
     min-width: 210px;
     padding: 10px 0;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 12px 30px #00000025;
-    z-index: 100;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+    z-index: 980;
 }
 
 .desplegable.abierto {
@@ -268,7 +270,7 @@ button {
 
 .categoria:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 25px #00000012;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
 }
 
 .categoria span {
@@ -299,7 +301,7 @@ button {
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 3px 15px #0000000d;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
 }
 
 .tarjeta-producto img {
@@ -366,8 +368,53 @@ button {
 .copyright {
     font-size: 12px;
     color: #bbb;
-    border-top: 1px solid #ffffff25;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
     padding-top: 25px;
+}
+
+/* BOTÓN DE CARRITO FLOTANTE */
+
+.carrito-flotante {
+    position: fixed;
+    right: 22px;
+    bottom: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px;
+    border-radius: 999px;
+    background: var(--acento-carrito);
+    color: var(--blanco);
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 24px rgba(154, 77, 36, 0.34);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carrito-flotante:hover {
+    background: var(--acento-carrito-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(154, 77, 36, 0.42);
+}
+
+.carrito-flotante .icono-carrito {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.carrito-flotante .contador-flotante {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: var(--blanco);
+    color: var(--verde-oscuro);
+    font-size: 0.82rem;
+    font-weight: 800;
 }
 
 /* CELULARES Y TABLETAS */
@@ -383,6 +430,8 @@ button {
 
     .barra-superior {
         flex-wrap: wrap;
+        gap: 14px;
+        padding: 16px 20px;
     }
 
     .buscador {
@@ -394,7 +443,7 @@ button {
 
 @media (max-width: 600px) {
     .barra-superior {
-        padding: 18px;
+        padding: 14px 16px;
     }
 
     .logo {
@@ -402,7 +451,8 @@ button {
     }
 
     .navegacion {
-        gap: 18px;
+        gap: 16px;
+        padding: 11px 14px;
         flex-wrap: wrap;
     }
 
@@ -427,6 +477,13 @@ button {
 
     .enlaces-footer {
         flex-wrap: wrap;
+    }
+
+    .carrito-flotante {
+        right: 14px;
+        bottom: 16px;
+        padding: 12px 16px;
+        font-size: 0.88rem;
     }
 }
 
@@ -694,8 +751,6 @@ button {
     }
 }
 
-
-
 /* ==========================================
    PORTADA FOTOGRÁFICA SKENZI HOME
 ========================================== */
@@ -728,74 +783,4 @@ button {
     position: relative;
     z-index: 2;
     max-width: 650px;
-}
-/* Mantener el encabezado y menú visibles al hacer scroll */
-.encabezado {
-    position: sticky;
-    top: 0;
-    z-index: 950;
-    box-shadow: 0 4px 16px rgba(34, 41, 28, 0.08);
-}
-
-/* Asegurar que el desplegable de categorías quede por encima del contenido */
-.menu-categorias {
-    position: relative;
-}
-
-.desplegable {
-    z-index: 980;
-}
-
-/* Botón flotante de carrito */
-.carrito-flotante {
-    position: fixed;
-    right: 22px;
-    bottom: 24px;
-    z-index: 1000;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 13px 20px;
-    border-radius: 999px;
-    background: #c86d3b;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 0.95rem;
-    box-shadow: 0 10px 24px rgba(154, 77, 36, 0.34);
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.carrito-flotante:hover {
-    background: #b05a2b;
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(154, 77, 36, 0.42);
-}
-
-.carrito-flotante .icono-carrito {
-    font-size: 1.15rem;
-    line-height: 1;
-}
-
-.carrito-flotante .contador-flotante {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 24px;
-    padding: 0 7px;
-    border-radius: 999px;
-    background: #ffffff;
-    color: #3f4f2c;
-    font-size: 0.82rem;
-    font-weight: 800;
-}
-
-@media (max-width: 600px) {
-    .carrito-flotante {
-        right: 14px;
-        bottom: 16px;
-        padding: 12px 16px;
-        font-size: 0.88rem;
-    }
 }
