@@ -1,555 +1,453 @@
 /* ==========================================
    SKENZI HOME — JUGUETES
+   SUPABASE + GALERÍA + CARRITO
    ========================================== */
 
-:root {
-    --verde-juguetes: #435632;
-    --verde-juguetes-oscuro: #315b3e;
-    --crema-juguetes: #faf8f4;
-    --texto-juguetes: #37352f;
-    --acento-carrito: #c86d3b;
-    --acento-carrito-hover: #b05a2b;
+"use strict";
+
+const PRECIO_JUGUETES = new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0
+});
+
+let productosJuguetes = [];
+let busquedaJuguetes = "";
+
+// ESCAPAR TEXTO
+function escaparJuguetes(texto) {
+    return String(texto ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[c]);
 }
 
-* {
-    box-sizing: border-box;
+// NORMALIZAR TEXTO
+function normalizarJuguetes(texto) {
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
 }
 
-html {
-    scroll-behavior: smooth;
-}
+// CARGAR PRODUCTOS DE SUPABASE
+async function cargarJuguetes() {
 
-body {
-    margin: 0;
-    font-family: 'Montserrat', Arial, sans-serif;
-    color: var(--texto-juguetes);
-    background: var(--crema-juguetes);
-}
+    const galeria = document.getElementById("galeria-juguetes");
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
+    if (!galeria) return;
 
-button,
-input {
-    font: inherit;
-}
+    try {
 
-/* ENCABEZADO FIJO AL HACER SCROLL */
+        const db = window.skenziDB;
 
-.encabezado-principal {
-    width: 100%;
-    background: #fff;
-    box-shadow: 0 3px 15px rgba(0,0,0,.07);
-    position: sticky;
-    top: 0;
-    z-index: 950;
-}
+        if (!db) {
+            throw new Error("No existe conexión con Supabase.");
+        }
 
-.barra-superior {
-    min-height: 80px;
-    padding: 15px 6%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 25px;
-}
+        galeria.innerHTML = "<p>Cargando juguetes...</p>";
 
-.marca {
-    color: #435632;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    white-space: nowrap;
-}
+        const { data, error } = await db
+            .from("productos")
+            .select(`
+                id,
+                nombre,
+                descripcion,
+                precio_venta,
+                existencias,
+                imagen_url,
+                imagenes_adicionales,
+                categoria_id,
+                activo,
+                categorias(nombre)
+            `)
+            .eq("activo", true)
+            .order("creado_en", { ascending: false });
 
-.buscador {
-    display: flex;
-    align-items: center;
-    width: min(480px, 65%);
-    gap: 8px;
-}
+        if (error) throw error;
 
-.buscador input {
-    width: 100%;
-    min-width: 0;
-    padding: 12px 17px;
-    border: 1px solid #d9d0c3;
-    border-radius: 25px;
-    outline: none;
-    background: #faf8f4;
-}
+        productosJuguetes = (data || []).filter(producto => {
 
-.buscador button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 25px;
-    background: #435632;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-}
+            const categoria = normalizarJuguetes(
+                producto.categorias?.nombre
+            );
 
-.buscador button:hover {
-    background: #344526;
-}
+            return categoria.includes("juguete");
+        });
 
-.carrito {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 11px 19px;
-    border: 1px solid #d9d0c3;
-    border-radius: 30px;
-    color: #435632;
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-}
+        mostrarJuguetes();
 
-#contador-carrito {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 5px;
-    border-radius: 50%;
-    background: #435632;
-    color: white;
-    font-size: 11px;
-}
+    } catch (error) {
 
-/* MENÚ */
+        console.error("Error cargando juguetes:", error);
 
-.navegacion {
-    min-height: 56px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 35px;
-    padding: 14px 15px;
-    background: #435632;
-}
-
-.navegacion > a,
-.enlace-categorias {
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.navegacion a:hover {
-    color: #e5d5a9;
-}
-
-.menu-categorias {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 27px;
-}
-
-.enlace-categorias span {
-    margin-left: 5px;
-    font-size: 11px;
-}
-
-.submenu-categorias {
-    display: none;
-    position: absolute;
-    top: 27px;
-    left: 0;
-    z-index: 980;
-    min-width: 205px;
-    overflow: hidden;
-    border-radius: 0 0 8px 8px;
-    background: white;
-    box-shadow: 0 8px 20px rgba(0,0,0,.15);
-}
-
-.submenu-categorias a {
-    display: block;
-    padding: 13px 18px;
-    color: #37352f;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.submenu-categorias a:hover {
-    background: #e8eee6;
-    color: #435632;
-}
-
-.menu-categorias:hover .submenu-categorias,
-.menu-categorias:focus-within .submenu-categorias {
-    display: block;
-}
-
-/* TÍTULO */
-
-.catalogo-juguetes {
-    width: 100%;
-    max-width: 1350px;
-    margin: auto;
-    padding: 55px 25px 80px;
-}
-
-.titulo-juguetes {
-    margin-bottom: 45px;
-    text-align: center;
-}
-
-.titulo-juguetes span {
-    color: #87947d;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 4px;
-}
-
-.titulo-juguetes h1 {
-    margin: 12px 0;
-    color: #37352f;
-    font-family: Georgia, serif;
-    font-size: clamp(30px, 4vw, 43px);
-    font-weight: 500;
-}
-
-.titulo-juguetes p {
-    color: #77736b;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-/* GALERÍA */
-
-.galeria-juguetes {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-    gap: 25px;
-}
-
-.producto-juguete {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    overflow: hidden;
-    border: 1px solid #e8e2d8;
-    border-radius: 14px;
-    background: white;
-    transition: transform .25s, box-shadow .25s;
-}
-
-.producto-juguete:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 28px rgba(0,0,0,.09);
-}
-
-.ver-detalle-juguete {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 0;
-    border: none;
-    background: white;
-    text-align: left;
-    cursor: pointer;
-}
-
-.ver-detalle-juguete img {
-    display: block;
-    width: 100%;
-    height: 245px;
-    padding: 12px;
-    object-fit: contain;
-}
-
-.ver-detalle-juguete h3 {
-    min-height: 45px;
-    margin: 12px 18px;
-    color: #37352f;
-    font-size: 16px;
-}
-
-.contenido-juguete {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: auto;
-    padding: 0 18px 18px;
-}
-
-.contenido-juguete .precio {
-    margin: 0;
-    color: #315b3e;
-    font-size: 20px;
-    font-weight: 800;
-}
-
-.contenido-juguete button,
-.detalle-juguete button {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 7px;
-    background: #435632;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.contenido-juguete button:hover,
-.detalle-juguete button:hover {
-    background: #344526;
-}
-
-.contenido-juguete button:disabled,
-.detalle-juguete button:disabled {
-    background: #aaa;
-    cursor: not-allowed;
-}
-
-.imagen-sin-juguete {
-    display: grid;
-    min-height: 220px;
-    place-items: center;
-    background: #f5f2ec;
-    font-size: 40px;
-}
-
-.mensaje-vacio {
-    grid-column: 1 / -1;
-    padding: 35px;
-    color: #77736b;
-    text-align: center;
-}
-
-/* VENTANA DE DETALLE */
-
-.modal-juguete {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(20,29,23,.75);
-    overflow-y: auto;
-}
-
-.modal-juguete[hidden] {
-    display: none;
-}
-
-.modal-juguete-contenido {
-    position: relative;
-    width: 100%;
-    max-width: 850px;
-    max-height: 90vh;
-    padding: 35px;
-    overflow-y: auto;
-    border-radius: 18px;
-    background: #fffdf8;
-}
-
-.cerrar-juguete {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    width: 38px;
-    height: 38px;
-    border: none;
-    border-radius: 50%;
-    background: #e8eee6;
-    color: #315b3e;
-    font-size: 27px;
-    cursor: pointer;
-}
-
-.detalle-juguete {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    align-items: center;
-}
-
-.detalle-juguete img {
-    width: 100%;
-    max-height: 350px;
-    object-fit: contain;
-}
-
-.detalle-juguete h2 {
-    color: #263e2d;
-    font-family: Georgia, serif;
-    font-size: 30px;
-}
-
-.detalle-juguete p {
-    color: #77736b;
-    line-height: 1.8;
-}
-
-.detalle-juguete .precio {
-    color: #315b3e;
-    font-size: 25px;
-    font-weight: 800;
-}
-
-body.modal-abierto-juguete {
-    overflow: hidden;
-}
-
-/* BOTÓN DE CARRITO FLOTANTE */
-
-.carrito-flotante {
-    position: fixed;
-    right: 22px;
-    bottom: 24px;
-    z-index: 1000;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 13px 20px;
-    border-radius: 999px;
-    background: var(--acento-carrito);
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 0.95rem;
-    box-shadow: 0 10px 24px rgba(154, 77, 36, 0.34);
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.carrito-flotante:hover {
-    background: var(--acento-carrito-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(154, 77, 36, 0.42);
-}
-
-.carrito-flotante .icono-carrito {
-    font-size: 1.15rem;
-    line-height: 1;
-}
-
-.carrito-flotante .contador-flotante {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 24px;
-    padding: 0 7px;
-    border-radius: 999px;
-    background: #ffffff;
-    color: var(--verde-juguetes-oscuro);
-    font-size: 0.82rem;
-    font-weight: 800;
-}
-
-/* PIE DE PÁGINA */
-
-footer {
-    padding: 25px;
-    background: #e8eee6;
-    color: #55594f;
-    text-align: center;
-    font-size: 12px;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 950px) {
-    .galeria-juguetes {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .navegacion {
-        gap: 22px;
+        galeria.innerHTML = `
+            <p class="mensaje-vacio">
+                No pudimos cargar los juguetes.
+                Intenta nuevamente.
+            </p>
+        `;
     }
 }
 
-@media (max-width: 650px) {
-    .barra-superior {
-        flex-wrap: wrap;
-        gap: 15px;
-        padding: 15px;
+// MOSTRAR GALERÍA
+function mostrarJuguetes() {
+
+    const galeria = document.getElementById("galeria-juguetes");
+
+    if (!galeria) return;
+
+    const productosFiltrados = productosJuguetes.filter(producto => {
+
+        const nombre = normalizarJuguetes(producto.nombre);
+        const descripcion = normalizarJuguetes(producto.descripcion);
+
+        return (
+            nombre.includes(busquedaJuguetes) ||
+            descripcion.includes(busquedaJuguetes)
+        );
+    });
+
+    if (!productosFiltrados.length) {
+
+        galeria.innerHTML = `
+            <p class="mensaje-vacio">
+                ${
+                    busquedaJuguetes
+                    ? "No encontramos juguetes con esa búsqueda."
+                    : "Próximamente tendremos juguetes disponibles."
+                }
+            </p>
+        `;
+
+        return;
     }
 
-    .buscador {
-        width: 100%;
-        order: 3;
+    galeria.innerHTML = productosFiltrados.map(producto => {
+
+        const precio = Number(producto.precio_venta) || 0;
+        const existencias = Number(producto.existencias) || 0;
+        const imagen = producto.imagen_url;
+        const disponible = existencias > 0 && precio > 0;
+
+        return `
+            <article class="producto-juguete">
+
+                <button
+                    type="button"
+                    class="ver-detalle-juguete"
+                    data-ver-juguete="${escaparJuguetes(producto.id)}"
+                >
+
+                    ${
+                        imagen
+                        ? `<img
+                            src="${escaparJuguetes(imagen)}"
+                            alt="${escaparJuguetes(producto.nombre)}"
+                            loading="lazy"
+                        >`
+                        : `<div class="imagen-sin-juguete">🧸</div>`
+                    }
+
+                    <h3>${escaparJuguetes(producto.nombre)}</h3>
+
+                </button>
+
+                <div class="contenido-juguete">
+
+                    <p class="precio">
+                        ${
+                            precio > 0
+                            ? PRECIO_JUGUETES.format(precio)
+                            : "Consultar precio"
+                        }
+                    </p>
+
+                    <button
+                        type="button"
+                        data-agregar-juguete="${escaparJuguetes(producto.id)}"
+                        ${disponible ? "" : "disabled"}
+                    >
+                        ${disponible ? "Añadir al carrito" : "No disponible"}
+                    </button>
+
+                </div>
+
+            </article>
+        `;
+
+    }).join("");
+}
+
+// CREAR VENTANA DE DETALLE
+function crearVentanaJuguetes() {
+
+    if (document.getElementById("modal-juguete")) return;
+
+    document.body.insertAdjacentHTML("beforeend", `
+
+        <div id="modal-juguete" class="modal-juguete" hidden>
+
+            <div class="modal-juguete-contenido"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-label="Información del juguete">
+
+                <button
+                    type="button"
+                    class="cerrar-juguete"
+                    data-cerrar-juguete
+                    aria-label="Cerrar"
+                >×</button>
+
+                <div id="detalle-juguete"></div>
+
+            </div>
+
+        </div>
+
+    `);
+}
+
+// VER DETALLE
+function verDetalleJuguetes(id) {
+
+    const producto = productosJuguetes.find(
+        p => String(p.id) === String(id)
+    );
+
+    if (!producto) return;
+
+    crearVentanaJuguetes();
+
+    const modal = document.getElementById("modal-juguete");
+    const detalle = document.getElementById("detalle-juguete");
+
+    const precio = Number(producto.precio_venta) || 0;
+    const existencias = Number(producto.existencias) || 0;
+    const disponible = existencias > 0 && precio > 0;
+
+    detalle.innerHTML = `
+
+        <div class="detalle-juguete">
+
+            <div>
+                ${
+                    producto.imagen_url
+                    ? `<img
+                        src="${escaparJuguetes(producto.imagen_url)}"
+                        alt="${escaparJuguetes(producto.nombre)}"
+                    >`
+                    : `<div class="imagen-sin-juguete">🧸</div>`
+                }
+            </div>
+
+            <div>
+
+                <span>SKENZI HOME</span>
+
+                <h2>${escaparJuguetes(producto.nombre)}</h2>
+
+                <p>
+                    ${escaparJuguetes(
+                        producto.descripcion || "Descubre este producto de nuestra colección."
+                    )}
+                </p>
+
+                <p class="precio">
+                    ${
+                        precio > 0
+                        ? PRECIO_JUGUETES.format(precio)
+                        : "Consultar precio"
+                    }
+                </p>
+
+                <p>
+                    ${existencias > 0 ? "Disponible" : "Agotado"}
+                </p>
+
+                <button
+                    type="button"
+                    data-agregar-juguete="${escaparJuguetes(producto.id)}"
+                    ${disponible ? "" : "disabled"}
+                >
+                    ${disponible ? "Añadir al carrito" : "No disponible"}
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+    modal.hidden = false;
+    document.body.classList.add("modal-abierto-juguete");
+}
+
+// CERRAR VENTANA
+function cerrarVentanaJuguetes() {
+
+    const modal = document.getElementById("modal-juguete");
+
+    if (modal) modal.hidden = true;
+
+    document.body.classList.remove("modal-abierto-juguete");
+}
+
+// AGREGAR AL CARRITO
+function agregarJuguetes(id) {
+
+    const producto = productosJuguetes.find(
+        p => String(p.id) === String(id)
+    );
+
+    if (!producto) return;
+
+    const existencias = Number(producto.existencias) || 0;
+    const precio = Number(producto.precio_venta) || 0;
+
+    if (existencias <= 0 || precio <= 0) {
+        alert("Este juguete no está disponible para compra.");
+        return;
     }
 
-    .carrito {
-        margin-left: auto;
+    const carrito = JSON.parse(
+        localStorage.getItem("skenzi_carrito") || "[]"
+    );
+
+    const existente = carrito.find(
+        p => String(p.id) === String(id)
+    );
+
+    if (existente) {
+
+        if (existente.cantidad >= existencias) {
+            alert("No hay más unidades disponibles.");
+            return;
+        }
+
+        existente.cantidad++;
+
+    } else {
+
+        carrito.push({
+            id: producto.id,
+            cantidad: 1
+        });
+
     }
 
-    .navegacion {
-        gap: 18px;
-        padding: 15px 8px;
-    }
+    localStorage.setItem(
+        "skenzi_carrito",
+        JSON.stringify(carrito)
+    );
 
-    .navegacion > a,
-    .enlace-categorias {
-        font-size: 14px;
-    }
+    actualizarContadorJuguetes();
 
-    .catalogo-juguetes {
-        padding: 40px 15px;
-    }
+    alert("¡Juguete agregado al carrito!");
+}
 
-    .galeria-juguetes {
-        gap: 13px;
-    }
+// ACTUALIZAR CONTADORES (ENCABEZADO + FLOTANTE)
+function actualizarContadorJuguetes() {
 
-    .ver-detalle-juguete img {
-        height: 180px;
-    }
+    const contador = document.getElementById("contador-carrito");
+    const contadorFlotante = document.getElementById("contador-carrito-flotante");
 
-    .ver-detalle-juguete h3 {
-        min-height: 40px;
-        margin: 10px 12px;
-        font-size: 14px;
-    }
+    try {
 
-    .contenido-juguete {
-        padding: 0 12px 13px;
-    }
+        const carrito = JSON.parse(
+            localStorage.getItem("skenzi_carrito") || "[]"
+        );
 
-    .contenido-juguete .precio {
-        font-size: 17px;
-    }
+        const cantidad = Array.isArray(carrito)
+            ? carrito.reduce(
+                (total, producto) => total + Number(producto?.cantidad || 0),
+                0
+            )
+            : 0;
 
-    .contenido-juguete button {
-        padding: 10px 7px;
-        font-size: 12px;
-    }
+        if (contador) contador.textContent = String(cantidad);
+        if (contadorFlotante) contadorFlotante.textContent = String(cantidad);
 
-    .detalle-juguete {
-        grid-template-columns: 1fr;
-    }
+    } catch (error) {
 
-    .modal-juguete-contenido {
-        padding: 45px 18px 22px;
-    }
+        console.error("Error al leer el carrito en Juguetes:", error);
+        if (contador) contador.textContent = "0";
+        if (contadorFlotante) contadorFlotante.textContent = "0";
 
-    .carrito-flotante {
-        right: 14px;
-        bottom: 16px;
-        padding: 12px 16px;
-        font-size: 0.88rem;
     }
 }
 
-@media (max-width: 380px) {
-    .galeria-juguetes {
-        grid-template-columns: 1fr;
+// BUSCADOR
+document.addEventListener("DOMContentLoaded", () => {
+
+    const buscador = document.getElementById("buscador-juguetes");
+    const campo = document.getElementById("buscar-producto-juguetes");
+
+    if (buscador && campo) {
+
+        buscador.addEventListener("submit", evento => {
+
+            evento.preventDefault();
+
+            busquedaJuguetes = normalizarJuguetes(campo.value);
+
+            mostrarJuguetes();
+
+        });
+
     }
 
-    .ver-detalle-juguete img {
-        height: 230px;
+});
+
+// EVENTOS DE PRODUCTOS
+document.addEventListener("click", evento => {
+
+    const agregar = evento.target.closest("[data-agregar-juguete]");
+
+    if (agregar) {
+        agregarJuguetes(agregar.dataset.agregarJuguete);
+        return;
     }
-}
+
+    const ver = evento.target.closest("[data-ver-juguete]");
+
+    if (ver) {
+        verDetalleJuguetes(ver.dataset.verJuguete);
+        return;
+    }
+
+    if (
+        evento.target.closest("[data-cerrar-juguete]") ||
+        evento.target.id === "modal-juguete"
+    ) {
+        cerrarVentanaJuguetes();
+    }
+
+});
+
+// CERRAR CON ESCAPE
+document.addEventListener("keydown", evento => {
+
+    if (evento.key === "Escape") {
+        cerrarVentanaJuguetes();
+    }
+
+});
+
+window.addEventListener("storage", actualizarContadorJuguetes);
+
+// INICIAR
+document.addEventListener("DOMContentLoaded", () => {
+
+    crearVentanaJuguetes();
+
+    actualizarContadorJuguetes();
+
+    cargarJuguetes();
+
+});
