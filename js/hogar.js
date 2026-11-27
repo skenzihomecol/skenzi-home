@@ -34,6 +34,32 @@ function normalizarHogar(texto) {
         .toLowerCase();
 }
 
+// SINCRONIZAR CONTADORES DEL CARRITO (ENCABEZADO + FLOTANTE)
+function actualizarContadoresHogar() {
+    const contadorHeader = document.getElementById("contador-carrito");
+    const contadorFlotante = document.getElementById("contador-carrito-flotante");
+
+    try {
+        const carrito = JSON.parse(
+            localStorage.getItem("skenzi_carrito") || "[]"
+        );
+
+        const cantidad = Array.isArray(carrito)
+            ? carrito.reduce(
+                (total, producto) => total + Number(producto?.cantidad || 0),
+                0
+            )
+            : 0;
+
+        if (contadorHeader) contadorHeader.textContent = String(cantidad);
+        if (contadorFlotante) contadorFlotante.textContent = String(cantidad);
+    } catch (error) {
+        console.error("Error al leer el carrito en Hogar:", error);
+        if (contadorHeader) contadorHeader.textContent = "0";
+        if (contadorFlotante) contadorFlotante.textContent = "0";
+    }
+}
+
 // CARGAR PRODUCTOS DESDE SUPABASE
 async function cargarHogar() {
     const galeria = document.getElementById("galeria-hogar");
@@ -46,7 +72,7 @@ async function cargarHogar() {
             throw new Error("No existe conexión con Supabase.");
         }
 
-        galeria.innerHTML = "<p>Cargando productos...</p>";
+        galeria.innerHTML = "<p class=\"mensaje-carga\">Cargando productos...</p>";
 
         const { data, error } = await db
             .from("productos")
@@ -204,7 +230,9 @@ function mostrarProductoPopularHogar() {
 // MOSTRAR GALERÍA SEGÚN LA CATEGORÍA
 function mostrarHogar() {
     const galeria = document.getElementById("galeria-hogar");
-    const titulo = document.getElementById("titulo-catalogo-hogar");
+    const titulo =
+        document.getElementById("titulo-categoria-hogar") ||
+        document.getElementById("titulo-catalogo-hogar");
 
     if (!galeria) return;
 
@@ -499,6 +527,14 @@ function agregarHogar(id) {
 
     if (!producto) return;
 
+    const existencias = Number(producto.existencias) || 0;
+    const precio = Number(producto.precio_venta) || 0;
+
+    if (existencias <= 0 || precio <= 0) {
+        alert("Este producto no está disponible para compra.");
+        return;
+    }
+
     const carrito = JSON.parse(
         localStorage.getItem("skenzi_carrito") || "[]"
     );
@@ -508,7 +544,7 @@ function agregarHogar(id) {
     );
 
     if (existente) {
-        if (existente.cantidad >= Number(producto.existencias)) {
+        if (existente.cantidad >= existencias) {
             alert("No hay más unidades disponibles.");
             return;
         }
@@ -525,6 +561,8 @@ function agregarHogar(id) {
         "skenzi_carrito",
         JSON.stringify(carrito)
     );
+
+    actualizarContadoresHogar();
 
     alert("¡Producto agregado al carrito!");
 }
@@ -600,7 +638,6 @@ window.cargarHogar = cargarHogar;
 window.mostrarHogar = mostrarHogar;
 
 // LEER CATEGORÍA DESDE EL MENÚ DESPLEGABLE
-
 function leerCategoriaHogar() {
 
     const parametros = new URLSearchParams(
@@ -611,6 +648,7 @@ function leerCategoriaHogar() {
 
     const categoriasPermitidas = [
         "todos",
+        "hogar",
         "organizadores",
         "cocina",
         "textiles"
@@ -621,10 +659,10 @@ function leerCategoriaHogar() {
     }
 }
 
-
 // INICIAR
-
 document.addEventListener("DOMContentLoaded", () => {
+
+    actualizarContadoresHogar();
 
     leerCategoriaHogar();
 
@@ -633,3 +671,5 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarHogar();
 
 });
+
+window.addEventListener("storage", actualizarContadoresHogar);
