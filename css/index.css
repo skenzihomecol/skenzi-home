@@ -729,3 +729,73 @@ button {
     z-index: 2;
     max-width: 650px;
 }
+/* Mantener el encabezado y menú visibles al hacer scroll */
+.encabezado {
+    position: sticky;
+    top: 0;
+    z-index: 950;
+    box-shadow: 0 4px 16px rgba(34, 41, 28, 0.08);
+}
+
+/* Asegurar que el desplegable de categorías quede por encima del contenido */
+.menu-categorias {
+    position: relative;
+}
+
+.desplegable {
+    z-index: 980;
+}
+
+/* Botón flotante de carrito */
+.carrito-flotante {
+    position: fixed;
+    right: 22px;
+    bottom: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px;
+    border-radius: 999px;
+    background: #c86d3b;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 24px rgba(154, 77, 36, 0.34);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carrito-flotante:hover {
+    background: #b05a2b;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(154, 77, 36, 0.42);
+}
+
+.carrito-flotante .icono-carrito {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.carrito-flotante .contador-flotante {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #3f4f2c;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+@media (max-width: 600px) {
+    .carrito-flotante {
+        right: 14px;
+        bottom: 16px;
+        padding: 12px 16px;
+        font-size: 0.88rem;
+    }
+}
