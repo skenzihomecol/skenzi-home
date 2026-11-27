@@ -1,4 +1,3 @@
-
 /* ==========================================
    SKENZI HOME — DEPORTE
    SUPABASE + GALERÍA + CARRITO
@@ -133,6 +132,7 @@ function mostrarDeporte() {
         const precio = Number(producto.precio_venta) || 0;
         const existencias = Number(producto.existencias) || 0;
         const imagen = producto.imagen_url;
+        const disponible = existencias > 0 && precio > 0;
 
         return `
             <article class="producto-deporte">
@@ -170,13 +170,9 @@ function mostrarDeporte() {
                     <button
                         type="button"
                         data-agregar-deporte="${escaparDeporte(producto.id)}"
-                        ${existencias <= 0 || precio <= 0 ? "disabled" : ""}
+                        ${disponible ? "" : "disabled"}
                     >
-                        ${
-                            existencias > 0 && precio > 0
-                            ? "Añadir al carrito"
-                            : "No disponible"
-                        }
+                        ${disponible ? "Añadir al carrito" : "No disponible"}
                     </button>
 
                 </div>
@@ -233,6 +229,7 @@ function verDetalleDeporte(id) {
 
     const precio = Number(producto.precio_venta) || 0;
     const existencias = Number(producto.existencias) || 0;
+    const disponible = existencias > 0 && precio > 0;
 
     detalle.innerHTML = `
 
@@ -276,9 +273,9 @@ function verDetalleDeporte(id) {
                 <button
                     type="button"
                     data-agregar-deporte="${escaparDeporte(producto.id)}"
-                    ${existencias <= 0 || precio <= 0 ? "disabled" : ""}
+                    ${disponible ? "" : "disabled"}
                 >
-                    Añadir al carrito
+                    ${disponible ? "Añadir al carrito" : "No disponible"}
                 </button>
 
             </div>
@@ -310,6 +307,14 @@ function agregarDeporte(id) {
 
     if (!producto) return;
 
+    const existencias = Number(producto.existencias) || 0;
+    const precio = Number(producto.precio_venta) || 0;
+
+    if (existencias <= 0 || precio <= 0) {
+        alert("Este producto no está disponible para compra.");
+        return;
+    }
+
     const carrito = JSON.parse(
         localStorage.getItem("skenzi_carrito") || "[]"
     );
@@ -317,8 +322,6 @@ function agregarDeporte(id) {
     const existente = carrito.find(
         p => String(p.id) === String(id)
     );
-
-    const existencias = Number(producto.existencias) || 0;
 
     if (existente) {
 
@@ -348,23 +351,35 @@ function agregarDeporte(id) {
     alert("¡Producto agregado al carrito!");
 }
 
-// ACTUALIZAR CONTADOR
+// ACTUALIZAR CONTADORES (ENCABEZADO + FLOTANTE)
 function actualizarContadorDeporte() {
 
     const contador = document.getElementById("contador-carrito");
+    const contadorFlotante = document.getElementById("contador-carrito-flotante");
 
-    if (!contador) return;
+    try {
 
-    const carrito = JSON.parse(
-        localStorage.getItem("skenzi_carrito") || "[]"
-    );
+        const carrito = JSON.parse(
+            localStorage.getItem("skenzi_carrito") || "[]"
+        );
 
-    const cantidad = carrito.reduce(
-        (total, producto) => total + Number(producto.cantidad || 0),
-        0
-    );
+        const cantidad = Array.isArray(carrito)
+            ? carrito.reduce(
+                (total, producto) => total + Number(producto?.cantidad || 0),
+                0
+            )
+            : 0;
 
-    contador.textContent = cantidad;
+        if (contador) contador.textContent = String(cantidad);
+        if (contadorFlotante) contadorFlotante.textContent = String(cantidad);
+
+    } catch (error) {
+
+        console.error("Error al leer el carrito en Deporte:", error);
+        if (contador) contador.textContent = "0";
+        if (contadorFlotante) contadorFlotante.textContent = "0";
+
+    }
 }
 
 // BUSCADOR
@@ -423,6 +438,8 @@ document.addEventListener("keydown", evento => {
     }
 
 });
+
+window.addEventListener("storage", actualizarContadorDeporte);
 
 // INICIAR
 document.addEventListener("DOMContentLoaded", () => {
