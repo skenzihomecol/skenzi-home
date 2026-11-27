@@ -1,4 +1,3 @@
-
 /* ==========================================
    SKENZI HOME — JAVASCRIPT DE INICIO
    ========================================== */
@@ -24,7 +23,10 @@ if (botonCategorias && listaCategorias) {
 
     document.addEventListener("click", (evento) => {
 
-        if (!listaCategorias.contains(evento.target)) {
+        if (
+            !listaCategorias.contains(evento.target) &&
+            !botonCategorias.contains(evento.target)
+        ) {
             listaCategorias.classList.remove("abierto");
             botonCategorias.setAttribute("aria-expanded", "false");
         }
@@ -74,12 +76,11 @@ if (formularioBusqueda) {
 
 }
 
-// CONTADOR DEL CARRITO
+// CONTADOR DEL CARRITO (ENCABEZADO + BOTÓN FLOTANTE)
 function actualizarContadorCarrito() {
 
     const contador = document.getElementById("contador-carrito");
-
-    if (!contador) return;
+    const contadorFlotante = document.getElementById("contador-carrito-flotante");
 
     try {
 
@@ -87,18 +88,22 @@ function actualizarContadorCarrito() {
             localStorage.getItem("skenzi_carrito") || "[]"
         );
 
-        const cantidad = carrito.reduce(
-            (total, producto) => total + Number(producto.cantidad || 0),
-            0
-        );
+        const cantidad = Array.isArray(carrito)
+            ? carrito.reduce(
+                (total, producto) => total + Number(producto.cantidad || 0),
+                0
+            )
+            : 0;
 
-        contador.textContent = cantidad;
+        if (contador) contador.textContent = cantidad;
+        if (contadorFlotante) contadorFlotante.textContent = cantidad;
 
     } catch (error) {
 
         console.error("Error al leer el carrito:", error);
 
-        contador.textContent = "0";
+        if (contador) contador.textContent = "0";
+        if (contadorFlotante) contadorFlotante.textContent = "0";
 
     }
 
@@ -112,6 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Skenzi Home: página principal iniciada.");
 
 });
+
+window.addEventListener("storage", actualizarContadorCarrito);
 
 /* ==========================================
    AGREGAR PRODUCTOS AL CARRITO
