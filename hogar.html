@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,6 +16,11 @@
 
     <div class="barra-superior">
 
+        <a href="index.html" class="logo">
+            <span>SKENZI</span>
+            <small>HOME</small>
+        </a>
+
         <form class="buscador" id="buscador-hogar">
 
             <input
@@ -31,7 +35,7 @@
 
         <a href="carrito.html" class="carrito">
             🛒 Mi carrito
-            <span id="contador-carrito">1</span>
+            <span id="contador-carrito">0</span>
         </a>
 
     </div>
@@ -47,31 +51,32 @@
                 Categorías <span>▼</span>
             </a>
 
-        <div class="submenu-categorias">
+            <div class="submenu-categorias">
 
-    <a href="hogar.html">Todos los productos</a>
+                <a href="hogar.html">Todos los productos</a>
 
-    <a href="hogar.html?categoria=organizadores">
-        Organizadores
-    </a>
+                <a href="hogar.html?categoria=organizadores">
+                    Organizadores
+                </a>
 
-    <a href="hogar.html?categoria=cocina">
-        Cocina
-    </a>
+                <a href="hogar.html?categoria=cocina">
+                    Cocina
+                </a>
 
-    <a href="hogar.html?categoria=textiles">
-        Cortinas 
-    </a>
+                <a href="hogar.html?categoria=textiles">
+                    Cortinas
+                </a>
 
-    <a href="juguetes.html">Juguetes</a>
+                <a href="juguetes.html">Juguetes</a>
 
-    <a href="herramientas.html">Herramientas</a>
+                <a href="herramientas.html">Herramientas</a>
 
-    <a href="deporte.html">Deporte</a>
+                <a href="deporte.html">Deporte</a>
 
-    <a href="belleza.html">Belleza</a>
+                <a href="belleza.html">Belleza</a>
 
-</div>  
+            </div>
+
         </div>
 
         <a href="novedades.html">Novedades</a>
@@ -88,22 +93,20 @@
     <!-- CATÁLOGO PRINCIPAL -->
     <section class="catalogo catalogo-hogar" id="catalogo-hogar">
 
-        <div class="titulo">
-
-          
+        <div class="encabezado-seccion">
+            <span class="etiqueta-categoria">CATEGORÍA HOGAR</span>
+            <h1 id="titulo-categoria-hogar">Productos para el Hogar</h1>
+            <p id="subtitulo-categoria-hogar">
+                Soluciones prácticas y funcionales para organizar y renovar tus espacios.
+            </p>
         </div>
-
-
-        
-
 
         <!-- GALERÍA DE PRODUCTOS -->
         <div id="galeria-hogar" class="productos-grid">
 
-            <p>Cargando productos...</p>
+            <p class="mensaje-carga">Cargando productos...</p>
 
         </div>
-
 
         <!-- VER TODOS -->
         <button
@@ -128,12 +131,47 @@
 </footer>
 
 
+<!-- BOTÓN FLOTANTE DE CARRITO -->
+<a href="carrito.html" class="carrito-flotante" aria-label="Ir a mi carrito">
+    <span class="icono-carrito">🛒</span>
+    <span>Mi carrito</span>
+    <span class="contador-flotante" id="contador-carrito-flotante">0</span>
+</a>
+
+
 <!-- CONEXIÓN Y FUNCIONAMIENTO -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="js/supabase.js"></script>
 
 <script src="js/hogar.js"></script>
+
+<script>
+(function () {
+    function leerCantidadCarrito() {
+        try {
+            const datos = JSON.parse(localStorage.getItem("skenzi_carrito") || "[]");
+            if (!Array.isArray(datos)) return 0;
+            return datos.reduce((acc, item) => acc + (Number(item?.cantidad) || 0), 0);
+        } catch {
+            return 0;
+        }
+    }
+
+    function sincronizarContadores() {
+        const total = leerCantidadCarrito();
+        const contHeader = document.getElementById("contador-carrito");
+        const contFlotante = document.getElementById("contador-carrito-flotante");
+        if (contHeader) contHeader.textContent = String(total);
+        if (contFlotante) contFlotante.textContent = String(total);
+    }
+
+    document.addEventListener("DOMContentLoaded", sincronizarContadores);
+    window.addEventListener("storage", sincronizarContadores);
+    document.addEventListener("click", () => setTimeout(sincronizarContadores, 60));
+    setInterval(sincronizarContadores, 600);
+})();
+</script>
 
 </body>
 </html>
