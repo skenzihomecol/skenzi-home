@@ -65,188 +65,423 @@
                             </div>
 
                             <div class="campo">
-                                <label for="barrio-select">Barrio / Comuna en Cali *</label>
+                                <label for="barrio-select">Barrio en Cali *</label>
                                 <select id="barrio-select" required>
                                     <option value="" data-envio="0">Selecciona tu barrio</option>
 
-                                    <optgroup label="Sur / Expansión y alrededores">
-                                        <option value="Ciudad del Campo" data-envio="12000">Ciudad del Campo</option>
-                                        <option value="Bochalema" data-envio="12000">Bochalema</option>
-                                        <option value="Ciudad Pacífica" data-envio="12000">Ciudad Pacífica</option>
-                                        <option value="Juanchito" data-envio="12000">Juanchito</option>
-                                        <option value="Poblado Campestre" data-envio="15000">Poblado Campestre</option>
-                                        <option value="Jamundí" data-envio="15000">Jamundí</option>
-                                        <option value="Los Naranjos" data-envio="15000">Los Naranjos</option>
-                                        <option value="Terranova" data-envio="15000">Terranova</option>
-                                        <option value="Alfaguara" data-envio="15000">Alfaguara</option>
-                                        <option value="Más allá de Alfaguara" data-envio="20000">Más allá de Alfaguara</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 1">
-                                        <option value="Terrón Colorado I (Comuna 1)" data-envio="12000">Terrón Colorado I</option>
-                                        <option value="Terrón Colorado II / Las Malvinas (Comuna 1)" data-envio="12000">Terrón Colorado II / Las Malvinas</option>
-                                        <option value="Barrio Alto Aguacatal / Mata de Guadua / La Estatua / La Paz / La Gracia / La Playita / Puente Azul (Comuna 1)" data-envio="12000">Alto Aguacatal y sectores</option>
-                                        <option value="Vista Hermosa / Las Fresas / Patio Bonito / Los Lotes / El Retén / La Barraquera (Comuna 1)" data-envio="12000">Vista Hermosa y sectores</option>
-                                        <option value="Bajo Palermo / La Fortuna (Comuna 1)" data-envio="12000">Bajo Palermo / La Fortuna</option>
-                                        <option value="Bajo Aguacatal / Palmas I y II / La Legua / Urb. Aguacatal / Villa del Mar / 2 Vipasa (Comuna 1)" data-envio="12000">Bajo Aguacatal / Palmas / La Legua / 2 Vipasa</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 2">
-                                        <option value="Altos de Menga (Comuna 2)" data-envio="8000">Altos de Menga</option>
-                                        <option value="Arboledas (Comuna 2)" data-envio="8000">Arboledas</option>
-                                        <option value="Área Libre - Parque del Amor (Comuna 2)" data-envio="8000">Área Libre - Parque del Amor</option>
-                                        <option value="Arroyohondo (Comuna 2)" data-envio="8000">Arroyohondo</option>
-                                        <option value="Brisas de los Álamos (Comuna 2)" data-envio="8000">Brisas de los Álamos</option>
-                                        <option value="Centenario (Comuna 2)" data-envio="8000">Centenario</option>
-                                        <option value="Ciudad los Álamos (Comuna 2)" data-envio="8000">Ciudad los Álamos</option>
-                                        <option value="Chipichape (Comuna 2)" data-envio="8000">Chipichape</option>
-                                        <option value="Dapa - Parte baja (Comuna 2)" data-envio="10000">Dapa (Parte baja)</option>
-                                        <option value="El Bosque (Comuna 2)" data-envio="8000">El Bosque</option>
-                                        <option value="Granada (Comuna 2)" data-envio="8000">Granada</option>
-                                        <option value="Juanambú (Comuna 2)" data-envio="8000">Juanambú</option>
-                                        <option value="La Campiña (Comuna 2)" data-envio="8000">La Campiña</option>
-                                        <option value="La Flora (Comuna 2)" data-envio="8000">La Flora</option>
-                                        <option value="La Paz (Comuna 2)" data-envio="8000">La Paz</option>
-                                        <option value="Menga Bajo (Comuna 2)" data-envio="8000">Menga bajo</option>
-                                        <option value="Menga Alto (Comuna 2)" data-envio="12000">Menga alto</option>
-                                        <option value="Normandia Bajo (Comuna 2)" data-envio="8000">Normandia bajo</option>
-                                        <option value="Normandia Alto (Comuna 2)" data-envio="12000">Normandia alto</option>
-                                        <option value="Pacará (Comuna 2)" data-envio="8000">Pacará</option>
-                                        <option value="Prados del Norte (Comuna 2)" data-envio="8000">Prados del Norte</option>
-                                        <option value="San Vicente (Comuna 2)" data-envio="8000">San Vicente</option>
-                                        <option value="Santa Mónica (Comuna 2)" data-envio="8000">Santa Mónica</option>
-                                        <option value="Santa Rita (Comuna 2)" data-envio="8000">Santa Rita</option>
-                                        <option value="Santa Teresita (Comuna 2)" data-envio="8000">Santa Teresita</option>
-                                        <option value="Altos de Normandía - Bataclán (Comuna 2)" data-envio="8000">Altos de Normandía - Bataclán</option>
-                                        <option value="Urb. La Flora (Comuna 2)" data-envio="8000">Urb. La Flora</option>
-                                        <option value="Urb. La Merced (Comuna 2)" data-envio="8000">Urb. La Merced</option>
-                                        <option value="Versalles (Comuna 2)" data-envio="8000">Versalles</option>
-                                        <option value="Vipasa (Comuna 2)" data-envio="8000">Vipasa</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 3">
-                                        <option value="Acueducto San Antonio / El Calvario / El Hoyo / El Nacional / El Peñón / El Piloto / La Merced / Los Libertadores / Navarro-La Chanca / San Antonio / San Cayetano / San Juan Bosco / San Nicolás / San Pascual / San Pedro / Santa Rosa (Comuna 3)" data-envio="8000">San Antonio / El Peñón / La Merced / Centro (Comuna 3)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 4">
-                                        <option value="Jorge Isaacs / Santander / Porvenir / Las Delicias / Manzanares / Salomia / Fátima / Sultana-Berlín-San Francisco / Popular / Ignacio Rengifo / Guillermo Valencia / La Isla / Marco Fidel Suárez / Evaristo García / La Esmeralda / Bolivariano / Olaya Herrera / Bueno Madrid / Flora Industrial / Calima / La Alianza / Industria de Licores (Comuna 4)" data-envio="8000">Salomia / Manzanares / Flora Industrial / Popular (Comuna 4)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 5">
-                                        <option value="El Sena / Palmeras del Norte / Los Andes / Los Guayacanes / La Rivera II / Chiminangos 1 y 2 / Metropolitano del Norte / Plazas Verdes / Urb. Barranquilla / Villa del Sol / Paseo de los Almendros / Villas de Veracruz / Torres de Comfandi / Villa del Prado / Santa Bárbara / Brisas del Guabito / Barrio Residencial el Bosque / Brisas de los Andes / Bajo Salomia (Comuna 5)" data-envio="8000">Chiminangos / Paseo de los Almendros / Villa del Prado / Salomia (Comuna 5)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 6">
-                                        <option value="San Luís I y II / Jorge Eliécer Gaitán / Paso del Comercio / Los Alcázares I y II / Petecuy I, II y III / La Rivera I / Los Guadales / Oasis de Comfandi / Floralia I, IA, I Sector II, II y III / Fonaviemcali / Calimio / Álamos Popular (Comuna 6)" data-envio="8000">Paso del Comercio / Floralia / Petecuy / Los Guadales (Comuna 6)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 7">
-                                        <option value="Alfonzo López 1, 2 y 3 / Puerto Nuevo / Puerto Mallarino / Andrés Sanín / Siete de Agosto / Los Pinos / San Marino / Las Ceibas / Las Veraneras / Base Aérea / Fepicol / La Playa / El Vivero (Comuna 7)" data-envio="8000">Alfonzo López / Andrés Sanín / Siete de Agosto / Base Aérea (Comuna 7)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 8">
-                                        <option value="Atanasio Girardot / Benjamín Herrera / Chapinero / El Trébol / El Troncal / Industrial / La Base / La Floresta / Las Américas / Municipal / Primitivo Crespo / Rafael Uribe Uribe / Saavedra Galindo / Santa Fe / Santa Mónica Popular / Simón Bolívar / Urb. La Base / Villacolombia / La Nueva Base (Comuna 8)" data-envio="8000">La Base / La Floresta / Villacolombia / Chapinero (Comuna 8)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 9">
-                                        <option value="Alameda / Bretaña / Junín / Guayaquil / Aranjuez / Manuel María Buenaventura / Belalcázar / Santa Mónica Belalcázar / Sucre / Obrero / Sector La Luna (Comuna 9)" data-envio="8000">Alameda / Bretaña / Junín / Guayaquil / Belalcázar (Comuna 9)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 10">
-                                        <option value="El Dorado / Guabal / La Libertad / Santa Elena / Las Acacias / Santo Domingo / Jorge Zawadsky / Olímpico / Cristóbal Colón / La Selva / Departamental / Pasamacho / Panamericano / Colseguros Andes / San Cristóbal / Las Granjas / San Judas Tadeo 1 y 2 (Comuna 10)" data-envio="8000">Santa Elena / Guabal / La Selva / Colseguros Andes (Comuna 10)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 11">
-                                        <option value="20 de Julio / Agua Blanca / Ciudad Modelo / El Jardín / El Prado / El Recuerdo / José Holguín Garcés / José María Córdoba / La Esperanza / La Fortaleza / Villa Nueva / La Independencia / León XIII / Los Conquistadores / Los Sauces / Maracaibo / Prados de Oriente / La Primavera / San Benito / San Carlos / San Pedro Claver / Urb. Boyacá (Comuna 11)" data-envio="8000">Ciudad Modelo / El Prado / La Primavera / Urb. Boyacá (Comuna 11)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 12">
-                                        <option value="Villanueva / Asturias / Eduardo Santos / Alfonso Barberena / El Paraíso / Fenalco Kennedy / Nueva Floresta / Julio Rincón / Doce de Octubre / Rodeo / Sindical / Bello Horizonte (Comuna 12)" data-envio="8000">Nueva Floresta / Fenalco Kennedy / Doce de Octubre (Comuna 12)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 13">
-                                        <option value="Ulpiano Lloreda / El Vergel / El Poblado I y II / Los Comuneros II / Ricardo Balcázar / Omar Torrijos / El Diamante / Villa del Lago / Los Robles / Nuevo Horizonte / Charco Azul / Villa Blanca / La Paz / Calipso / Yira Castro / Lleras-Cinta Larga / Marroquín III / Los Lagos I y II / El Pondaje / Sector Asprosocial - Diamante / Sector Laguna del Pondaje / Rodrigo Lara Bonilla / Lleras Restrepo (Comuna 13)" data-envio="10000">Ulpiano Lloreda / El Poblado / Calipso / Marroquín III (Comuna 13)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 14">
-                                        <option value="Alfonso Bonilla Aragón / Alirio Mora Beltrán / Manuela Beltrán / Las Orquídeas / José Manuel Marroquín 1 y 2 / Puertas del Sol / Naranjos 1 y 2 / Promociones Populares (Comuna 14)" data-envio="10000">Manuela Beltrán / Puertas del Sol / Las Orquídeas (Comuna 14)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 15">
-                                        <option value="El Retiro / Comuneros I / Laureano Gómez / Vallado / Ciudad Córdoba / Mojica / Bajos de Ciudad Córdoba - Llano Verde (Comuna 15)" data-envio="10000">Ciudad Córdoba / El Retiro / Vallado / Llano Verde (Comuna 15)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 16">
-                                        <option value="Mariano Ramos / República de Israel / Unión de Vivienda Popular / Antonio Nariño / Brisas del Limonar / Ciudad 2000 / La Alborada / El Limonar (Comuna 16)" data-envio="10000">Ciudad 2000 / Mariano Ramos / Unión de Vivienda Popular (Comuna 16)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 17">
-                                        <option value="La Playa (Comuna 17)" data-envio="8000">La Playa</option>
-                                        <option value="Primero de Mayo (Comuna 17)" data-envio="8000">Primero de Mayo</option>
-                                        <option value="Ciudadela Comfandi (Comuna 17)" data-envio="8000">Ciudadela Comfandi</option>
-                                        <option value="Urbanización Ciudad Jardín (Comuna 17)" data-envio="8000">Urbanización Ciudad Jardín</option>
-                                        <option value="Caney (Comuna 17)" data-envio="10000">Caney</option>
-                                        <option value="Lili (Comuna 17)" data-envio="10000">Lili</option>
-                                        <option value="Ciudad Universitaria / Club Campestre / Ciudad Campestre / Santa Anita / La Selva / El Ingenio / Mayapan / Las Vegas / Las Quintas de Don Simón / Ciudad Capri / La Hacienda / Los Portales / Nuevo Rey / Cañaverales / Los Samanes / El Limonar / Bosques del Limonar / El Gran Limonar - Cataya / Unicentro / Parcelaciones Pance / Ciudadela Pasoancho / Prados del Limonar / Urb. San Joaquín / Urb. Río Lili (Comuna 17)" data-envio="8000">El Ingenio / Ciudad Capri / Unicentro / Pasoancho / Lili (Comuna 17)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 18">
-                                        <option value="Buenos Aires (Comuna 18)" data-envio="8000">Buenos Aires</option>
-                                        <option value="Caldas (Comuna 18)" data-envio="8000">Caldas</option>
-                                        <option value="Los Chorros hasta el hospital (Comuna 18)" data-envio="8000">Los Chorros (hasta el hospital)</option>
-                                        <option value="Chorros alto después de calle 2da oeste (Comuna 18)" data-envio="12000">Chorros alto (después de calle 2da oeste)</option>
-                                        <option value="Meléndez Bajo (Comuna 18)" data-envio="8000">Meléndez bajo</option>
-                                        <option value="Meléndez Alto (Comuna 18)" data-envio="12000">Meléndez alto</option>
-                                        <option value="Farallones (Comuna 18)" data-envio="8000">Farallones</option>
-                                        <option value="Francisco Eladio Ramírez (Comuna 18)" data-envio="8000">Francisco Eladio Ramírez</option>
-                                        <option value="Prados del Sur (Comuna 18)" data-envio="8000">Prados del Sur</option>
-                                        <option value="Horizontes (Comuna 18)" data-envio="8000">Horizontes</option>
-                                        <option value="Mario Correa Rengifo (Comuna 18)" data-envio="8000">Mario Correa Rengifo</option>
-                                        <option value="Lourdes (Comuna 18)" data-envio="8000">Lourdes</option>
-                                        <option value="Colinas del Sur (Comuna 18)" data-envio="8000">Colinas del Sur</option>
-                                        <option value="Alférez Real (Comuna 18)" data-envio="8000">Alférez Real</option>
-                                        <option value="Nápoles Bajo (Comuna 18)" data-envio="8000">Nápoles bajo</option>
-                                        <option value="Nápoles Alto (Comuna 18)" data-envio="10000">Nápoles alto</option>
-                                        <option value="El Jordán Bajo (Comuna 18)" data-envio="8000">El Jordán bajo</option>
-                                        <option value="El Jordán Alto (Comuna 18)" data-envio="12000">El Jordán alto</option>
-                                        <option value="Cuarteles de Nápoles (Comuna 18)" data-envio="8000">Cuarteles de Nápoles</option>
-                                        <option value="Sector Alto Jordán (Comuna 18)" data-envio="12000">Sector Alto Jordán</option>
-                                        <option value="Alto Nápoles (Comuna 18)" data-envio="12000">Alto Nápoles</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 19">
-                                        <option value="Bellavista (Comuna 19)" data-envio="10000">Bellavista</option>
-                                        <option value="El Mortiñal (Comuna 19)" data-envio="10000">El Mortiñal</option>
-                                        <option value="Refugio / La Cascada / El Lido / Urb. Tequendama / Eucarístico / San Fernando Nuevo / Urb. Nueva Granada / Santa Isabel / San Fernando Viejo / Miraflores / Tres de Julio / El Cedro / Champagnat / Urb. Colseguros / Cambulos / Urb. Militar / Cuarto de Legua / Guadalupe / Unidad Panamericana / Nuevo Tequendama / Camino Real Los Fundadores / Sector Altos de Santa Isabel / Santa Bárbara / Tejares / Cristales / Unidad Residencial Santiago de Cali / Unidad Residencial El Coliseo / Cañaveralejo / Sector La Patria Cañaveral (Comuna 19)" data-envio="8000">El Lido / Tequendama / San Fernando / Guadalupe / Santa Isabel (Comuna 19)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 20">
-                                        <option value="Cortijo (Comuna 20)" data-envio="8000">Cortijo</option>
-                                        <option value="Belisario Caicedo (Comuna 20)" data-envio="8000">Belisario Caicedo</option>
-                                        <option value="Siloé (Comuna 20)" data-envio="10000">Siloé</option>
-                                        <option value="Lleras Camargo (Comuna 20)" data-envio="10000">Lleras Camargo</option>
-                                        <option value="Belén (Comuna 20)" data-envio="10000">Belén</option>
-                                        <option value="Brisas de Mayo (Comuna 20)" data-envio="10000">Brisas de Mayo</option>
-                                        <option value="Tierra Blanca (Comuna 20)" data-envio="10000">Tierra Blanca</option>
-                                        <option value="Pueblo Joven (Comuna 20)" data-envio="10000">Pueblo Joven</option>
-                                        <option value="Cementerio Carabineros (Comuna 20)" data-envio="8000">Cementerio Carabineros</option>
-                                        <option value="Venezuela (Comuna 20)" data-envio="8000">Venezuela</option>
-                                        <option value="Urb. Cañaveralejo (Comuna 20)" data-envio="8000">Urb. Cañaveralejo</option>
-                                        <option value="La Sultana (Comuna 20)" data-envio="12000">La Sultana</option>
-                                        <option value="Urb. Venezuela (Comuna 20)" data-envio="8000">Urb. Venezuela</option>
-                                        <option value="Urb. Cortijo (Comuna 20)" data-envio="8000">Urb. Cortijo</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 21">
-                                        <option value="Pizamos 1, 2 y 3 / Calimio Desepaz / Remanso / Los Líderes / Desepaz Invicali / Compartir / Ciudad Talanga / Villa Mercedes I / Villa Luz / Las Garzas / Las Dalias / Potrero Grande / Ciudadela del Río - CVC / Valle Grande / Plantan de Tratamiento Puerto Mallarino / Santa Clara (Comuna 21)" data-envio="12000">Desepaz / Potrero Grande / Ciudadela del Río / Pizamos (Comuna 21)</option>
-                                    </optgroup>
-
-                                    <optgroup label="Comuna 22">
-                                        <option value="Ciudad Jardín y Pance / Ciudad Campestre / Urb. Ciudad Jardín / Jockey Club / Urb. Río Lili / Condominio Miramontes / Verdanza / Jardín de Pance / Remanso de Ciudad Jardín / Haciendas de Alférez (Comuna 22)" data-envio="10000">Pance / Ciudad Jardín / Jockey Club / Verdanza (Comuna 22)</option>
-                                    </optgroup>
-
+                                    <option value="20 de Julio" data-envio="8000">20 de Julio</option>
+                                    <option value="2 Vipasa" data-envio="12000">2 Vipasa</option>
+                                    <option value="Acueducto San Antonio" data-envio="8000">Acueducto San Antonio</option>
+                                    <option value="Agua Blanca" data-envio="8000">Agua Blanca</option>
+                                    <option value="Alameda" data-envio="8000">Alameda</option>
+                                    <option value="Álamos Popular" data-envio="8000">Álamos Popular</option>
+                                    <option value="Alfaguara" data-envio="15000">Alfaguara</option>
+                                    <option value="Alférez Real" data-envio="8000">Alférez Real</option>
+                                    <option value="Alfonso Barberena" data-envio="8000">Alfonso Barberena</option>
+                                    <option value="Alfonso Bonilla Aragón" data-envio="10000">Alfonso Bonilla Aragón</option>
+                                    <option value="Alfonzo López 1.ª Etapa" data-envio="8000">Alfonzo López 1.ª Etapa</option>
+                                    <option value="Alfonzo López 2.ª Etapa" data-envio="8000">Alfonzo López 2.ª Etapa</option>
+                                    <option value="Alfonzo López 3.ª Etapa" data-envio="8000">Alfonzo López 3.ª Etapa</option>
+                                    <option value="Alirio Mora Beltrán" data-envio="10000">Alirio Mora Beltrán</option>
+                                    <option value="Alto Aguacatal" data-envio="12000">Alto Aguacatal</option>
+                                    <option value="Alto Nápoles" data-envio="12000">Alto Nápoles</option>
+                                    <option value="Altos de Menga" data-envio="8000">Altos de Menga</option>
+                                    <option value="Altos de Normandía - Bataclán" data-envio="8000">Altos de Normandía - Bataclán</option>
+                                    <option value="Altos de Santa Isabel" data-envio="8000">Altos de Santa Isabel</option>
+                                    <option value="Andrés Sanín" data-envio="8000">Andrés Sanín</option>
+                                    <option value="Antonio Nariño" data-envio="10000">Antonio Nariño</option>
+                                    <option value="Aranjuez" data-envio="8000">Aranjuez</option>
+                                    <option value="Arboledas" data-envio="8000">Arboledas</option>
+                                    <option value="Área Libre - Parque del Amor" data-envio="8000">Área Libre - Parque del Amor</option>
+                                    <option value="Arroyohondo" data-envio="8000">Arroyohondo</option>
+                                    <option value="Asturias" data-envio="8000">Asturias</option>
+                                    <option value="Atanasio Girardot" data-envio="8000">Atanasio Girardot</option>
+                                    <option value="Bajo Aguacatal" data-envio="12000">Bajo Aguacatal</option>
+                                    <option value="Bajo Palermo" data-envio="12000">Bajo Palermo</option>
+                                    <option value="Bajo Salomia" data-envio="8000">Bajo Salomia</option>
+                                    <option value="Bajos de Ciudad Córdoba (Llano Verde)" data-envio="10000">Bajos de Ciudad Córdoba (Llano Verde)</option>
+                                    <option value="Barrio Residencial el Bosque" data-envio="8000">Barrio Residencial el Bosque</option>
+                                    <option value="Base Aérea" data-envio="8000">Base Aérea</option>
+                                    <option value="Belalcázar" data-envio="8000">Belalcázar</option>
+                                    <option value="Belén" data-envio="10000">Belén</option>
+                                    <option value="Belisario Caicedo" data-envio="8000">Belisario Caicedo</option>
+                                    <option value="Bellavista" data-envio="10000">Bellavista</option>
+                                    <option value="Bello Horizonte" data-envio="8000">Bello Horizonte</option>
+                                    <option value="Benjamín Herrera" data-envio="8000">Benjamín Herrera</option>
+                                    <option value="Bochalema" data-envio="12000">Bochalema</option>
+                                    <option value="Bolivariano" data-envio="8000">Bolivariano</option>
+                                    <option value="Bosques del Limonar" data-envio="8000">Bosques del Limonar</option>
+                                    <option value="Bretaña" data-envio="8000">Bretaña</option>
+                                    <option value="Brisas de los Álamos" data-envio="8000">Brisas de los Álamos</option>
+                                    <option value="Brisas de los Andes" data-envio="8000">Brisas de los Andes</option>
+                                    <option value="Brisas de Mayo" data-envio="10000">Brisas de Mayo</option>
+                                    <option value="Brisas del Guabito" data-envio="8000">Brisas del Guabito</option>
+                                    <option value="Brisas del Limonar" data-envio="10000">Brisas del Limonar</option>
+                                    <option value="Bueno Madrid" data-envio="8000">Bueno Madrid</option>
+                                    <option value="Buenos Aires" data-envio="8000">Buenos Aires</option>
+                                    <option value="Caldas" data-envio="8000">Caldas</option>
+                                    <option value="Calima" data-envio="8000">Calima</option>
+                                    <option value="Calimio" data-envio="8000">Calimio</option>
+                                    <option value="Calimio Desepaz" data-envio="12000">Calimio Desepaz</option>
+                                    <option value="Calipso" data-envio="10000">Calipso</option>
+                                    <option value="Cambulos" data-envio="8000">Cambulos</option>
+                                    <option value="Camino Real Los Fundadores" data-envio="8000">Camino Real Los Fundadores</option>
+                                    <option value="Caney" data-envio="10000">Caney</option>
+                                    <option value="Cañaveralejo" data-envio="8000">Cañaveralejo</option>
+                                    <option value="Cañaverales" data-envio="8000">Cañaverales</option>
+                                    <option value="Cementerio Carabineros" data-envio="8000">Cementerio Carabineros</option>
+                                    <option value="Centenario" data-envio="8000">Centenario</option>
+                                    <option value="Champagnat" data-envio="8000">Champagnat</option>
+                                    <option value="Chapinero" data-envio="8000">Chapinero</option>
+                                    <option value="Charco Azul" data-envio="10000">Charco Azul</option>
+                                    <option value="Chiminangos 1.ª Etapa" data-envio="8000">Chiminangos 1.ª Etapa</option>
+                                    <option value="Chiminangos 2.ª Etapa" data-envio="8000">Chiminangos 2.ª Etapa</option>
+                                    <option value="Chipichape" data-envio="8000">Chipichape</option>
+                                    <option value="Chorros alto (después de calle 2da oeste)" data-envio="12000">Chorros alto (después de calle 2da oeste)</option>
+                                    <option value="Ciudad 2000" data-envio="10000">Ciudad 2000</option>
+                                    <option value="Ciudad Campestre" data-envio="8000">Ciudad Campestre</option>
+                                    <option value="Ciudad Capri" data-envio="8000">Ciudad Capri</option>
+                                    <option value="Ciudad Córdoba" data-envio="10000">Ciudad Córdoba</option>
+                                    <option value="Ciudad del Campo" data-envio="12000">Ciudad del Campo</option>
+                                    <option value="Ciudad Jardín" data-envio="8000">Ciudad Jardín</option>
+                                    <option value="Ciudad Jardín y Pance" data-envio="10000">Ciudad Jardín y Pance</option>
+                                    <option value="Ciudad los Álamos" data-envio="8000">Ciudad los Álamos</option>
+                                    <option value="Ciudad Modelo" data-envio="8000">Ciudad Modelo</option>
+                                    <option value="Ciudad Pacífica" data-envio="12000">Ciudad Pacífica</option>
+                                    <option value="Ciudad Talanga" data-envio="12000">Ciudad Talanga</option>
+                                    <option value="Ciudad Universitaria" data-envio="8000">Ciudad Universitaria</option>
+                                    <option value="Ciudadela Comfandi" data-envio="8000">Ciudadela Comfandi</option>
+                                    <option value="Ciudadela del Río - CVC" data-envio="12000">Ciudadela del Río - CVC</option>
+                                    <option value="Ciudadela Paso ancho" data-envio="8000">Ciudadela Paso ancho</option>
+                                    <option value="Club Campestre" data-envio="8000">Club Campestre</option>
+                                    <option value="Colinas del Sur" data-envio="8000">Colinas del Sur</option>
+                                    <option value="Colseguros Andes" data-envio="8000">Colseguros Andes</option>
+                                    <option value="Compartir" data-envio="12000">Compartir</option>
+                                    <option value="Comuneros I" data-envio="10000">Comuneros I</option>
+                                    <option value="Condominio Miramontes" data-envio="10000">Condominio Miramontes</option>
+                                    <option value="Cortijo" data-envio="8000">Cortijo</option>
+                                    <option value="Cristales" data-envio="8000">Cristales</option>
+                                    <option value="Cristóbal Colón" data-envio="8000">Cristóbal Colón</option>
+                                    <option value="Cuarto de Legua" data-envio="8000">Cuarto de Legua</option>
+                                    <option value="Cuarteles de Nápoles" data-envio="8000">Cuarteles de Nápoles</option>
+                                    <option value="Dapa (parte baja)" data-envio="10000">Dapa (parte baja)</option>
+                                    <option value="Departamental" data-envio="8000">Departamental</option>
+                                    <option value="Desepaz Invicali" data-envio="12000">Desepaz Invicali</option>
+                                    <option value="Doce de Octubre" data-envio="8000">Doce de Octubre</option>
+                                    <option value="Eduardo Santos" data-envio="8000">Eduardo Santos</option>
+                                    <option value="El Bosque" data-envio="8000">El Bosque</option>
+                                    <option value="El Calvario" data-envio="8000">El Calvario</option>
+                                    <option value="El Cedro" data-envio="8000">El Cedro</option>
+                                    <option value="El Diamante" data-envio="10000">El Diamante</option>
+                                    <option value="El Dorado" data-envio="8000">El Dorado</option>
+                                    <option value="El Gran Limonar - Cataya" data-envio="8000">El Gran Limonar - Cataya</option>
+                                    <option value="El Hoyo" data-envio="8000">El Hoyo</option>
+                                    <option value="El Ingenio" data-envio="8000">El Ingenio</option>
+                                    <option value="El Jardín" data-envio="8000">El Jardín</option>
+                                    <option value="El Jordán alto" data-envio="12000">El Jordán alto</option>
+                                    <option value="El Jordán bajo" data-envio="8000">El Jordán bajo</option>
+                                    <option value="El Lido" data-envio="8000">El Lido</option>
+                                    <option value="El Limonar" data-envio="10000">El Limonar</option>
+                                    <option value="El Mortiñal" data-envio="10000">El Mortiñal</option>
+                                    <option value="El Nacional" data-envio="8000">El Nacional</option>
+                                    <option value="El Paraíso" data-envio="8000">El Paraíso</option>
+                                    <option value="El Peñón" data-envio="8000">El Peñón</option>
+                                    <option value="El Piloto" data-envio="8000">El Piloto</option>
+                                    <option value="El Poblado I" data-envio="10000">El Poblado I</option>
+                                    <option value="El Poblado II" data-envio="10000">El Poblado II</option>
+                                    <option value="El Pondaje" data-envio="10000">El Pondaje</option>
+                                    <option value="El Prado" data-envio="8000">El Prado</option>
+                                    <option value="El Recuerdo" data-envio="8000">El Recuerdo</option>
+                                    <option value="El Retén" data-envio="12000">El Retén</option>
+                                    <option value="El Retiro" data-envio="10000">El Retiro</option>
+                                    <option value="El Sena" data-envio="8000">El Sena</option>
+                                    <option value="El Trébol" data-envio="8000">El Trébol</option>
+                                    <option value="El Troncal" data-envio="8000">El Troncal</option>
+                                    <option value="El Vergel" data-envio="10000">El Vergel</option>
+                                    <option value="El Vivero" data-envio="8000">El Vivero</option>
+                                    <option value="Eucarístico" data-envio="8000">Eucarístico</option>
+                                    <option value="Evaristo García" data-envio="8000">Evaristo García</option>
+                                    <option value="Farallones" data-envio="8000">Farallones</option>
+                                    <option value="Fátima" data-envio="8000">Fátima</option>
+                                    <option value="Fenalco Kennedy" data-envio="8000">Fenalco Kennedy</option>
+                                    <option value="Fepicol" data-envio="8000">Fepicol</option>
+                                    <option value="Flora Industrial" data-envio="8000">Flora Industrial</option>
+                                    <option value="Floralia I" data-envio="8000">Floralia I</option>
+                                    <option value="Floralia IA" data-envio="8000">Floralia IA</option>
+                                    <option value="Floralia I Sector II" data-envio="8000">Floralia I Sector II</option>
+                                    <option value="Floralia II" data-envio="8000">Floralia II</option>
+                                    <option value="Floralia III" data-envio="8000">Floralia III</option>
+                                    <option value="Fonaviemcali" data-envio="8000">Fonaviemcali</option>
+                                    <option value="Francisco Eladio Ramírez" data-envio="8000">Francisco Eladio Ramírez</option>
+                                    <option value="Galindo" data-envio="8000">Galindo</option>
+                                    <option value="Granada" data-envio="8000">Granada</option>
+                                    <option value="Guabal" data-envio="8000">Guabal</option>
+                                    <option value="Guadalupe" data-envio="8000">Guadalupe</option>
+                                    <option value="Guayaquil" data-envio="8000">Guayaquil</option>
+                                    <option value="Guillermo Valencia" data-envio="8000">Guillermo Valencia</option>
+                                    <option value="Haciendas de Alferez" data-envio="10000">Haciendas de Alferez</option>
+                                    <option value="Horizontes" data-envio="8000">Horizontes</option>
+                                    <option value="Ignacio Rengifo" data-envio="8000">Ignacio Rengifo</option>
+                                    <option value="Industrial" data-envio="8000">Industrial</option>
+                                    <option value="Industria de Licores" data-envio="8000">Industria de Licores</option>
+                                    <option value="Jamundí" data-envio="15000">Jamundí</option>
+                                    <option value="Jardín de Pance" data-envio="10000">Jardín de Pance</option>
+                                    <option value="Jockey Club" data-envio="10000">Jockey Club</option>
+                                    <option value="Jorge Eliécer Gaitán" data-envio="8000">Jorge Eliécer Gaitán</option>
+                                    <option value="Jorge Holguín Garcés" data-envio="8000">Jorge Holguín Garcés</option>
+                                    <option value="Jorge Isaacs" data-envio="8000">Jorge Isaacs</option>
+                                    <option value="Jorge María Córdoba" data-envio="8000">Jorge María Córdoba</option>
+                                    <option value="Jorge Zawadsky" data-envio="8000">Jorge Zawadsky</option>
+                                    <option value="José Manuel Marroquín 1" data-envio="10000">José Manuel Marroquín 1</option>
+                                    <option value="José Manuel Marroquín 2" data-envio="10000">José Manuel Marroquín 2</option>
+                                    <option value="Juanambú" data-envio="8000">Juanambú</option>
+                                    <option value="Juanchito" data-envio="12000">Juanchito</option>
+                                    <option value="Julio Rincón" data-envio="8000">Julio Rincón</option>
+                                    <option value="Junín" data-envio="8000">Junín</option>
+                                    <option value="La Alborada" data-envio="10000">La Alborada</option>
+                                    <option value="La Alianza" data-envio="8000">La Alianza</option>
+                                    <option value="La Barraquera" data-envio="12000">La Barraquera</option>
+                                    <option value="La Base" data-envio="8000">La Base</option>
+                                    <option value="La Campiña" data-envio="8000">La Campiña</option>
+                                    <option value="La Cascada" data-envio="8000">La Cascada</option>
+                                    <option value="La Esmeralda" data-envio="8000">La Esmeralda</option>
+                                    <option value="La Esperanza" data-envio="8000">La Esperanza</option>
+                                    <option value="La Estatua" data-envio="12000">La Estatua</option>
+                                    <option value="La Flora" data-envio="8000">La Flora</option>
+                                    <option value="La Floresta" data-envio="8000">La Floresta</option>
+                                    <option value="La Fortaleza" data-envio="8000">La Fortaleza</option>
+                                    <option value="La Fortuna" data-envio="12000">La Fortuna</option>
+                                    <option value="La Gracia" data-envio="12000">La Gracia</option>
+                                    <option value="La Hacienda" data-envio="8000">La Hacienda</option>
+                                    <option value="La Independencia" data-envio="8000">La Independencia</option>
+                                    <option value="La Isla" data-envio="8000">La Isla</option>
+                                    <option value="La Legua" data-envio="12000">La Legua</option>
+                                    <option value="La Libertad" data-envio="8000">La Libertad</option>
+                                    <option value="La Merced" data-envio="8000">La Merced</option>
+                                    <option value="La Nueva Base" data-envio="8000">La Nueva Base</option>
+                                    <option value="La Patria Cañaveral" data-envio="8000">La Patria Cañaveral</option>
+                                    <option value="La Paz" data-envio="8000">La Paz</option>
+                                    <option value="La Playa" data-envio="8000">La Playa</option>
+                                    <option value="La Playita" data-envio="12000">La Playita</option>
+                                    <option value="La Primavera" data-envio="8000">La Primavera</option>
+                                    <option value="La Rivera I" data-envio="8000">La Rivera I</option>
+                                    <option value="La Rivera II" data-envio="8000">La Rivera II</option>
+                                    <option value="La Selva" data-envio="8000">La Selva</option>
+                                    <option value="La Sultana" data-envio="12000">La Sultana</option>
+                                    <option value="Las Acacias" data-envio="8000">Las Acacias</option>
+                                    <option value="Las Américas" data-envio="8000">Las Américas</option>
+                                    <option value="Las Ceibas" data-envio="8000">Las Ceibas</option>
+                                    <option value="Las Dalias" data-envio="12000">Las Dalias</option>
+                                    <option value="Las Delicias" data-envio="8000">Las Delicias</option>
+                                    <option value="Las Fresas" data-envio="12000">Las Fresas</option>
+                                    <option value="Las Garzas" data-envio="12000">Las Garzas</option>
+                                    <option value="Las Granjas" data-envio="8000">Las Granjas</option>
+                                    <option value="Las Malvinas" data-envio="12000">Las Malvinas</option>
+                                    <option value="Las Orquídeas" data-envio="10000">Las Orquídeas</option>
+                                    <option value="Las Quintas de don Simón" data-envio="8000">Las Quintas de don Simón</option>
+                                    <option value="Las Vegas" data-envio="8000">Las Vegas</option>
+                                    <option value="Las Veraneras" data-envio="8000">Las Veraneras</option>
+                                    <option value="Laureano Gómez" data-envio="10000">Laureano Gómez</option>
+                                    <option value="León XIII" data-envio="8000">León XIII</option>
+                                    <option value="Lili" data-envio="10000">Lili</option>
+                                    <option value="Lleras-Cinta larga" data-envio="10000">Lleras-Cinta larga</option>
+                                    <option value="Lleras Camargo" data-envio="10000">Lleras Camargo</option>
+                                    <option value="Lleras Restrepo" data-envio="10000">Lleras Restrepo</option>
+                                    <option value="Los Alcázares I" data-envio="8000">Los Alcázares I</option>
+                                    <option value="Los Alcázares II" data-envio="8000">Los Alcázares II</option>
+                                    <option value="Los Andes" data-envio="8000">Los Andes</option>
+                                    <option value="Los Chorros hasta el hospital" data-envio="8000">Los Chorros hasta el hospital</option>
+                                    <option value="Los Comuneros II" data-envio="10000">Los Comuneros II</option>
+                                    <option value="Los Conquistadores" data-envio="8000">Los Conquistadores</option>
+                                    <option value="Los Guadales" data-envio="8000">Los Guadales</option>
+                                    <option value="Los Guayacanes" data-envio="8000">Los Guayacanes</option>
+                                    <option value="Los Lagos I" data-envio="10000">Los Lagos I</option>
+                                    <option value="Los Lagos II" data-envio="10000">Los Lagos II</option>
+                                    <option value="Los Libertadores" data-envio="8000">Los Libertadores</option>
+                                    <option value="Los Líderes" data-envio="12000">Los Líderes</option>
+                                    <option value="Los Lotes" data-envio="12000">Los Lotes</option>
+                                    <option value="Los Naranjos" data-envio="15000">Los Naranjos</option>
+                                    <option value="Los Pinos" data-envio="8000">Los Pinos</option>
+                                    <option value="Los Portales" data-envio="8000">Los Portales</option>
+                                    <option value="Los Robles" data-envio="10000">Los Robles</option>
+                                    <option value="Los Samanes" data-envio="8000">Los Samanes</option>
+                                    <option value="Los Sauces" data-envio="8000">Los Sauces</option>
+                                    <option value="Lourdes" data-envio="8000">Lourdes</option>
+                                    <option value="Manuel María Buenaventura" data-envio="8000">Manuel María Buenaventura</option>
+                                    <option value="Manuela Beltrán" data-envio="10000">Manuela Beltrán</option>
+                                    <option value="Manzanares" data-envio="8000">Manzanares</option>
+                                    <option value="Maracaibo" data-envio="8000">Maracaibo</option>
+                                    <option value="Marco Fidel Suárez" data-envio="8000">Marco Fidel Suárez</option>
+                                    <option value="Mariano Ramos" data-envio="10000">Mariano Ramos</option>
+                                    <option value="Mario Correa Rengifo" data-envio="8000">Mario Correa Rengifo</option>
+                                    <option value="Marroquín III" data-envio="10000">Marroquín III</option>
+                                    <option value="Más allá de Alfaguara" data-envio="20000">Más allá de Alfaguara</option>
+                                    <option value="Mata de Guadua" data-envio="12000">Mata de Guadua</option>
+                                    <option value="Mayapan" data-envio="8000">Mayapan</option>
+                                    <option value="Meléndez alto" data-envio="12000">Meléndez alto</option>
+                                    <option value="Meléndez bajo" data-envio="8000">Meléndez bajo</option>
+                                    <option value="Menga alto" data-envio="12000">Menga alto</option>
+                                    <option value="Menga bajo" data-envio="8000">Menga bajo</option>
+                                    <option value="Metropolitano del Norte" data-envio="8000">Metropolitano del Norte</option>
+                                    <option value="Miraflores" data-envio="8000">Miraflores</option>
+                                    <option value="Mojica" data-envio="10000">Mojica</option>
+                                    <option value="Municipal" data-envio="8000">Municipal</option>
+                                    <option value="Nápoles alto" data-envio="10000">Nápoles alto</option>
+                                    <option value="Nápoles bajo" data-envio="8000">Nápoles bajo</option>
+                                    <option value="Naranjos 1" data-envio="10000">Naranjos 1</option>
+                                    <option value="Naranjos 2" data-envio="10000">Naranjos 2</option>
+                                    <option value="Navarro-La Chanca" data-envio="8000">Navarro-La Chanca</option>
+                                    <option value="Normandia alto" data-envio="12000">Normandia alto</option>
+                                    <option value="Normandia bajo" data-envio="8000">Normandia bajo</option>
+                                    <option value="Nueva Floresta" data-envio="8000">Nueva Floresta</option>
+                                    <option value="Nuevo Horizonte" data-envio="10000">Nuevo Horizonte</option>
+                                    <option value="Nuevo Rey" data-envio="8000">Nuevo Rey</option>
+                                    <option value="Nuevo Tequendama" data-envio="8000">Nuevo Tequendama</option>
+                                    <option value="Oasis de Comfandi" data-envio="8000">Oasis de Comfandi</option>
+                                    <option value="Obrero" data-envio="8000">Obrero</option>
+                                    <option value="Olaya Herrera" data-envio="8000">Olaya Herrera</option>
+                                    <option value="Olímpico" data-envio="8000">Olímpico</option>
+                                    <option value="Omar Torrijos" data-envio="10000">Omar Torrijos</option>
+                                    <option value="Pacará" data-envio="8000">Pacará</option>
+                                    <option value="Palmeras del norte" data-envio="8000">Palmeras del norte</option>
+                                    <option value="Palmas I" data-envio="12000">Palmas I</option>
+                                    <option value="Palmas II" data-envio="12000">Palmas II</option>
+                                    <option value="Pampa Linda" data-envio="8000">Pampa Linda</option>
+                                    <option value="Panamericano" data-envio="8000">Panamericano</option>
+                                    <option value="Parcelaciones Pance" data-envio="8000">Parcelaciones Pance</option>
+                                    <option value="Pasamacho" data-envio="8000">Pasamacho</option>
+                                    <option value="Paseo de los Almendros" data-envio="8000">Paseo de los Almendros</option>
+                                    <option value="Paso del Comercio" data-envio="8000">Paso del Comercio</option>
+                                    <option value="Patio Bonito" data-envio="12000">Patio Bonito</option>
+                                    <option value="Petecuy I etapa" data-envio="8000">Petecuy I etapa</option>
+                                    <option value="Petecuy II etapa" data-envio="8000">Petecuy II etapa</option>
+                                    <option value="Petecuy III etapa" data-envio="8000">Petecuy III etapa</option>
+                                    <option value="Pizamos 1" data-envio="12000">Pizamos 1</option>
+                                    <option value="Pizamos 2" data-envio="12000">Pizamos 2</option>
+                                    <option value="Pizamos 3" data-envio="12000">Pizamos 3</option>
+                                    <option value="Plantan de Tratamiento Puerto Mallarino" data-envio="12000">Plantan de Tratamiento Puerto Mallarino</option>
+                                    <option value="Plaza de Toros" data-envio="8000">Plaza de Toros</option>
+                                    <option value="Plazas Verdes" data-envio="8000">Plazas Verdes</option>
+                                    <option value="Poblado Campestre" data-envio="15000">Poblado Campestre</option>
+                                    <option value="Popular" data-envio="8000">Popular</option>
+                                    <option value="Porvenir" data-envio="8000">Porvenir</option>
+                                    <option value="Potrero Grande" data-envio="12000">Potrero Grande</option>
+                                    <option value="Prados de Oriente" data-envio="8000">Prados de Oriente</option>
+                                    <option value="Prados del Limonar" data-envio="8000">Prados del Limonar</option>
+                                    <option value="Prados del Norte" data-envio="8000">Prados del Norte</option>
+                                    <option value="Prados del Sur" data-envio="8000">Prados del Sur</option>
+                                    <option value="Primitivo Crespo" data-envio="8000">Primitivo Crespo</option>
+                                    <option value="Primero de Mayo" data-envio="8000">Primero de Mayo</option>
+                                    <option value="Promociones Populares" data-envio="10000">Promociones Populares</option>
+                                    <option value="Pueblo Joven" data-envio="10000">Pueblo Joven</option>
+                                    <option value="Puente Azul" data-envio="12000">Puente Azul</option>
+                                    <option value="Puertas del Sol" data-envio="10000">Puertas del Sol</option>
+                                    <option value="Puerto Mallarino" data-envio="8000">Puerto Mallarino</option>
+                                    <option value="Puerto Nuevo" data-envio="8000">Puerto Nuevo</option>
+                                    <option value="Rafael Uribe Uribe" data-envio="8000">Rafael Uribe Uribe</option>
+                                    <option value="Reamanso de Ciudad Jardín" data-envio="10000">Reamanso de Ciudad Jardín</option>
+                                    <option value="Refugio" data-envio="8000">Refugio</option>
+                                    <option value="Remanso" data-envio="12000">Remanso</option>
+                                    <option value="República de Israel" data-envio="10000">República de Israel</option>
+                                    <option value="Ricardo Balcázar" data-envio="10000">Ricardo Balcázar</option>
+                                    <option value="Rodeo" data-envio="8000">Rodeo</option>
+                                    <option value="Rodrigo Lara Bonilla" data-envio="10000">Rodrigo Lara Bonilla</option>
+                                    <option value="Saavedra Galindo" data-envio="8000">Saavedra Galindo</option>
+                                    <option value="Salomia" data-envio="8000">Salomia</option>
+                                    <option value="San Antonio" data-envio="8000">San Antonio</option>
+                                    <option value="San Benito" data-envio="8000">San Benito</option>
+                                    <option value="San Carlos" data-envio="8000">San Carlos</option>
+                                    <option value="San Cayetano" data-envio="8000">San Cayetano</option>
+                                    <option value="San Cristóbal" data-envio="8000">San Cristóbal</option>
+                                    <option value="San Fernando Nuevo" data-envio="8000">San Fernando Nuevo</option>
+                                    <option value="San Fernando Viejo" data-envio="8000">San Fernando Viejo</option>
+                                    <option value="San Judas Tadeo 1" data-envio="8000">San Judas Tadeo 1</option>
+                                    <option value="San Judas Tadeo 2" data-envio="8000">San Judas Tadeo 2</option>
+                                    <option value="San Juan Bosco" data-envio="8000">San Juan Bosco</option>
+                                    <option value="San Luís I" data-envio="8000">San Luís I</option>
+                                    <option value="San Luís II" data-envio="8000">San Luís II</option>
+                                    <option value="San Marino" data-envio="8000">San Marino</option>
+                                    <option value="San Nicolás" data-envio="8000">San Nicolás</option>
+                                    <option value="San Pascual" data-envio="8000">San Pascual</option>
+                                    <option value="San Pedro" data-envio="8000">San Pedro</option>
+                                    <option value="San Pedro Claver" data-envio="8000">San Pedro Claver</option>
+                                    <option value="San Vicente" data-envio="8000">San Vicente</option>
+                                    <option value="Santa Anita" data-envio="8000">Santa Anita</option>
+                                    <option value="Santa Bárbara" data-envio="8000">Santa Bárbara</option>
+                                    <option value="Santa Clara" data-envio="12000">Santa Clara</option>
+                                    <option value="Santa Elena" data-envio="8000">Santa Elena</option>
+                                    <option value="Santa Fe" data-envio="8000">Santa Fe</option>
+                                    <option value="Santa Isabel" data-envio="8000">Santa Isabel</option>
+                                    <option value="Santa Mónica" data-envio="8000">Santa Mónica</option>
+                                    <option value="Santa Mónica Belalcázar" data-envio="8000">Santa Mónica Belalcázar</option>
+                                    <option value="Santa Mónica Popular" data-envio="8000">Santa Mónica Popular</option>
+                                    <option value="Santa Rita" data-envio="8000">Santa Rita</option>
+                                    <option value="Santa Rosa" data-envio="8000">Santa Rosa</option>
+                                    <option value="Santa Teresita" data-envio="8000">Santa Teresita</option>
+                                    <option value="Santander" data-envio="8000">Santander</option>
+                                    <option value="Sector Alto Jordán" data-envio="12000">Sector Alto Jordán</option>
+                                    <option value="Sector Asprosocial - Diamante" data-envio="10000">Sector Asprosocial - Diamante</option>
+                                    <option value="Sector Bosque Municipal" data-envio="8000">Sector Bosque Municipal</option>
+                                    <option value="Sector Cañaveralejo Guadalupe" data-envio="8000">Sector Cañaveralejo Guadalupe</option>
+                                    <option value="Sector La Luna" data-envio="8000">Sector La Luna</option>
+                                    <option value="Sector La Patria Cañaveral" data-envio="8000">Sector La Patria Cañaveral</option>
+                                    <option value="Sector Laguna del Pondaje" data-envio="10000">Sector Laguna del Pondaje</option>
+                                    <option value="Siete de Agosto" data-envio="8000">Siete de Agosto</option>
+                                    <option value="Siloé" data-envio="10000">Siloé</option>
+                                    <option value="Simón Bolívar" data-envio="8000">Simón Bolívar</option>
+                                    <option value="Sindical" data-envio="8000">Sindical</option>
+                                    <option value="Sucre" data-envio="8000">Sucre</option>
+                                    <option value="Sultana-Berlín-San Francisco" data-envio="8000">Sultana-Berlín-San Francisco</option>
+                                    <option value="Tejares" data-envio="8000">Tejares</option>
+                                    <option value="Terranova" data-envio="15000">Terranova</option>
+                                    <option value="Terrón Colorado I" data-envio="12000">Terrón Colorado I</option>
+                                    <option value="Terrón Colorado II" data-envio="12000">Terrón Colorado II</option>
+                                    <option value="Tierra Blanca" data-envio="10000">Tierra Blanca</option>
+                                    <option value="Torres de Comfandi" data-envio="8000">Torres de Comfandi</option>
+                                    <option value="Tres de Julio" data-envio="8000">Tres de Julio</option>
+                                    <option value="Ulpiano Lloreda" data-envio="10000">Ulpiano Lloreda</option>
+                                    <option value="Unicentro" data-envio="8000">Unicentro</option>
+                                    <option value="Unidad Deportiva A" data-envio="8000">Unidad Deportiva A</option>
+                                    <option value="Unidad Panamericana" data-envio="8000">Unidad Panamericana</option>
+                                    <option value="Unidad Residencial El Coliseo" data-envio="8000">Unidad Residencial El Coliseo</option>
+                                    <option value="Unidad Residencial Santiago de Cali" data-envio="8000">Unidad Residencial Santiago de Cali</option>
+                                    <option value="Unión de Vivienda Popular" data-envio="10000">Unión de Vivienda Popular</option>
+                                    <option value="Urb. Aguacatal" data-envio="12000">Urb. Aguacatal</option>
+                                    <option value="Urb. Barranquilla" data-envio="8000">Urb. Barranquilla</option>
+                                    <option value="Urb. Boyacá" data-envio="8000">Urb. Boyacá</option>
+                                    <option value="Urb. Cañaveralejo" data-envio="8000">Urb. Cañaveralejo</option>
+                                    <option value="Urb. Ciudad Jardín" data-envio="8000">Urb. Ciudad Jardín</option>
+                                    <option value="Urb. Colseguros" data-envio="8000">Urb. Colseguros</option>
+                                    <option value="Urb. Cortijo" data-envio="8000">Urb. Cortijo</option>
+                                    <option value="Urb. La Base" data-envio="8000">Urb. La Base</option>
+                                    <option value="Urb. La Flora" data-envio="8000">Urb. La Flora</option>
+                                    <option value="Urb. La Merced" data-envio="8000">Urb. La Merced</option>
+                                    <option value="Urb. Militar" data-envio="8000">Urb. Militar</option>
+                                    <option value="Urb. Nueva Granada" data-envio="8000">Urb. Nueva Granada</option>
+                                    <option value="Urb. Río Lili" data-envio="8000">Urb. Río Lili</option>
+                                    <option value="Urb. San Joaquín" data-envio="8000">Urb. San Joaquín</option>
+                                    <option value="Urb. Tequendama" data-envio="8000">Urb. Tequendama</option>
+                                    <option value="Urb. Venezuela" data-envio="8000">Urb. Venezuela</option>
+                                    <option value="Vallado" data-envio="10000">Vallado</option>
+                                    <option value="Valle del Lili" data-envio="8000">Valle del Lili</option>
+                                    <option value="Valle Grande" data-envio="12000">Valle Grande</option>
+                                    <option value="Venezuela" data-envio="8000">Venezuela</option>
+                                    <option value="Verdanza" data-envio="10000">Verdanza</option>
+                                    <option value="Versalles" data-envio="8000">Versalles</option>
+                                    <option value="Villa Blanca" data-envio="10000">Villa Blanca</option>
+                                    <option value="Villa del Lago" data-envio="10000">Villa del Lago</option>
+                                    <option value="Villa del Mar" data-envio="12000">Villa del Mar</option>
+                                    <option value="Villa del Prado" data-envio="8000">Villa del Prado</option>
+                                    <option value="Villa del Sol" data-envio="8000">Villa del Sol</option>
                                     <option value="Villa del Sur" data-envio="8000">Villa del Sur</option>
-                                    <option value="Pampa Linda / Sector Cañaveralejo Guadalupe / Sector Bosque Municipal / Unidad Deportiva A / Galindo / Plaza de Toros" data-envio="8000">Pampa Linda / Plaza de Toros / Bosque Municipal</option>
+                                    <option value="Villa Luz" data-envio="12000">Villa Luz</option>
+                                    <option value="Villa Mercedes I" data-envio="12000">Villa Mercedes I</option>
+                                    <option value="Villa Nueva" data-envio="8000">Villa Nueva</option>
+                                    <option value="Villacolombia" data-envio="8000">Villacolombia</option>
+                                    <option value="Villas de Veracruz" data-envio="8000">Villas de Veracruz</option>
+                                    <option value="Vipasa" data-envio="8000">Vipasa</option>
+                                    <option value="Vista Hermosa" data-envio="12000">Vista Hermosa</option>
+                                    <option value="Yira Castro" data-envio="10000">Yira Castro</option>
                                     <option value="Otro barrio de Cali" data-envio="10000">Otro barrio de Cali</option>
                                 </select>
                             </div>
@@ -330,7 +565,7 @@
     </main>
 
     <footer class="pie-carrito">
-        © 2026 Skenzi Home. Todos los derechos reservados.
+     © 2026 Skenzi Home. Todos los derechos reservados.
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
