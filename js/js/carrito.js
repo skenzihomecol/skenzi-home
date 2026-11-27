@@ -1,4 +1,3 @@
-
 /* ==========================================
    SKENZI HOME — CARRITO DE COMPRAS
    ========================================== */
@@ -342,7 +341,7 @@ function enviarPedido() {
 
     const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
 
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
 }
 
 // EVENTOS
