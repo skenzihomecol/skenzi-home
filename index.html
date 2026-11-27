@@ -52,7 +52,7 @@
                 <div class="desplegable" id="lista-categorias">
                     <a href="hogar.html">Hogar</a>
                     <a href="cocina.html">Cocina</a>
-                     <a href="cocina.html">Cortinas</a>
+                    <a href="cocina.html">Cortinas</a>
                     <a href="juguetes.html">Juguetes</a>
                     <a href="herramientas.html">Herramientas</a>
                     <a href="deporte.html">Deporte</a>
@@ -94,79 +94,78 @@
             </div>
 
         </section>
-<!-- CARRUSEL PUBLICITARIO SKENZI HOME -->
-<section class="carrusel-publicitario">
 
-    <div class="carrusel-contenedor" id="carrusel-skenzi">
+        <!-- CARRUSEL PUBLICITARIO SKENZI HOME -->
+        <section class="carrusel-publicitario">
 
-        <div class="carrusel-pista" id="carrusel-pista">
+            <div class="carrusel-contenedor" id="carrusel-skenzi">
 
-            <!-- BANNER 1 -->
-            <div class="banner-publicitario">
-                <div class="banner-texto">
-                    <span>SKENZI HOME PRESENTA</span>
-                    <h2>Temporada Primavera-Verano 2026</h2>
-                    <p>Renueva tus espacios con detalles especiales.</p>
+                <div class="carrusel-pista" id="carrusel-pista">
+
+                    <!-- BANNER 1 -->
+                    <div class="banner-publicitario">
+                        <div class="banner-texto">
+                            <span>SKENZI HOME PRESENTA</span>
+                            <h2>Temporada Primavera-Verano 2026</h2>
+                            <p>Renueva tus espacios con detalles especiales.</p>
+                        </div>
+                        <div class="banner-productos" id="banner-productos-1"></div>
+                    </div>
+
+                    <!-- BANNER 2 -->
+                    <div class="banner-publicitario">
+                        <div class="banner-texto">
+                            <span>PARA TU DÍA A DÍA</span>
+                            <h2>Todo para tu hogar y cocina</h2>
+                            <p>Practicidad y estilo en un solo lugar.</p>
+                        </div>
+                        <div class="banner-productos" id="banner-productos-2"></div>
+                    </div>
+
+                    <!-- BANNER 3 -->
+                    <div class="banner-publicitario">
+                        <div class="banner-texto">
+                            <span>DESCUBRE LO NUEVO</span>
+                            <h2>Productos que te sorprenderán</h2>
+                            <p>Encuentra tus próximos favoritos.</p>
+                        </div>
+                        <div class="banner-productos" id="banner-productos-3"></div>
+                    </div>
+
                 </div>
-                <div class="banner-productos" id="banner-productos-1"></div>
-            </div>
 
-            <!-- BANNER 2 -->
-            <div class="banner-publicitario">
-                <div class="banner-texto">
-                    <span>PARA TU DÍA A DÍA</span>
-                    <h2>Todo para tu hogar y cocina</h2>
-                    <p>Practicidad y estilo en un solo lugar.</p>
-                </div>
-                <div class="banner-productos" id="banner-productos-2"></div>
-            </div>
+                <button class="carrusel-flecha anterior"
+                    id="banner-anterior"
+                    type="button"
+                    aria-label="Anterior">‹</button>
 
-            <!-- BANNER 3 -->
-            <div class="banner-publicitario">
-                <div class="banner-texto">
-                    <span>DESCUBRE LO NUEVO</span>
-                    <h2>Productos que te sorprenderán</h2>
-                    <p>Encuentra tus próximos favoritos.</p>
-                </div>
-                <div class="banner-productos" id="banner-productos-3"></div>
-            </div>
+                <button class="carrusel-flecha siguiente"
+                    id="banner-siguiente"
+                    type="button"
+                    aria-label="Siguiente">›</button>
 
-        </div>
-
-        <button class="carrusel-flecha anterior"
-            id="banner-anterior"
-            type="button"
-            aria-label="Anterior">‹</button>
-
-        <button class="carrusel-flecha siguiente"
-            id="banner-siguiente"
-            type="button"
-            aria-label="Siguiente">›</button>
-
-        <div class="carrusel-indicadores"
-            id="banner-indicadores"></div>
-
-    </div>
-
-</section>
-<!-- FIN CARRUSEL PUBLICITARIO -->
-        <!-- GALERÍA GENERAL DE PRODUCTOS -->
-        <section class="catalogo" id="catalogo">
-
-            <div class="titulo-seccion">
-               
-               
-            <div id="galeria-productos" class="productos-grid">
-
-                <p class="mensaje-carga">
-                    Cargando nuestros productos...
-                </p>
+                <div class="carrusel-indicadores"
+                    id="banner-indicadores"></div>
 
             </div>
 
         </section>
+        <!-- FIN CARRUSEL PUBLICITARIO -->
 
+        <!-- GALERÍA GENERAL DE PRODUCTOS -->
+        <section class="catalogo" id="catalogo">
 
+            <div class="titulo-seccion">
+                <div id="galeria-productos" class="productos-grid">
+
+                    <p class="mensaje-carga">
+                        Cargando nuestros productos...
+                    </p>
+
+                </div>
+            </div>
+
+        </section>
 
         <!-- BENEFICIOS -->
         <section class="beneficios">
@@ -216,11 +215,47 @@
 
     </footer>
 
+    <!-- BOTÓN FLOTANTE DE CARRITO -->
+    <a href="carrito.html" class="carrito-flotante" aria-label="Ir a mi carrito">
+        <span class="icono-carrito">🛒</span>
+        <span>Mi carrito</span>
+        <span class="contador-flotante" id="contador-carrito-flotante">0</span>
+    </a>
+
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/productos.js"></script>
     <script src="js/index.js"></script>
+
+    <script>
+    (function () {
+        function obtenerCantidadCarrito() {
+            try {
+                const raw = JSON.parse(localStorage.getItem("skenzi_carrito") || "[]");
+                if (!Array.isArray(raw)) return 0;
+                return raw.reduce((total, item) => total + (Number(item?.cantidad) || 0), 0);
+            } catch {
+                return 0;
+            }
+        }
+
+        function sincronizarContadoresCarrito() {
+            const total = obtenerCantidadCarrito();
+            const contadorFlotante = document.getElementById("contador-carrito-flotante");
+            if (contadorFlotante) {
+                contadorFlotante.textContent = String(total);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", sincronizarContadoresCarrito);
+        window.addEventListener("storage", sincronizarContadoresCarrito);
+        document.addEventListener("click", () => {
+            setTimeout(sincronizarContadoresCarrito, 60);
+        });
+        setInterval(sincronizarContadoresCarrito, 600);
+    })();
+    </script>
 
 </body>
 </html>
