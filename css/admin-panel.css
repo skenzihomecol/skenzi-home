@@ -39,6 +39,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 20px;
     border-bottom: 1px solid var(--borde);
 }
@@ -59,6 +60,36 @@ body {
     font-size: 9px;
     letter-spacing: 7px;
     text-align: center;
+}
+
+.admin-tabs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.admin-tab {
+    padding: 10px 16px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    background: var(--crema);
+    color: var(--texto);
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.admin-tab:hover {
+    border-color: var(--verde);
+    color: var(--verde);
+}
+
+.admin-tab.activa {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--blanco);
 }
 
 .admin-header-derecha {
@@ -96,6 +127,10 @@ body {
     margin: 55px auto;
 }
 
+.admin-vista[hidden] {
+    display: none !important;
+}
+
 /* BIENVENIDA */
 
 .bienvenida-admin {
@@ -103,7 +138,8 @@ body {
 }
 
 .bienvenida-admin > span,
-.titulo-gestion span {
+.titulo-gestion span,
+.panel-caja > span {
     color: var(--dorado);
     font-size: 11px;
     font-weight: bold;
@@ -119,7 +155,8 @@ body {
 }
 
 .bienvenida-admin p,
-.titulo-gestion p {
+.titulo-gestion p,
+.panel-caja p {
     color: var(--gris);
     font-size: 14px;
     line-height: 1.7;
@@ -162,14 +199,24 @@ body {
 }
 
 .resumen-card strong {
+    display: block;
     color: var(--verde);
     font-family: Georgia, serif;
     font-size: 34px;
 }
 
-/* GESTIÓN DE PRODUCTOS */
+.resumen-card small {
+    display: block;
+    margin-top: 8px;
+    color: var(--gris);
+    font-size: 12px;
+}
 
-.gestion-productos {
+/* GESTIÓN DE PRODUCTOS Y VISTAS */
+
+.gestion-productos,
+#vista-pedidos,
+#vista-ventas {
     padding: 35px;
     background: var(--blanco);
     border: 1px solid var(--borde);
@@ -199,7 +246,8 @@ body {
 
 /* BOTONES */
 
-#nuevo-producto {
+#nuevo-producto,
+#btn-toggle-nuevo-pedido {
     padding: 14px 22px;
     border: none;
     border-radius: 6px;
@@ -211,9 +259,28 @@ body {
     transition: .3s;
 }
 
-#nuevo-producto:hover {
+#nuevo-producto:hover,
+#btn-toggle-nuevo-pedido:hover {
     background: var(--verde-oscuro);
     transform: translateY(-2px);
+}
+
+#btn-limpiar-expirados,
+#filtro-periodo-ranking {
+    padding: 12px 16px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--crema);
+    color: var(--texto);
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.acciones-pedidos-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 /* BUSCADOR Y FILTROS */
@@ -251,9 +318,10 @@ body {
     border-color: var(--verde);
 }
 
-/* LISTA DE PRODUCTOS */
+/* LISTA DE PRODUCTOS Y PEDIDOS */
 
-#lista-productos-admin {
+#lista-productos-admin,
+#lista-pedidos-admin {
     min-height: 150px;
     width: 100%;
 }
@@ -265,20 +333,150 @@ body {
     font-size: 14px;
 }
 
-/* TARJETAS DE PRODUCTOS */
-
-.producto-admin {
+.producto-admin,
+.producto-admin-card,
+.tarjeta-admin {
     padding: 20px;
     margin-bottom: 15px;
     background: #fff;
     border: 1px solid var(--borde);
     border-radius: 9px;
+    overflow: hidden;
 }
 
-.producto-admin img {
-    max-width: 100%;
-    height: auto;
+.producto-admin-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.producto-admin-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.imagen-producto-admin,
+.producto-admin-imagen,
+.producto-admin img,
+.tarjeta-admin img {
+    width: 130px;
+    height: 130px;
+    max-width: 150px;
+    max-height: 150px;
     object-fit: contain;
+    display: block;
+    border-radius: 10px;
+    background: #f5f2eb;
+    margin-bottom: 10px;
+}
+
+.acciones-producto-admin {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.boton-imprimir-etiqueta,
+.boton-editar-producto,
+.boton-eliminar-producto,
+.btn-rotulo,
+.btn-recibo {
+    padding: 9px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.boton-imprimir-etiqueta,
+.btn-rotulo {
+    border: 1px solid var(--verde);
+    background: var(--verde-suave);
+    color: var(--verde);
+}
+
+.boton-editar-producto,
+.btn-recibo {
+    border: 1px solid var(--borde);
+    background: var(--blanco);
+    color: var(--texto);
+}
+
+.boton-eliminar-producto {
+    border: 1px solid #e2c2be;
+    background: #fdf3f2;
+    color: #a34e43;
+}
+
+.select-estado-pedido {
+    padding: 9px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--blanco);
+    font-size: 12px;
+}
+
+.badge-estado {
+    display: inline-block;
+    padding: 3px 9px;
+    margin-left: 8px;
+    border-radius: 999px;
+    background: var(--verde-suave);
+    color: var(--verde);
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* CAJAS Y RENDIMIENTO */
+
+.panel-caja {
+    padding: 24px;
+    margin-bottom: 24px;
+    background: #faf8f4;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+}
+
+.panel-caja[hidden] {
+    display: none !important;
+}
+
+.panel-caja h3 {
+    margin: 8px 0 12px;
+    color: var(--verde);
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.panel-caja ul {
+    margin-top: 12px;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.grid-rendimiento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.texto-documento {
+    padding: 18px;
+    background: #faf8f4;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
 }
 
 /* PIE DE PÁGINA */
@@ -292,99 +490,6 @@ body {
     letter-spacing: 2px;
 }
 
-/* TABLET */
-
-@media (max-width: 850px) {
-    .admin-contenedor {
-        width: 92%;
-    }
-
-    .resumen-admin {
-        gap: 12px;
-    }
-
-    .resumen-card {
-        padding: 20px;
-    }
-
-    .gestion-productos {
-        padding: 25px;
-    }
-}
-
-/* CELULARES */
-
-@media (max-width: 600px) {
-    .admin-header {
-        padding: 16px 5%;
-        align-items: flex-start;
-    }
-
-    .admin-logo {
-        font-size: 23px;
-    }
-
-    .admin-header-derecha {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 9px;
-    }
-
-    #correo-admin {
-        max-width: 155px;
-        overflow-wrap: anywhere;
-        text-align: right;
-        font-size: 11px;
-    }
-
-    #cerrar-sesion {
-        padding: 9px 12px;
-        font-size: 11px;
-    }
-
-    .admin-contenedor {
-        width: 92%;
-        margin: 35px auto;
-    }
-
-    .bienvenida-admin h1 {
-        font-size: 31px;
-    }
-
-    .resumen-admin {
-        grid-template-columns: 1fr;
-    }
-
-    .resumen-card {
-        padding: 20px;
-    }
-
-    .titulo-gestion {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    #nuevo-producto {
-        width: 100%;
-    }
-
-    .gestion-productos {
-        padding: 20px 15px;
-    }
-
-    .herramientas-admin {
-        flex-direction: column;
-    }
-
-    .herramientas-admin input,
-    .herramientas-admin select {
-        width: 100%;
-    }
-
-    .admin-footer {
-        font-size: 9px;
-    }
-}
 /* =====================================
    FORMULARIO DE PRODUCTOS SKENZI HOME
 ===================================== */
@@ -443,7 +548,8 @@ body {
     font-size: 13px;
 }
 
-#cerrar-modal-producto {
+#cerrar-modal-producto,
+#cerrar-modal-documento {
     width: 38px;
     height: 38px;
     border: 1px solid #e6e3da;
@@ -500,6 +606,13 @@ body {
     resize: vertical;
 }
 
+.vista-imagenes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
 .opciones-producto {
     display: flex;
     flex-wrap: wrap;
@@ -538,19 +651,22 @@ body {
     cursor: pointer;
 }
 
-#cancelar-producto {
+#cancelar-producto,
+#copiar-documento-pedido {
     border: 1px solid #deded6;
     background: white;
     color: #465638;
 }
 
-#guardar-producto {
+#guardar-producto,
+#imprimir-documento-pedido {
     border: none;
     background: #465638;
     color: white;
 }
 
-#guardar-producto:hover {
+#guardar-producto:hover,
+#imprimir-documento-pedido:hover {
     background: #35452b;
 }
 
@@ -559,7 +675,102 @@ body {
     cursor: wait;
 }
 
+/* TABLET */
+
+@media (max-width: 850px) {
+    .admin-contenedor {
+        width: 92%;
+    }
+
+    .resumen-admin,
+    .grid-rendimiento {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .resumen-card {
+        padding: 20px;
+    }
+
+    .gestion-productos,
+    #vista-pedidos,
+    #vista-ventas {
+        padding: 25px;
+    }
+}
+
+/* CELULARES */
+
 @media (max-width: 600px) {
+    .admin-header {
+        padding: 16px 5%;
+        align-items: flex-start;
+    }
+
+    .admin-logo {
+        font-size: 23px;
+    }
+
+    .admin-header-derecha {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 9px;
+    }
+
+    #correo-admin {
+        max-width: 155px;
+        overflow-wrap: anywhere;
+        text-align: right;
+        font-size: 11px;
+    }
+
+    #cerrar-sesion {
+        padding: 9px 12px;
+        font-size: 11px;
+    }
+
+    .admin-contenedor {
+        width: 92%;
+        margin: 35px auto;
+    }
+
+    .bienvenida-admin h1 {
+        font-size: 31px;
+    }
+
+    .resumen-admin {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen-card {
+        padding: 20px;
+    }
+
+    .titulo-gestion {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #nuevo-producto,
+    #btn-toggle-nuevo-pedido {
+        width: 100%;
+    }
+
+    .gestion-productos,
+    #vista-pedidos,
+    #vista-ventas {
+        padding: 20px 15px;
+    }
+
+    .herramientas-admin {
+        flex-direction: column;
+    }
+
+    .herramientas-admin input,
+    .herramientas-admin select {
+        width: 100%;
+    }
+
     .modal-producto {
         padding: 10px;
     }
@@ -584,41 +795,13 @@ body {
     .acciones-formulario button {
         width: 100%;
     }
-}
 
-/* ==========================================
-   SKENZI HOME — IMÁGENES DEL INVENTARIO
-   ========================================== */
-
-.imagen-producto-admin,
-.producto-admin img,
-.tarjeta-admin img {
-    width: 130px;
-    height: 130px;
-    object-fit: contain;
-    display: block;
-    border-radius: 10px;
-    background: #f5f2eb;
-    margin-bottom: 10px;
-}
-
-/* Tarjetas del inventario */
-.producto-admin,
-.tarjeta-admin {
-    overflow: hidden;
-}
-
-/* Evitar imágenes desbordadas */
-#lista-productos-admin img {
-    max-width: 150px;
-    max-height: 150px;
-    object-fit: contain;
-}
-
-/* Adaptación para pantallas pequeñas */
-@media (max-width: 600px) {
     #lista-productos-admin img {
         width: 100px;
         height: 100px;
+    }
+
+    .admin-footer {
+        font-size: 9px;
     }
 }
