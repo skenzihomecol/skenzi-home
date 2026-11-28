@@ -1,8 +1,7 @@
-
 /* ==========================================
    SKENZI HOME — PANEL ADMINISTRATIVO
    INVENTARIO + 3 FOTOGRAFÍAS + ETIQUETAS
-   SUPABASE — ESTRUCTURA REAL
+   PEDIDOS / RÓTULOS / RECIBOS + VENTAS
    ========================================== */
 
 "use strict";
@@ -26,35 +25,46 @@ async function iniciarPanel() {
     const botonGuardar = document.getElementById("guardar-producto");
 
     const mensaje = document.getElementById("mensaje-producto");
-const productoDestacado = document.getElementById(
-    "producto-destacado"
-);
-   const productoNovedad = document.getElementById(
-    "producto-novedad"
-);
-    const imagenPrincipal = document.getElementById(
-        "producto-imagen-principal"
-    );
+    const productoDestacado = document.getElementById("producto-destacado");
+    const productoNovedad = document.getElementById("producto-novedad");
+    const imagenPrincipal = document.getElementById("producto-imagen-principal");
+    const imagenesAdicionales = document.getElementById("producto-imagenes-adicionales");
+    const vistaPrincipal = document.getElementById("vista-imagen-principal");
+    const vistaAdicionales = document.getElementById("vista-imagenes-adicionales");
 
-    const imagenesAdicionales = document.getElementById(
-        "producto-imagenes-adicionales"
-    );
+    // Pestañas y nuevas secciones
+    const tabs = document.querySelectorAll(".admin-tab");
+    const vistas = document.querySelectorAll(".admin-vista");
 
-    const vistaPrincipal = document.getElementById(
-        "vista-imagen-principal"
-    );
+    const btnLimpiarExpirados = document.getElementById("btn-limpiar-expirados");
+    const btnToggleNuevoPedido = document.getElementById("btn-toggle-nuevo-pedido");
+    const formNuevoPedido = document.getElementById("form-nuevo-pedido");
+    const btnCancelarPedido = document.getElementById("cancelar-pedido");
+    const buscarPedido = document.getElementById("buscar-pedido");
+    const filtroEstadoPedido = document.getElementById("filtro-estado-pedido");
+    const listaPedidosEl = document.getElementById("lista-pedidos-admin");
 
-    const vistaAdicionales = document.getElementById(
-        "vista-imagenes-adicionales"
-    );
+    const filtroPeriodoRanking = document.getElementById("filtro-periodo-ranking");
+
+    const modalDocumento = document.getElementById("modal-documento-pedido");
+    const btnCerrarDocumento = document.getElementById("cerrar-modal-documento");
+    const btnCopiarDocumento = document.getElementById("copiar-documento-pedido");
+    const btnImprimirDocumento = document.getElementById("imprimir-documento-pedido");
+    const etiquetaDocumento = document.getElementById("tipo-documento-etiqueta");
+    const tituloDocumento = document.getElementById("titulo-documento-pedido");
+    const contenidoDocumento = document.getElementById("contenido-documento-pedido");
 
     let productos = [];
     let categorias = [];
-let productoEnEdicion = null;
+    let pedidos = [];
+    let productoEnEdicion = null;
+    let textoDocumentoActual = "";
+
     const BUCKET = "productos";
+    const STORAGE_PEDIDOS = "skenzi_pedidos_admin";
+    const MS_48_HORAS = 48 * 60 * 60 * 1000;
     const MAX_IMAGENES_ADICIONALES = 2;
     const MAX_TAMANO_IMAGEN = 5 * 1024 * 1024;
-
     const correoAutorizado = "hurtado03444@gmail.com";
 
     // ======================================
@@ -63,8 +73,7 @@ let productoEnEdicion = null;
 
     if (!db) {
         if (lista) {
-            lista.innerHTML =
-                "<p>No se pudo conectar con Supabase.</p>";
+            lista.innerHTML = "<p>No se pudo conectar con Supabase.</p>";
         }
         console.error("No existe skenziAdminDB.");
         return;
@@ -95,20 +104,45 @@ let productoEnEdicion = null;
         return;
     }
 
-    document.getElementById("correo-admin").textContent =
-        usuario.email;
-
-    // ======================================
-    // CERRAR SESIÓN
-    // ======================================
+    document.getElementById("correo-admin").textContent = usuario.email;
 
     document.getElementById("cerrar-sesion")
         ?.addEventListener("click", async () => {
-
             await db.auth.signOut();
-
             window.location.href = "login-admin.html";
         });
+
+    // ======================================
+    // NAVEGACIÓN ENTRE VISTAS / PESTAÑAS
+    // ======================================
+
+    function cambiarVista(idVista) {
+        tabs.forEach(tab => {
+            const activa = tab.dataset.vista === idVista;
+            tab.classList.toggle("activa", activa);
+        });
+
+        vistas.forEach(vista => {
+            const esActiva = vista.id === idVista;
+            vista.hidden = !esActiva;
+            vista.classList.toggle("activa", esActiva);
+        });
+
+        if (idVista === "vista-pedidos") {
+            poblarSelectProductosPedido();
+            mostrarPedidos();
+        } else if (idVista === "vista-ventas") {
+            actualizarMetricasYRanking();
+        }
+    }
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            if (tab.dataset.vista) {
+                cambiarVista(tab.dataset.vista);
+            }
+        });
+    });
 
     // ======================================
     // CARGAR CATEGORÍAS REALES
@@ -130,7 +164,6 @@ let productoEnEdicion = null;
             document.getElementById("producto-categoria");
 
         if (selectCategoria) {
-
             selectCategoria.innerHTML = `
                 <option value="">Seleccionar categoría</option>
                 ${categorias.map(categoria => `
@@ -142,7 +175,6 @@ let productoEnEdicion = null;
         }
 
         if (filtro) {
-
             filtro.innerHTML = `
                 <option value="">Todas las categorías</option>
                 ${categorias.map(categoria => `
@@ -152,8 +184,6 @@ let productoEnEdicion = null;
                 `).join("")}
             `;
         }
-
-        console.log("Categorías cargadas:", categorias.length);
     }
 
     // ======================================
@@ -195,7 +225,6 @@ let productoEnEdicion = null;
             if (error) throw error;
 
             productos = (data || []).map(producto => {
-
                 const categoria = categorias.find(
                     item => item.id === producto.categoria_id
                 );
@@ -210,11 +239,8 @@ let productoEnEdicion = null;
 
             actualizarResumen();
             mostrarProductos();
-
-            console.log(
-                "Inventario cargado:",
-                productos.length
-            );
+            poblarSelectProductosPedido();
+            actualizarMetricasYRanking();
 
         } catch (error) {
 
@@ -242,9 +268,7 @@ let productoEnEdicion = null;
             productos.filter(p => p.activo === true).length;
 
         document.getElementById("productos-agotados").textContent =
-            productos.filter(p =>
-                Number(p.existencias) <= 0
-            ).length;
+            productos.filter(p => Number(p.existencias) <= 0).length;
     }
 
     // ======================================
@@ -257,7 +281,6 @@ let productoEnEdicion = null;
         const categoriaId = filtro?.value || "";
 
         const filtrados = productos.filter(p => {
-
             const coincideNombre =
                 (p.nombre || "").toLowerCase().includes(texto);
 
@@ -267,18 +290,15 @@ let productoEnEdicion = null;
             const coincideCategoria =
                 !categoriaId || p.categoria_id === categoriaId;
 
-            return (coincideNombre || coincideCodigo) &&
-                coincideCategoria;
+            return (coincideNombre || coincideCodigo) && coincideCategoria;
         });
 
         if (!filtrados.length) {
-
             lista.innerHTML = `
                 <p class="mensaje-admin">
                     No se encontraron productos.
                 </p>
             `;
-
             return;
         }
 
@@ -337,32 +357,29 @@ let productoEnEdicion = null;
                         Imprimir etiqueta
                     </button>
 
+                    <div class="acciones-producto-admin">
 
-<div class="acciones-producto-admin">
+                        <button
+                            type="button"
+                            class="boton-editar-producto"
+                            data-id="${escapar(p.id)}">
+                            Editar producto
+                        </button>
 
-    <button
-        type="button"
-        class="boton-editar-producto"
-        data-id="${escapar(p.id)}">
-        Editar producto
-    </button>
+                        <button
+                            type="button"
+                            class="boton-eliminar-producto"
+                            data-id="${escapar(p.id)}">
+                            Eliminar
+                        </button>
 
-    <button
-        type="button"
-        class="boton-eliminar-producto"
-        data-id="${escapar(p.id)}">
-        Eliminar
-    </button>
-
-</div>
+                    </div>
 
                 </article>
             `;
 
         }).join("");
 
-        
-        // BOTÓN IMPRIMIR
         lista.querySelectorAll(".boton-imprimir-etiqueta")
             .forEach(boton => {
                 boton.addEventListener("click", () => {
@@ -373,7 +390,6 @@ let productoEnEdicion = null;
                 });
             });
 
-        // BOTÓN EDITAR
         lista.querySelectorAll(".boton-editar-producto")
             .forEach(boton => {
                 boton.addEventListener("click", () => {
@@ -389,7 +405,7 @@ let productoEnEdicion = null;
                     document.getElementById("producto-nombre").value = p.nombre || "";
                     document.getElementById("producto-descripcion").value = p.descripcion || "";
                     document.getElementById("producto-categoria").value = p.categoria_id || "";
-                   document.getElementById("producto-proveedor").value = p.proveedor || "";
+                    document.getElementById("producto-proveedor").value = p.proveedor || "";
                     document.getElementById("producto-costo").value = p.costo_compra;
                     document.getElementById("producto-precio").value = p.precio_venta;
                     document.getElementById("producto-stock").value = p.existencias;
@@ -398,13 +414,12 @@ let productoEnEdicion = null;
 
                     document.getElementById("producto-activo").checked = !!p.activo;
                     document.getElementById("producto-publicado").checked = !!p.activo;
-if (productoDestacado) {
-    productoDestacado.checked = !!p.es_destacado;
-
-}
-                   if (productoNovedad) {
-    productoNovedad.checked = !!p.es_novedad;
-}
+                    if (productoDestacado) {
+                        productoDestacado.checked = !!p.es_destacado;
+                    }
+                    if (productoNovedad) {
+                        productoNovedad.checked = !!p.es_novedad;
+                    }
                     imagenPrincipal.value = "";
                     imagenesAdicionales.value = "";
 
@@ -425,7 +440,6 @@ if (productoDestacado) {
                 });
             });
 
-        // BOTÓN ELIMINAR
         lista.querySelectorAll(".boton-eliminar-producto")
             .forEach(boton => {
                 boton.addEventListener("click", async () => {
@@ -457,704 +471,110 @@ if (productoDestacado) {
                     }
                 });
             });
-} 
-
-    // ======================================
-    // FORMATO DE PRECIO
-    // ======================================
-
-    function formatearPrecio(valor) {
-
-        return "$ " + Number(valor || 0).toLocaleString("es-CO");
     }
 
     // ======================================
-    // PROTECCIÓN HTML
+    // PEDIDOS, RÓTULOS, RECIBOS Y LIMPIEZA 48H
     // ======================================
 
-    function escapar(valor) {
-
-        return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-        })[caracter]);
-    }
-
-    // ======================================
-    // PREVISUALIZAR FOTOGRAFÍA PRINCIPAL
-    // ======================================
-
-    function mostrarVistaPrincipal() {
-
-        if (!vistaPrincipal || !imagenPrincipal) return;
-
-        const archivo = imagenPrincipal.files?.[0];
-
-        vistaPrincipal.innerHTML = "";
-
-        if (!archivo) return;
-
-        const imagen = document.createElement("img");
-
-        imagen.src = URL.createObjectURL(archivo);
-        imagen.alt = "Fotografía principal";
-
-        imagen.style.maxWidth = "150px";
-        imagen.style.maxHeight = "150px";
-        imagen.style.objectFit = "contain";
-
-        vistaPrincipal.appendChild(imagen);
-    }
-
-    // ======================================
-    // PREVISUALIZAR FOTOGRAFÍAS ADICIONALES
-    // ======================================
-
-    function mostrarVistasAdicionales() {
-
-        if (!vistaAdicionales || !imagenesAdicionales) return;
-
-        const archivos = Array.from(imagenesAdicionales.files || []);
-
-        vistaAdicionales.innerHTML = "";
-
-        if (archivos.length > MAX_IMAGENES_ADICIONALES) {
-
-            imagenesAdicionales.value = "";
-
-            alert("Solo puedes seleccionar dos fotografías adicionales.");
-
-            return;
-        }
-
-        archivos.forEach((archivo, indice) => {
-
-            const imagen = document.createElement("img");
-
-            imagen.src = URL.createObjectURL(archivo);
-            imagen.alt = `Fotografía adicional ${indice + 1}`;
-
-            imagen.style.maxWidth = "120px";
-            imagen.style.maxHeight = "120px";
-            imagen.style.objectFit = "contain";
-
-            vistaAdicionales.appendChild(imagen);
-        });
-    }
-
-    imagenPrincipal?.addEventListener(
-        "change",
-        mostrarVistaPrincipal
-    );
-
-    imagenesAdicionales?.addEventListener(
-        "change",
-        mostrarVistasAdicionales
-    );
-
-    // ======================================
-    // VALIDAR FOTOGRAFÍAS
-    // ======================================
-
-    function validarImagen(archivo) {
-
-        const tiposPermitidos = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
-
-        if (!tiposPermitidos.includes(archivo.type)) {
-            throw new Error(
-                "Solo se permiten imágenes JPG, PNG o WEBP."
-            );
-        }
-
-        if (archivo.size > MAX_TAMANO_IMAGEN) {
-            throw new Error(
-                "Cada fotografía debe pesar máximo 5 MB."
-            );
-        }
-    }
-
-    // ======================================
-    // SUBIR UNA FOTOGRAFÍA A STORAGE
-    // ======================================
-
-    async function subirImagen(archivo) {
-
-        validarImagen(archivo);
-
-        const extension = archivo.name
-            .split(".")
-            .pop()
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, "");
-
-        const nombreArchivo =
-            `${crypto.randomUUID()}.${extension}`;
-
-        const ruta = `productos/${nombreArchivo}`;
-
-        const { error } = await db.storage
-            .from(BUCKET)
-            .upload(ruta, archivo, {
-                cacheControl: "3600",
-                upsert: false,
-                contentType: archivo.type
-            });
-
-        if (error) throw error;
-
-        const { data } = db.storage
-            .from(BUCKET)
-            .getPublicUrl(ruta);
-
-        return {
-            ruta,
-            url: data.publicUrl
-        };
-    }
-
-    // ======================================
-    // ELIMINAR ARCHIVOS SI FALLA EL GUARDADO
-    // ======================================
-
-    async function limpiarImagenesSubidas(rutas) {
-
-        if (!rutas.length) return;
-
-        const { error } = await db.storage
-            .from(BUCKET)
-            .remove(rutas);
-
-        if (error) {
-            console.error(
-                "No se pudieron limpiar las imágenes:",
-                error
-            );
-        }
-    }
-
-    // ======================================
-    // ABRIR FORMULARIO
-    // ======================================
-
-    function abrirFormularioProducto() {
-productoEnEdicion = null;
-botonGuardar.textContent = "GUARDAR PRODUCTO";
-        formulario.reset();
-
-        document.getElementById("producto-stock").value = 0;
-
-        document.getElementById("producto-stock-minimo").value = 2;
-
-        document.getElementById("producto-activo").checked = true;
-
-        document.getElementById("producto-publicado").checked = false;
-if (productoDestacado) {
-    productoDestacado.checked = false;
-   
-}
-       if (productoNovedad) {
-    productoNovedad.checked = false;
-}
-        imagenPrincipal.value = "";
-        imagenesAdicionales.value = "";
-
-        vistaPrincipal.innerHTML = "";
-        vistaAdicionales.innerHTML = "";
-
-        mensaje.textContent = "";
-
-        modal.hidden = false;
-    }
-
-    botonNuevo?.addEventListener(
-        "click",
-        abrirFormularioProducto
-    );
-
-    // ======================================
-    // CERRAR FORMULARIO
-    // ======================================
-
-    function cerrarFormularioProducto() {
-
-        modal.hidden = true;
-    }
-
-    botonCerrar?.addEventListener(
-        "click",
-        cerrarFormularioProducto
-    );
-
-    botonCancelar?.addEventListener(
-        "click",
-        cerrarFormularioProducto
-    );
-
-formulario.addEventListener("submit", async evento => {
-
-    evento.preventDefault();
-
-    const rutasSubidas = [];
-
-    mensaje.style.color = "#A34E43";
-    mensaje.textContent = "";
-
-    botonGuardar.disabled = true;
-    botonGuardar.textContent = productoEnEdicion
-        ? "ACTUALIZANDO..."
-        : "GUARDANDO...";
-
-    try {
-
-        const archivoPrincipal = imagenPrincipal.files?.[0];
-
-        const archivosAdicionales = Array.from(
-            imagenesAdicionales.files || []
-        );
-
-        // Si es nuevo, la imagen principal es obligatoria.
-        if (!productoEnEdicion && !archivoPrincipal) {
-            throw new Error("Selecciona la fotografía principal.");
-        }
-
-        if (archivosAdicionales.length > 2) {
-            throw new Error("Solo puedes subir dos fotografías adicionales.");
-        }
-
-        const categoriaId =
-            document.getElementById("producto-categoria").value;
-const proveedor =
-    document.getElementById("producto-proveedor").value;
-
-if (!proveedor) {
-    throw new Error("Selecciona un proveedor.");
-}
-        if (!categoriaId) {
-            throw new Error("Selecciona una categoría.");
-        }
-
-        const costo = Number(
-            document.getElementById("producto-costo").value
-        );
-
-        const precio = Number(
-            document.getElementById("producto-precio").value
-        );
-
-        const existencias = Number(
-            document.getElementById("producto-stock").value
-        );
-
-        const stockMinimo = Number(
-            document.getElementById("producto-stock-minimo").value
-        );
-
-        if (
-            !Number.isFinite(costo) ||
-            !Number.isFinite(precio) ||
-            !Number.isInteger(existencias) ||
-            !Number.isInteger(stockMinimo) ||
-            costo < 0 ||
-            precio < 0 ||
-            existencias < 0 ||
-            stockMinimo < 0
-        ) {
-            throw new Error("Revisa los costos, precios y cantidades.");
-        }
-
-        // CONSERVAR O CAMBIAR IMAGEN PRINCIPAL
-        let imagenUrl = productoEnEdicion?.imagen_url || null;
-
-        if (archivoPrincipal) {
-
-            mensaje.textContent = "Subiendo fotografía principal...";
-
-            const principal = await subirImagen(archivoPrincipal);
-
-            rutasSubidas.push(principal.ruta);
-
-            imagenUrl = principal.url;
-        }
-
-        // CONSERVAR O CAMBIAR FOTOGRAFÍAS ADICIONALES
-        let urlsAdicionales = Array.isArray(
-            productoEnEdicion?.imagenes_adicionales
-        )
-            ? [...productoEnEdicion.imagenes_adicionales]
-            : [];
-
-        if (archivosAdicionales.length > 0) {
-
-            urlsAdicionales = [];
-
-            for (let i = 0; i < archivosAdicionales.length; i++) {
-
-                mensaje.textContent =
-                    `Subiendo fotografía adicional ${i + 1}...`;
-
-                const resultado = await subirImagen(
-                    archivosAdicionales[i]
-                );
-
-                rutasSubidas.push(resultado.ruta);
-
-                urlsAdicionales.push(resultado.url);
-            }
-        }
-
-        const activo =
-            document.getElementById("producto-activo").checked &&
-            document.getElementById("producto-publicado").checked;
-
-        const datosProducto = {
-
-            nombre: document.getElementById(
-                "producto-nombre"
-            ).value.trim(),
-
-            descripcion: document.getElementById(
-                "producto-descripcion"
-            ).value.trim(),
-
-            categoria_id: categoriaId,
-proveedor: proveedor,
-            costo_compra: costo,
-
-            precio_venta: precio,
-
-            existencias: existencias,
-
-            stock_minimo: stockMinimo,
-
-            codigo_barras: document.getElementById(
-                "producto-codigo"
-            ).value.trim() || null,
-
-            imagen_url: imagenUrl,
-
-            imagenes_adicionales: urlsAdicionales,
-
-            activo: activo,
-
-           es_novedad: productoNovedad?.checked ?? false,
-
-           es_destacado: productoDestacado?.checked ?? false,
-
-            en_oferta: productoEnEdicion?.en_oferta ?? false
-        };
-
-        mensaje.textContent = productoEnEdicion
-            ? "Actualizando producto..."
-            : "Guardando producto...";
-
-        let resultado;
-
-        if (productoEnEdicion) {
-
-            // ACTUALIZAR EL PRODUCTO EXISTENTE
-            resultado = await db
-                .from("productos")
-                .update(datosProducto)
-                .eq("id", productoEnEdicion.id);
-
-        } else {
-
-            // CREAR UN PRODUCTO NUEVO
-            resultado = await db
-                .from("productos")
-                .insert([datosProducto]);
-        }
-
-        if (resultado.error) {
-            throw resultado.error;
-        }
-// Si se seleccionó como destacado, quitar
-// esa condición de los demás productos.
-if (datosProducto.es_destacado) {
-
-    let consulta = db
-        .from("productos")
-        .update({ es_destacado: false })
-        .eq("es_destacado", true);
-
-    if (productoEnEdicion) {
-        consulta = consulta.neq("id", productoEnEdicion.id);
-    }
-
-    const { error: errorDestacados } = await consulta;
-
-    if (errorDestacados) {
-        console.error(
-            "No se pudieron actualizar los otros destacados:",
-            errorDestacados
-        );
-
-        throw errorDestacados;
-    }
-}
-        mensaje.style.color = "#394E3C";
-
-        mensaje.textContent = productoEnEdicion
-            ? "¡Producto actualizado correctamente!"
-            : "¡Producto guardado correctamente!";
-
-        productoEnEdicion = null;
-
-        await cargarProductos();
-
-        formulario.reset();
-
-        imagenPrincipal.value = "";
-        imagenesAdicionales.value = "";
-
-        vistaPrincipal.innerHTML = "";
-        vistaAdicionales.innerHTML = "";
-
-        setTimeout(() => {
-            cerrarFormularioProducto();
-        }, 1200);
-
-    } catch (error) {
-
-        console.error("Error guardando producto:", error);
-
-        await limpiarImagenesSubidas(rutasSubidas);
-
-        mensaje.style.color = "#A34E43";
-
-        mensaje.textContent =
-            "No se pudo guardar: " + error.message;
-
-    } finally {
-
-        botonGuardar.disabled = false;
-
-        botonGuardar.textContent = "GUARDAR PRODUCTO";
-    }
-
-});
-
-    // ======================================
-    // GUARDAR PRODUCTO EN SUPABASE
-    // ======================================
-
-   
-    // ======================================
-    // BÚSQUEDA Y FILTROS
-    // ======================================
-
-    buscar?.addEventListener(
-        "input",
-        mostrarProductos
-    );
-
-    filtro?.addEventListener(
-        "change",
-        mostrarProductos
-    );
-
-    // ======================================
-    // IMPRIMIR ETIQUETA POS-80C
-    // ======================================
-
-    function imprimirEtiqueta(producto) {
-
-        if (typeof JsBarcode === "undefined") {
-
-            alert(
-                "No se ha cargado el generador de códigos de barras."
-            );
-
-            return;
-        }
-
-        const codigo = producto.codigo_barras ||
-            ("SH" + producto.id.replace(/-/g, "").substring(0, 10))
-                .toUpperCase();
-
-        const ventana = window.open(
-            "",
-            "_blank",
-            "width=420,height=650"
-        );
-
-        if (!ventana) {
-
-            alert(
-                "Permite las ventanas emergentes para imprimir."
-            );
-
-            return;
-        }
-
-        const svg = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-        );
-
+    function leerPedidosLocales() {
         try {
-
-            JsBarcode(svg, codigo, {
-                format: "CODE128",
-                width: 2,
-                height: 48,
-                displayValue: true,
-                fontSize: 13,
-                margin: 2
-            });
-
+            const raw = localStorage.getItem(STORAGE_PEDIDOS);
+            const parsed = JSON.parse(raw || "[]");
+            return Array.isArray(parsed) ? parsed : [];
         } catch (error) {
-
-            ventana.close();
-
-            alert(
-                "No se pudo generar el código de barras."
-            );
-
-            return;
+            console.error("Error leyendo pedidos:", error);
+            return [];
         }
-
-        const codigoSVG = svg.outerHTML;
-
-        ventana.document.write(`
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <title>Etiqueta Skenzi Home</title>
-
-                <style>
-                    @page {
-                        size: 80mm auto;
-                        margin: 3mm;
-                    }
-
-                    * {
-                        box-sizing: border-box;
-                    }
-
-                    body {
-                        width: 74mm;
-                        margin: 0 auto;
-                        padding: 3mm 0;
-                        color: #111;
-                        font-family: Arial, sans-serif;
-                        text-align: center;
-                    }
-
-                    .marca {
-                        font-size: 17px;
-                        font-weight: bold;
-                        letter-spacing: 2px;
-                    }
-
-                    .producto {
-                        font-size: 15px;
-                        font-weight: bold;
-                        margin: 10px 0 6px;
-                        overflow-wrap: anywhere;
-                    }
-
-                    .referencia {
-                        font-size: 11px;
-                        margin-bottom: 8px;
-                    }
-
-                    .precio {
-                        font-size: 25px;
-                        font-weight: bold;
-                        margin: 8px 0;
-                    }
-
-                    .barcode {
-                        width: 100%;
-                        height: auto;
-                        max-height: 65px;
-                    }
-
-                    .pie {
-                        font-size: 10px;
-                        margin-top: 8px;
-                    }
-
-                    @media screen {
-                        body {
-                            padding: 15px;
-                        }
-                    }
-                </style>
-            </head>
-
-            <body>
-
-                <div class="marca">SKENZI HOME</div>
-
-                <div class="producto">
-                    ${escapar(producto.nombre)}
-                </div>
-
-                <div class="referencia">
-                    Ref: ${escapar(codigo)}
-                </div>
-
-                <div class="precio">
-                    ${formatearPrecio(producto.precio_venta)}
-                </div>
-
-                ${codigoSVG}
-
-                <div class="pie">
-                    Gracias por tu compra
-                </div>
-
-                <script>
-                    window.onload = function() {
-                        setTimeout(function() {
-                            window.print();
-                        }, 500);
-                    };
-                <\/script>
-
-            </body>
-            </html>
-        `);
-
-        ventana.document.close();
     }
 
-    // ======================================
-    // INICIAR PANEL
-    // ======================================
+    function guardarPedidosLocales() {
+        localStorage.setItem(STORAGE_PEDIDOS, JSON.stringify(pedidos));
+    }
 
-    try {
+    function purgarDatosClientesAntiguos(mostrarAviso = false) {
+        const ahora = Date.now();
+        let limpiados = 0;
 
-        await cargarCategorias();
+        pedidos = pedidos.map(pedido => {
+            const creadaMs = new Date(pedido.creado_en || ahora).getTime();
+            const supera48h = (ahora - creadaMs) >= MS_48_HORAS;
 
-        await cargarProductos();
+            if (supera48h && !pedido.datos_limpiados) {
+                limpiados++;
+                return {
+                    ...pedido,
+                    cliente: "Cliente eliminado (48h)",
+                    telefono: "—",
+                    ciudad: "—",
+                    direccion: "Datos eliminados automáticamente tras 2 días",
+                    nota: "",
+                    datos_limpiados: true
+                };
+            }
+            return pedido;
+        });
 
-        console.log(
-            "Panel administrativo SKENZI HOME iniciado."
-        );
+        if (limpiados > 0) {
+            guardarPedidosLocales();
+        }
 
-    } catch (error) {
+        if (mostrarAviso) {
+            alert(
+                limpiados > 0
+                    ? `Se eliminaron los datos personales de ${limpiados} pedido(s) con más de 48 horas.`
+                    : "No hay pedidos con más de 48 horas pendientes de limpieza."
+            );
+        }
 
-        console.error(
-            "Error iniciando panel:",
-            error
-        );
+        mostrarPedidos();
+    }
 
-        lista.innerHTML = `
-            <p class="mensaje-admin">
-                No se pudo iniciar el panel:
-                ${escapar(error.message)}
-            </p>
+    function poblarSelectProductosPedido() {
+        const selectProd = document.getElementById("pedido-producto");
+        if (!selectProd) return;
+
+        selectProd.innerHTML = `
+            <option value="">Seleccionar producto del catálogo</option>
+            ${productos.map(p => `
+                <option value="${escapar(p.id)}">
+                    ${escapar(p.nombre)} (${formatearPrecio(p.precio_venta)} · Stock: ${Number(p.existencias) || 0})
+                </option>
+            `).join("")}
         `;
     }
-}
+
+    function mostrarPedidos() {
+        if (!listaPedidosEl) return;
+
+        const texto = (buscarPedido?.value || "").trim().toLowerCase();
+        const estado = filtroEstadoPedido?.value || "";
+
+        const filtrados = pedidos.filter(ped => {
+            const coincideTexto =
+                !texto ||
+                String(ped.codigo || "").toLowerCase().includes(texto) ||
+                String(ped.cliente || "").toLowerCase().includes(texto) ||
+                String(ped.telefono || "").toLowerCase().includes(texto);
+
+            const coincideEstado = !estado || ped.estado === estado;
+            return coincideTexto && coincideEstado;
+        });
+
+        if (!filtrados.length) {
+            listaPedidosEl.innerHTML = `
+                <p class="mensaje-admin">
+                    No hay pedidos registrados para mostrar.
+                </p>
+            `;
+            return;
+        }
+
+        listaPedidosEl.innerHTML = filtrados.map(ped => {
+            const itemsTexto = (ped.items || [])
+                .map(i => `${escapar(i.nombre)} x${Number(i.cantidad) || 1}`)
+                .join(", ");
+
+            return `
+                <article class="producto-admin-card pedido-card">
+                    <div class="producto-admin-info
