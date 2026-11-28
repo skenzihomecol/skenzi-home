@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,6 +18,18 @@
             <small>HOME</small>
         </a>
 
+        <nav class="admin-tabs" aria-label="Secciones del panel">
+            <button type="button" class="admin-tab activa" data-vista="vista-inventario">
+                Inventario
+            </button>
+            <button type="button" class="admin-tab" data-vista="vista-pedidos">
+                Pedidos, Rótulos y Recibos
+            </button>
+            <button type="button" class="admin-tab" data-vista="vista-ventas">
+                Ventas y Rendimiento
+            </button>
+        </nav>
+
         <div class="admin-header-derecha">
             <span id="correo-admin">Administración</span>
             <button id="cerrar-sesion" type="button">
@@ -33,257 +44,447 @@
         <section class="bienvenida-admin">
             <span>ESPACIO PRIVADO</span>
             <h1>Panel de administración</h1>
-            <p>Gestiona los productos y el inventario de tu tienda.</p>
+            <p>Gestiona el inventario, los pedidos con rótulos/recibos y el control de ventas de tu tienda.</p>
         </section>
 
-        <!-- RESUMEN -->
-        <section class="resumen-admin">
+        <!-- =========================================
+             VISTA 1: INVENTARIO
+        ========================================= -->
+        <div id="vista-inventario" class="admin-vista activa">
 
-            <article class="resumen-card">
-                <span>Total de productos</span>
-                <strong id="total-productos">0</strong>
-            </article>
+            <!-- RESUMEN -->
+            <section class="resumen-admin">
 
-            <article class="resumen-card">
-                <span>Productos publicados</span>
-                <strong id="productos-publicados">0</strong>
-            </article>
+                <article class="resumen-card">
+                    <span>Total de productos</span>
+                    <strong id="total-productos">0</strong>
+                </article>
 
-            <article class="resumen-card">
-                <span>Productos agotados</span>
-                <strong id="productos-agotados">0</strong>
-            </article>
+                <article class="resumen-card">
+                    <span>Productos publicados</span>
+                    <strong id="productos-publicados">0</strong>
+                </article>
 
-        </section>
+                <article class="resumen-card">
+                    <span>Productos agotados</span>
+                    <strong id="productos-agotados">0</strong>
+                </article>
 
-        <!-- ACCIONES -->
-        <section class="gestion-productos">
+            </section>
+
+            <!-- ACCIONES -->
+            <section class="gestion-productos">
+
+                <div class="titulo-gestion">
+                    <div>
+                        <span>INVENTARIO</span>
+                        <h2>Mis productos</h2>
+                        <p>Administra el catálogo de Skenzi Home.</p>
+                    </div>
+
+                    <button id="nuevo-producto" type="button">
+                        + Agregar producto
+                    </button>
+                </div>
+
+                <div class="herramientas-admin">
+
+                    <input
+                        type="search"
+                        id="buscar-admin"
+                        placeholder="Buscar producto..."
+                    >
+
+                    <select id="filtro-categoria">
+                        <option value="">Todas las categorías</option>
+                        <option value="Hogar">Hogar</option>
+                        <option value="Cocina">Cocina</option>
+                        <option value="Juguetes">Juguetes</option>
+                        <option value="Herramientas">Herramientas</option>
+                        <option value="Deporte">Deporte</option>
+                        <option value="Belleza">Belleza</option>
+                        <option value="Tecnología">Tecnología</option>
+                        <option value="Organizadores">Organizadores</option>
+                        <option value="Textiles">Textiles</option>
+                    </select>
+
+                </div>
+
+                <div id="lista-productos-admin">
+
+                    <p class="mensaje-admin">
+                        Cargando productos...
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- =========================================
+             VISTA 2: PEDIDOS, RÓTULOS Y RECIBOS
+        ========================================= -->
+        <section id="vista-pedidos" class="admin-vista" hidden>
 
             <div class="titulo-gestion">
                 <div>
-                    <span>INVENTARIO</span>
-                    <h2>Mis productos</h2>
-                    <p>Administra el catálogo de Skenzi Home.</p>
+                    <span>LOGÍSTICA Y DESPACHO</span>
+                    <h2>Pedidos, Rótulos y Recibos</h2>
+                    <p>
+                        Los datos personales de clientes se eliminan automáticamente después de <strong>2 días (48 horas)</strong> para cuidar el almacenamiento, conservando el historial de ventas.
+                    </p>
                 </div>
 
-                <button id="nuevo-producto" type="button">
-                    + Agregar producto
-                </button>
+                <div class="acciones-pedidos-top">
+                    <button type="button" id="btn-limpiar-expirados">
+                        Limpiar datos &gt; 48h ahora
+                    </button>
+                    <button type="button" id="btn-toggle-nuevo-pedido">
+                        + Registrar pedido
+                    </button>
+                </div>
             </div>
 
-            <div class="herramientas-admin">
+            <!-- REGISTRO RÁPIDO DE PEDIDO -->
+            <form id="form-nuevo-pedido" class="panel-caja" hidden>
+                <h3>Nuevo pedido de cliente</h3>
+                <div class="campos-producto">
+                    <div class="campo-producto">
+                        <label for="pedido-cliente">Nombre del cliente *</label>
+                        <input type="text" id="pedido-cliente" required>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-telefono">Teléfono / WhatsApp *</label>
+                        <input type="tel" id="pedido-telefono" required>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-ciudad">Ciudad / Municipio *</label>
+                        <input type="text" id="pedido-ciudad" value="Cali" required>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-direccion">Dirección y barrio *</label>
+                        <input type="text" id="pedido-direccion" required>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-producto">Producto vendido *</label>
+                        <select id="pedido-producto" required>
+                            <option value="">Seleccionar producto del catálogo</option>
+                        </select>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-cantidad">Cantidad *</label>
+                        <input type="number" id="pedido-cantidad" min="1" value="1" required>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-pago">Método de pago</label>
+                        <select id="pedido-pago">
+                            <option value="Contraentrega">Contraentrega</option>
+                            <option value="Transferencia / Nequi / Daviplata">Transferencia / Nequi / Daviplata</option>
+                            <option value="Efectivo">Efectivo</option>
+                        </select>
+                    </div>
+                    <div class="campo-producto">
+                        <label for="pedido-nota">Nota para el rótulo / entrega</label>
+                        <input type="text" id="pedido-nota" placeholder="Ej. Portería, llamar al llegar">
+                    </div>
+                </div>
+                <div class="acciones-formulario">
+                    <button type="button" id="cancelar-pedido">Cancelar</button>
+                    <button type="submit" id="guardar-pedido">Guardar pedido</button>
+                </div>
+            </form>
 
+            <!-- FILTROS DE PEDIDOS -->
+            <div class="herramientas-admin">
                 <input
                     type="search"
-                    id="buscar-admin"
-                    placeholder="Buscar producto..."
+                    id="buscar-pedido"
+                    placeholder="Buscar por código, cliente o teléfono..."
                 >
-
-                <select id="filtro-categoria">
-                    <option value="">Todas las categorías</option>
-                    <option value="Hogar">Hogar</option>
-                    <option value="Cocina">Cocina</option>
-                    <option value="Juguetes">Juguetes</option>
-                    <option value="Herramientas">Herramientas</option>
-                    <option value="Deporte">Deporte</option>
-                    <option value="Belleza">Belleza</option>
-                    <option value="Tecnología">Tecnología</option>
-                    <option value="Organizadores">Organizadores</option>
-                    <option value="Textiles">Textiles</option>
+                <select id="filtro-estado-pedido">
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Empacado">Empacado</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Entregado">Entregado</option>
                 </select>
-
             </div>
 
-            <div id="lista-productos-admin">
+            <div id="lista-pedidos-admin">
+                <p class="mensaje-admin">Cargando pedidos...</p>
+            </div>
 
-                <p class="mensaje-admin">
-                    Cargando productos...
-                </p>
+        </section>
+
+        <!-- =========================================
+             VISTA 3: VENTAS Y RENDIMIENTO
+        ========================================= -->
+        <section id="vista-ventas" class="admin-vista" hidden>
+
+            <div class="titulo-gestion">
+                <div>
+                    <span>CONTROL FINANCIERO Y CATÁLOGO</span>
+                    <h2>Ventas por período y rendimiento de productos</h2>
+                    <p>Consulta lo vendido en la semana, mes y año, identifica tu producto estrella y detecta cuáles impulsar.</p>
+                </div>
+
+                <select id="filtro-periodo-ranking">
+                    <option value="semana">Esta semana</option>
+                    <option value="mes" selected>Este mes</option>
+                    <option value="anio">Este año</option>
+                    <option value="todo">Todo el historial</option>
+                </select>
+            </div>
+
+            <!-- RESUMEN DE VENTAS: SEMANA / MES / AÑO -->
+            <section class="resumen-admin">
+
+                <article class="resumen-card">
+                    <span>Ventas esta semana</span>
+                    <strong id="ventas-semana">$0</strong>
+                    <small id="pedidos-semana">0 pedidos</small>
+                </article>
+
+                <article class="resumen-card">
+                    <span>Ventas este mes</span>
+                    <strong id="ventas-mes">$0</strong>
+                    <small id="pedidos-mes">0 pedidos</small>
+                </article>
+
+                <article class="resumen-card">
+                    <span>Ventas este año</span>
+                    <strong id="ventas-anio">$0</strong>
+                    <small id="pedidos-anio">0 pedidos</small>
+                </article>
+
+            </section>
+
+            <!-- MÁS VENDIDO VS. POR IMPULSAR -->
+            <div class="grid-rendimiento">
+
+                <article class="panel-caja">
+                    <span>PRODUCTO MÁS VENDIDO</span>
+                    <h3 id="producto-estrella-nombre">Sin ventas aún</h3>
+                    <p id="producto-estrella-metricas">0 unidades · $0</p>
+                    <div id="top-mas-vendidos"></div>
+                </article>
+
+                <article class="panel-caja">
+                    <span>POR IMPULSAR (BAJAS O CERO VENTAS)</span>
+                    <h3>Productos con menor rotación</h3>
+                    <p>Considera destacarlos, darles mejor ubicación o crear promociones.</p>
+                    <div id="lista-por-impulsar"></div>
+                </article>
 
             </div>
 
         </section>
-<!-- FORMULARIO PARA AGREGAR PRODUCTOS -->
-<section id="modal-producto" class="modal-producto" hidden>
 
-    <div class="formulario-producto">
+        <!-- =========================================
+             MODAL: RÓTULO / RECIBO IMPRIMIBLE
+        ========================================= -->
+        <section id="modal-documento-pedido" class="modal-producto" hidden>
+            <div class="formulario-producto documento-imprimible">
+                <div class="formulario-encabezado">
+                    <div>
+                        <span id="tipo-documento-etiqueta">DOCUMENTO</span>
+                        <h2 id="titulo-documento-pedido">Detalle</h2>
+                    </div>
+                    <button type="button" id="cerrar-modal-documento">×</button>
+                </div>
 
-        <div class="formulario-encabezado">
-            <div>
-                <span>INVENTARIO SKENZI HOME</span>
-                <h2>Nuevo producto</h2>
-                <p>Completa la información del producto.</p>
+                <div id="contenido-documento-pedido" class="contenido-documento"></div>
+
+                <div class="acciones-formulario">
+                    <button type="button" id="copiar-documento-pedido">Copiar texto</button>
+                    <button type="button" id="imprimir-documento-pedido">Imprimir</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORMULARIO PARA AGREGAR PRODUCTOS -->
+        <section id="modal-producto" class="modal-producto" hidden>
+
+            <div class="formulario-producto">
+
+                <div class="formulario-encabezado">
+                    <div>
+                        <span>INVENTARIO SKENZI HOME</span>
+                        <h2>Nuevo producto</h2>
+                        <p>Completa la información del producto.</p>
+                    </div>
+
+                    <button type="button" id="cerrar-modal-producto">×</button>
+                </div>
+
+                <form id="form-producto">
+
+                    <div class="campos-producto">
+
+                        <div class="campo-producto">
+                            <label for="producto-nombre">Nombre *</label>
+                            <input type="text" id="producto-nombre" required>
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-categoria">Categoría *</label>
+                            <select id="producto-categoria" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option>Hogar</option>
+                                <option>Cocina</option>
+                                <option>Juguetes</option>
+                                <option>Herramientas</option>
+                                <option>Deporte</option>
+                                <option>Belleza</option>
+                                <option>Tecnología</option>
+                                <option>Organizadores</option>
+                                <option>Textiles</option>
+                                <option>Industrial</option>
+                            </select>
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-proveedor">Proveedor *</label>
+                            <select id="producto-proveedor" required>
+                                <option value="">Seleccionar proveedor</option>
+                                <option value="JM">JM</option>
+                                <option value="JH">JH</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="campo-producto campo-completo">
+                            <label for="producto-descripcion">Descripción</label>
+                            <textarea id="producto-descripcion" rows="4"></textarea>
+                        </div>
+
+                        <!-- GALERÍA DE IMÁGENES DEL PRODUCTO -->
+                        <div class="campo-producto campo-completo">
+
+                            <label for="producto-imagen-principal">
+                                Imagen principal *
+                            </label>
+
+                            <input
+                                type="file"
+                                id="producto-imagen-principal"
+                                accept="image/jpeg,image/png,image/webp"
+                            >
+                            <div id="vista-imagen-principal" class="vista-imagenes"></div>
+
+                        </div>
+
+                        <div class="campo-producto campo-completo">
+
+                            <label for="producto-imagenes-adicionales">
+                                Fotografías adicionales (máximo 2)
+                            </label>
+
+                            <input
+                                type="file"
+                                id="producto-imagenes-adicionales"
+                                accept="image/jpeg,image/png,image/webp"
+                                multiple
+                            >
+
+                            <div id="vista-imagenes-adicionales" class="vista-imagenes"></div>
+
+                            <small>Selecciona hasta dos fotografías adicionales.</small>
+
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-costo">Costo de compra *</label>
+                            <input type="number" id="producto-costo"
+                                   min="0" step="0.01" required>
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-precio">Precio de venta *</label>
+                            <input type="number" id="producto-precio"
+                                   min="0" step="0.01" required>
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-stock">Cantidad disponible</label>
+                            <input type="number" id="producto-stock"
+                                   min="0" value="0" required>
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-stock-minimo">Stock mínimo</label>
+                            <input type="number" id="producto-stock-minimo"
+                                   min="0" value="2" required>
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-codigo">Código de barras</label>
+                            <input type="text" id="producto-codigo">
+                        </div>
+
+                        <div class="campo-producto">
+                            <label for="producto-tipo">Tipo de inventario</label>
+                            <select id="producto-tipo">
+                                <option value="Fisico">Producto físico</option>
+                                <option value="Bajo pedido">Bajo pedido</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="opciones-producto">
+
+                        <label>
+                            <input type="checkbox" id="producto-activo" checked>
+                            Producto activo
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="producto-publicado">
+                            Publicar en la tienda
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="producto-destacado">
+                            ⭐ Destacar producto de la semana
+                        </label>
+                        <label>
+                            <input type="checkbox" id="producto-novedad">
+                            🕒 Mostrar en Novedades (Próximamente)
+                        </label>
+                    </div>
+
+                    <p id="mensaje-producto" aria-live="polite"></p>
+
+                    <div class="acciones-formulario">
+                        <button type="button" id="cancelar-producto">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" id="guardar-producto">
+                            GUARDAR PRODUCTO
+                        </button>
+                    </div>
+
+                </form>
+
             </div>
 
-            <button type="button" id="cerrar-modal-producto">×</button>
-        </div>
+        </section>
 
-        <form id="form-producto">
-
-            <div class="campos-producto">
-
-                <div class="campo-producto">
-                    <label for="producto-nombre">Nombre *</label>
-                    <input type="text" id="producto-nombre" required>
-                </div>
-
-                <div class="campo-producto">
-                    <label for="producto-categoria">Categoría *</label>
-                    <select id="producto-categoria" required>
-                        <option value="">Seleccionar categoría</option>
-                        <option>Hogar</option>
-                        <option>Cocina</option>
-                        <option>Juguetes</option>
-                        <option>Herramientas</option>
-                        <option>Deporte</option>
-                        <option>Belleza</option>
-                        <option>Tecnología</option>
-                        <option>Organizadores</option>
-                        <option>Textiles</option>
-                        <option>Industrial</option>
-                    </select>
-                </div>
-
-<div class="campo-producto">
-    <label for="producto-proveedor">Proveedor *</label>
-    <select id="producto-proveedor" required>
-        <option value="">Seleccionar proveedor</option>
-        <option value="JM">JM</option>
-        <option value="JH">JH</option>
-        <option value="Otro">Otro</option>
-    </select>
-</div>
-
-                <div class="campo-producto campo-completo">
-                    <label for="producto-descripcion">Descripción</label>
-                    <textarea id="producto-descripcion" rows="4"></textarea>
-                </div>
-
-               <!-- GALERÍA DE IMÁGENES DEL PRODUCTO -->
-<div class="campo-producto campo-completo">
-
-    <label for="producto-imagen-principal">
-        Imagen principal *
-    </label>
-
-   <input
-    type="file"
-    id="producto-imagen-principal"
-    accept="image/jpeg,image/png,image/webp"
->
-    <div id="vista-imagen-principal" class="vista-imagenes"></div>
-
-</div>
-
-<div class="campo-producto campo-completo">
-
-    <label for="producto-imagenes-adicionales">
-        Fotografías adicionales (máximo 2)
-    </label>
-
-    <input
-        type="file"
-        id="producto-imagenes-adicionales"
-        accept="image/jpeg,image/png,image/webp"
-        multiple
-    >
-
-    <div id="vista-imagenes-adicionales" class="vista-imagenes"></div>
-
-    <small>Selecciona hasta dos fotografías adicionales.</small>
-
-</div>
-
-                <div class="campo-producto">
-                    <label for="producto-costo">Costo de compra *</label>
-                    <input type="number" id="producto-costo"
-                           min="0" step="0.01" required>
-                </div>
-
-                <div class="campo-producto">
-                    <label for="producto-precio">Precio de venta *</label>
-                    <input type="number" id="producto-precio"
-                           min="0" step="0.01" required>
-                </div>
-
-                <div class="campo-producto">
-                    <label for="producto-stock">Cantidad disponible</label>
-                    <input type="number" id="producto-stock"
-                           min="0" value="0" required>
-                </div>
-
-                <div class="campo-producto">
-                    <label for="producto-stock-minimo">Stock mínimo</label>
-                    <input type="number" id="producto-stock-minimo"
-                           min="0" value="2" required>
-                </div>
-
-                <div class="campo-producto">
-                    <label for="producto-codigo">Código de barras</label>
-                    <input type="text" id="producto-codigo">
-                </div>
-
-                <div class="campo-producto">
-                    <label for="producto-tipo">Tipo de inventario</label>
-                    <select id="producto-tipo">
-                        <option value="Fisico">Producto físico</option>
-                        <option value="Bajo pedido">Bajo pedido</option>
-                    </select>
-                </div>
-
-            </div>
-
-           <div class="opciones-producto">
-
-    <label>
-        <input type="checkbox" id="producto-activo" checked>
-        Producto activo
-    </label>
-
-    <label>
-        <input type="checkbox" id="producto-publicado">
-        Publicar en la tienda
-    </label>
-
-    <label>
-        <input type="checkbox" id="producto-destacado">
-        ⭐ Destacar producto de la semana
-    </label>
-<label>
-    <input type="checkbox" id="producto-novedad">
-    🕒 Mostrar en Novedades (Próximamente)
-</label>
-</div>
-
-            <p id="mensaje-producto" aria-live="polite"></p>
-
-            <div class="acciones-formulario">
-                <button type="button" id="cancelar-producto">
-                    Cancelar
-                </button>
-
-                <button type="submit" id="guardar-producto">
-                    GUARDAR PRODUCTO
-                </button>
-            </div>
-
-        </form>
-
-    </div>
-
-</section>
     </main>
 
     <footer class="admin-footer">
         SKENZI HOME · ADMINISTRACIÓN PRIVADA
     </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="supabase-admin.js"></script>
+    <script src="supabase-admin.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
-<script src="js/admin-panel.js"></script>
+    <script src="js/admin-panel.js"></script>
 </body>
 </html>
